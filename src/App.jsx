@@ -10,6 +10,7 @@ import Navigation from "./components/Navigation/Navigation";
 import GreenProduct from "./pages/GreenProduct/GreenProduct";
 import GreenEnergyProduct from "./pages/GreenEnergyProduct/GreenEnergyProduct";
 import { useEffect } from "react";
+import OrderDetail from "./pages/OrderDetail/OrderDetail";
 
 function App() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/green-product" element={<GreenProduct />} />
         <Route path="/green-energy-product" element={<GreenEnergyProduct />} />
+        <Route path="/order-detail" element={<OrderDetail />} />
 
       </Routes>
 
