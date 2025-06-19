@@ -50,6 +50,7 @@ function GreenProduct() {
                 <span>제품명</span>
                 <span className="font-bold">가격</span>
                 <span className="text-xs mb-3">포인트 75P 적립</span>
+                
               </div>
             </div>
               

@@ -12,7 +12,7 @@ export const menuData = [
         },
         {
             subTitle: "주문내역",
-            subLink: "/order-datail"
+            subLink: "/order-detail"
         },
         {
             subTitle: "사업자등록증",

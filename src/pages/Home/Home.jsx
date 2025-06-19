@@ -1,7 +1,7 @@
 /* global kakao */
 import { Link } from "react-router-dom";
-import banner from "../../assets/banner.png";
-import logo from "../../assets/logo.png";
+// import banner from "../../assets/banner.png";
+// import logo from "../../assets/logo.png";
 import { useEffect, useState } from "react";
 
 function Home() {
@@ -158,8 +158,8 @@ function Home() {
   };
 
   return (
-    <div className="container">
-      <div className="flex justify-end items-center mt-4">
+    <div className="container font-notokr">
+      {/* <div className="flex justify-end items-center mt-4">
         <Link to="/">
           <img className="w-40" src={logo} alt="/" />
         </Link>
@@ -179,7 +179,7 @@ function Home() {
 
       <div className="">
         <img src={banner} alt="" />
-      </div>
+      </div> */}
 
       <div className="my-8">
         <span className="font-extrabold">녹색 제품 목록</span>
@@ -289,14 +289,16 @@ function Home() {
         </div>
       </div>
 
-      <footer className="bg-slate-600 p-10">
+      {/* <footer className="bg-slate-600 p-10">
         <div>
           <span className="text-primary-500">풀내음</span>
         </div>
         <div className="mt-2 text-gray-300 text-sm">
           COPYRIGHT 2023 (c) DAEJEON METROPOLITAN CITY. ALL RIGHTS RESERVED.
         </div>
-      </footer>
+      </footer> */}
+
+
     </div>
   );
 }
