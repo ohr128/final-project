@@ -12,12 +12,6 @@ function Login(){
     const [password, setPw] = useState("");
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     if(!Kakao.isInitialized()) {
-    //         Kakao.init("5a45f6634970f2c8e381cf07d89884bf");
-    //         console.log("Kakao SDK 초기화 완료");
-    //     }
-    // }, []);
     const handleLogin = async (e) => {
         e.preventDefault();
 
@@ -26,7 +20,7 @@ function Login(){
                 id,
                 password
             });
-            localStorage.setItem("token", JSON.stringify(response.data));
+            sessionStorage.setItem("token", JSON.stringify(response.data));
             const saveToken = JSON.parse(localStorage.getItem('token'));
             console.log(saveToken);
             alert("로그인 성공");
