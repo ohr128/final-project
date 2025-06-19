@@ -1,7 +1,5 @@
 /* global kakao */
 import { Link } from "react-router-dom";
-import banner from "../../assets/banner.png";
-import logo from "../../assets/logo.png";
 import { useEffect, useState } from "react";
 
 function Home() {
