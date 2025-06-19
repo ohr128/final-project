@@ -65,8 +65,8 @@ function Login(){
 
                     <div className="flex justify-end text-xs text-gray-500 mt-2">
                             <Link to="/signUp" className="ml-50">회원가입</Link>
-                            <Link className="ml-2">아이디 찾기</Link>
-                            <Link className="ml-2">비밀번호 찾기</Link>
+                            <Link to="/findId" className="ml-2">아이디 찾기</Link>
+                            <Link to="/findPw" className="ml-2">비밀번호 찾기</Link>
                     </div>
 
                     <button className="border border-gray-300 w-100 h-10 flex justify-center items-center my-10 rounded" onClick={handleKakaoLogin}>

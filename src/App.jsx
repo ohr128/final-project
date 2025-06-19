@@ -1,26 +1,61 @@
 import "./App.css";
-import { Routes, Route, Link } from "react-router-dom";
+import banner from "./assets/banner.png";
+import { Routes, Route, useLocation } from "react-router-dom";
 import SignUp from "./pages/SignUp/SignUp";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import Cart from "./pages/Cart/Cart";
+import Footer from "./components/Footer/Footer";
+import Navigation from "./components/Navigation/Navigation";
+import GreenProduct from "./pages/GreenProduct/GreenProduct";
+import GreenEnergyProduct from "./pages/GreenEnergyProduct/GreenEnergyProduct";
+import { useEffect } from "react";
+import OrderDetail from "./pages/OrderDetail/OrderDetail";
+import FindId from "./pages/FindId/FindId";
+import FindPw from "./pages/FindPw/FindPw";
+import GreenDetail from "./pages/GreenDetail/GreenDetail";
 import VerifySuccess from "./pages/verify/VerifySuccess";
 import Auth from "./pages/Login/Auth";
 
 function App() {
+  const location = useLocation();
+  const hideHeaderFooter = ["/login", "/signUp", "/findId", "/findPw"].includes(location.pathname);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <div className="container m-auto">
-      
 
-      {/* 페이지 전환 */}
+      {!hideHeaderFooter && (
+        <>
+          <Navigation />
+          <div>
+            <img src={banner} alt="배너 이미지" />
+          </div>
+        </>
+      )}
+
+      {/* 라우팅 */}
       <Routes>
-        <Route path="/" element= {<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/signUp" element={<SignUp />} />
+        <Route path="/findId" element={<FindId />} />
+        <Route path="/findPw" element={<FindPw />} />
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/login" element={<Login />} />
         <Route path="/login/auth" element={<Auth />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/green-product" element={<GreenProduct />} />
+        <Route path="/green-energy-product" element={<GreenEnergyProduct />} />
+        <Route path="/order-detail" element={<OrderDetail />} />
+        <Route path="/green-detail" element={<GreenDetail />} />
+
       </Routes>
+
+
+      {!hideHeaderFooter && <Footer />}
     </div>
   );
 }
