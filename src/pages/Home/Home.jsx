@@ -1,5 +1,7 @@
 /* global kakao */
 import { Link } from "react-router-dom";
+import banner from "../../assets/banner.png";
+import logo from "../../assets/logo.png";
 import { useEffect, useState } from "react";
 
 function Home() {
@@ -156,7 +158,8 @@ function Home() {
   };
 
   return (
-    <div className="container">
+    <div className="container font-notokr">
+
       <div className="my-8">
         <span className="font-extrabold">녹색 제품 목록</span>
 
