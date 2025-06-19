@@ -5,9 +5,16 @@
     <link rel="shortcut icon" href="./src/assets/favicon.ico" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>풀내음</title>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if(!Kakao.isInitialized()) {
+            Kakao.init("5a45f6634970f2c8e381cf07d89884bf");
+            console.log("Kakao SDK 초기화 완료");
+        }
+    </script>
   </body>
 </html>
