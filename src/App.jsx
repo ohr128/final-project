@@ -9,6 +9,7 @@ import Footer from "./components/Footer/Footer";
 import Navigation from "./components/Navigation/Navigation";
 import GreenProduct from "./pages/GreenProduct/GreenProduct";
 import GreenEnergyProduct from "./pages/GreenEnergyProduct/GreenEnergyProduct";
+import GreenDetail from "./pages/GreenDetail/GreenDetail";
 import { useEffect } from "react";
 
 function App() {
@@ -39,7 +40,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/green-product" element={<GreenProduct />} />
         <Route path="/green-energy-product" element={<GreenEnergyProduct />} />
-
+        <Route path="/GreenDetail" element={<GreenDetail/>} />
       </Routes>
 
       {/* Footer: 로그인/회원가입 페이지가 아닐 때만 */}
