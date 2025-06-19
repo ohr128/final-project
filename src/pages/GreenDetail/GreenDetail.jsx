@@ -1,60 +1,145 @@
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 
 function GreenDetail() {
+  const [searchParams] = useSearchParams();
+  const productId = searchParams.get("productId");
+  const [product, setProduct] = useState({});
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [count, setCount] = useState(1);
 
-    return(
+  useEffect(() => {
+    fetch(`http://localhost:8080/api/product/${productId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setProduct(data);
+        setCurrentImageIndex(0);
+        setCount(1);
+      });
+  }, [productId]);
 
-        <div className="flex font-notokr">
+  const nextImage = () => {
+    if (product.images && product.images.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
+    }
+  };
 
-            <SideMenu from="/green-product"/>
+  const prevImage = () => {
+    if (product.images && product.images.length > 0) {
+      setCurrentImageIndex(
+        (prev) => (prev - 1 + product.images.length) % product.images.length
+      );
+    }
+  };
 
-        {/* 오른쪽 영역 */}
-            <div className="w-4/5 px-6">
+  const handleDecrease = () => {
+    setCount((prev) => Math.max(1, prev - 1));
+  };
 
-                <div className="flex justify-evenly  my-20">
+  const handleIncrease = () => {
+    setCount((prev) => Math.min(10, prev + 1));
+  };
 
-                    <img className="w-1/3" src="https://sitem.ssgcdn.com/61/73/61/item/1000188617361_i1_750.jpg" alt="" />
-                    
-                    <div className="flex flex-col gap-3 ">
+  return (
+    <div className="flex font-notokr">
+      <SideMenu from="/green-product" />
+      <div className="w-4/5 px-6">
+        <div className="flex justify-evenly mt-20 mb-8">
+          <div className="relative w-3/5 h-90 mr-8 border-gray-400">
+            {product.images && product.images.length > 0 ? (
+              <>
+                <img
+                  className="w-full h-full object-contain"
+                  src={`http://localhost:8080/${encodeURIComponent(
+                    product.images[currentImageIndex]
+                  )}`}
+                  alt="제품 이미지"
+                />
+                {product.images && product.images.length > 1 ? (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute top-1/2 left-0 transform -translate-y-1/2 text-xl px-2"
+                    >
+                      {"<"}
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute top-1/2 right-0 transform -translate-y-1/2 text-xl px-2"
+                    >
+                      {">"}
+                    </button>
+                  </>
+                ) : null}
+              </>
+            ) : (
+              <img
+                className="w-full h-full"
+                src="http://localhost:8080/no_image.jpg"
+                alt="기본 이미지"
+              />
+            )}
+          </div>
 
-                        <span>제품명</span>
-                        <span>가격</span>
-                        <span>포인트</span>
+          <div className="flex flex-col gap-3 flex-1">
+            <span>제품명 : {product.name}</span>
+            <span>가격 : {product.prices * count}원</span>
+            <span>포인트 : {product.mileage * count}포인트</span>
 
-                        <div className="w-3/5 flex items-center border border-gray-300 rounded">
-                            <button className="px-3 py-1 text-">-</button>
-                            <span className="px-3">1</span>
-                            <button className="px-3 py-1 text-lg">+</button>
-                        </div>
-                        
-                        <div className="flex">
-                            <button className="border border-primary-500 text-primary-500 px-4 py-2 cursor-pointer">장바구니</button>
-                            <button className=" bg-primary-500 text-white px-4 py-2 cursor-pointer">바로구매</button>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
-
-
-                <div className="border-y border-y-gray-200 flex justify-center items-center p-20">
-                        <span>제품 상세내용</span>
-                </div>
-
-                <div className="border-y border-y-gray-200">
-                    <span className="text-xl">리뷰</span>
-
-                    <div className="border-y border-y-gray-200 p-10 flex items-center justify-around">
-                        <img className="w-1/5" src="https://sitem.ssgcdn.com/61/73/61/item/1000188617361_i1_750.jpg" alt="" />
-                        <span>잘쓰고있습니다.</span>
-                    </div>
-                </div>
-
-
+            <div className="w-25 flex items-center border border-gray-300 rounded">
+              <button onClick={handleDecrease} className="px-3 py-1">
+                -
+              </button>
+              <span className="px-3">{count}</span>
+              <button onClick={handleIncrease} className="px-3 py-1 text-lg">+</button>
             </div>
 
+            <div className="flex">
+              <button className="border border-primary-500 text-primary-500 px-4 py-2 cursor-pointer">
+                장바구니
+              </button>
+              <button className="bg-primary-500 text-white px-4 py-2 cursor-pointer">
+                바로구매
+              </button>
+            </div>
+          </div>
         </div>
-    )
+
+        <span className="font-bold text-3xl">상세정보</span>
+        <div className="border-y border-y-gray-200 justify-center items-center my-4">
+          {product.classification === "녹색 제품" ? (
+            <>
+              <div className="my-2">제조 회사 : {product.company}</div>
+              <div className="my-2">
+                사업자 등록증 번호 : {product.registrationNum}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="my-2">kc인증 정보 : {product.kc}</div>
+              <div className="my-2">제조국 : {product.madeIn}</div>
+              <div className="my-2">
+                인증 기간 : {product.authenticationPeriod}
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className="border-y border-y-gray-200">
+          <span className="text-xl">리뷰</span>
+          <div className="border-y border-y-gray-200 p-10 flex items-center justify-around">
+            <img
+              className="w-1/5"
+              src="https://sitem.ssgcdn.com/61/73/61/item/1000188617361_i1_750.jpg"
+              alt="리뷰 이미지"
+            />
+            <span>잘쓰고있습니다.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default GreenDetail;

@@ -9,11 +9,11 @@ import Footer from "./components/Footer/Footer";
 import Navigation from "./components/Navigation/Navigation";
 import GreenProduct from "./pages/GreenProduct/GreenProduct";
 import GreenEnergyProduct from "./pages/GreenEnergyProduct/GreenEnergyProduct";
+import GreenDetail from "./pages/GreenDetail/GreenDetail";
 import { useEffect } from "react";
 import OrderDetail from "./pages/OrderDetail/OrderDetail";
 import FindId from "./pages/FindId/FindId";
 import FindPw from "./pages/FindPw/FindPw";
-import GreenDetail from "./pages/GreenDetail/GreenDetail";
 import VerifySuccess from "./pages/verify/VerifySuccess";
 import Auth from "./pages/Login/Auth";
 
@@ -50,8 +50,7 @@ function App() {
         <Route path="/green-product" element={<GreenProduct />} />
         <Route path="/green-energy-product" element={<GreenEnergyProduct />} />
         <Route path="/order-detail" element={<OrderDetail />} />
-        <Route path="/green-detail" element={<GreenDetail />} />
-
+        <Route path="/GreenDetail" element={<GreenDetail/>} />
       </Routes>
 
 
