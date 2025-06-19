@@ -26,8 +26,9 @@ function Login(){
                 id,
                 password
             });
-            const token = response.data;
-            localStorage.setItem("token", token);
+            localStorage.setItem("token", JSON.stringify(response.data));
+            const saveToken = JSON.parse(localStorage.getItem('token'));
+            console.log(saveToken);
             alert("로그인 성공");
             navigate("/");
         } catch(error) {
