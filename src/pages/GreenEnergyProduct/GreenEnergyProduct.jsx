@@ -191,7 +191,7 @@ function GreenEnergyProduct() {
                         : item.name}
                     </span>
                     <span className="font-bold">
-                      ₩ {item.prices.toLocaleString()}
+                      ₩ {item.prices.toLocaleString()}원
                     </span>
                     <span className="text-xs mb-3">
                       포인트 {item.mileage.toLocaleString()}P 적립

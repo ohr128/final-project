@@ -141,7 +141,7 @@ function GreenProduct() {
                     <span>
                       {item.name.length > 18 ? item.name.slice(0, 18) + "..." : item.name}
                     </span>
-                    <span className="font-bold">₩ {item.prices.toLocaleString()}</span>
+                    <span className="font-bold">₩ {item.prices.toLocaleString()}원</span>
                     <span className="text-xs mb-3">포인트 {item.mileage.toLocaleString()}P 적립</span>
                   </div>
                 </div>
