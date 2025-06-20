@@ -1,9 +1,18 @@
 import logo from "../../assets/logo.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { menuData } from "./menu";
 
 function Navigation() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const rawToken = sessionStorage.getItem("token");
+  const isLoggedIn = rawToken && JSON.parse(rawToken)?.token;
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("token");
+    navigate("/");
+  };
 
   return (
     <nav className="font-notokr">
@@ -13,20 +22,27 @@ function Navigation() {
         </Link>
 
         <div className="w-full h-12 flex justify-end items-center text-s font-bold gap-6">
-          <Link to="/login">로그인</Link>
-          <Link to="/signUp">회원가입</Link>
-          <Link to="/cart">장바구니</Link>
+          {isLoggedIn ? (
+            <>
+              <button onClick={handleLogout}>로그아웃</button>
+              <Link to="/cart">장바구니</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/login">로그인</Link>
+              <Link to="/signUp">회원가입</Link>
+              <Link to="/cart">장바구니</Link>
+            </>
+          )}
         </div>
       </div>
 
       <ul className="flex justify-around font-bold">
         {menuData.map((data, idx) => {
           const isMainLinkActive = location.pathname === data.link;
-
           const isSubLinkActive = data.sub?.some(
             (menu) => location.pathname === menu.subLink
           );
-
           const isActive = isMainLinkActive || isSubLinkActive;
 
           return (

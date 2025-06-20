@@ -9,11 +9,13 @@ import Footer from "./components/Footer/Footer";
 import Navigation from "./components/Navigation/Navigation";
 import GreenProduct from "./pages/GreenProduct/GreenProduct";
 import GreenEnergyProduct from "./pages/GreenEnergyProduct/GreenEnergyProduct";
+import GreenDetail from "./pages/GreenDetail/GreenDetail";
 import { useEffect } from "react";
 import OrderDetail from "./pages/OrderDetail/OrderDetail";
 import FindId from "./pages/FindId/FindId";
 import FindPw from "./pages/FindPw/FindPw";
-import GreenDetail from "./pages/GreenDetail/GreenDetail";
+import VerifySuccess from "./pages/verify/VerifySuccess";
+import Auth from "./pages/Login/Auth";
 import ShowId from "./pages/ShowId/ShowId";
 import Review from "./pages/Review/Review";
 import TakeBack from "./pages/TakeBack/TakeBack";
@@ -24,7 +26,7 @@ import DelInfo from "./pages/DelInfo/DelInfo";
 
 function App() {
   const location = useLocation();
-  const hideHeaderFooter = ["/login", "/signUp", "/findId", "/findPw", "/showId"].includes(location.pathname);
+  const hideHeaderFooter = ["/login", "/signUp", "/findId", "/findPw", "/verify-success", "/showId"].includes(location.pathname);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,7 +50,9 @@ function App() {
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/findId" element={<FindId />} />
         <Route path="/findPw" element={<FindPw />} />
+        <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/login/auth" element={<Auth />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/green-product" element={<GreenProduct />} />
         <Route path="/green-energy-product" element={<GreenEnergyProduct />} />

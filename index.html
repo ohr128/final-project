@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet" />
 
 
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
   </head>
   <body>
     <div id="root"></div>
@@ -18,5 +19,11 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2b6472e711d3e504d3e9fc1a7b47a5a2&libraries=clusterer,services"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script>
+      if(!Kakao.isInitialized()) {
+            Kakao.init("5a45f6634970f2c8e381cf07d89884bf");
+            console.log("Kakao SDK 초기화 완료");
+        }
+    </script>
   </body>
 </html>
