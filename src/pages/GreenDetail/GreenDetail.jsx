@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 
 function GreenDetail() {
@@ -8,11 +8,13 @@ function GreenDetail() {
   const [product, setProduct] = useState({});
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [count, setCount] = useState(1);
+  const nav = useNavigate();
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/product/${productId}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setProduct(data);
         setCurrentImageIndex(0);
         setCount(1);
@@ -41,6 +43,41 @@ function GreenDetail() {
     setCount((prev) => Math.min(10, prev + 1));
   };
 
+  const handleAddToCart = () => {
+    const token = JSON.parse(sessionStorage.getItem("token"))?.token;
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    fetch("http://localhost:8080/api/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        pId: product.productId,
+        quantity: count,
+      }),
+    })
+      .then(async (res) => {
+        if (res.ok) {
+          nav("/cart");
+        } else {
+          const text = await res.text();
+          if (text.includes("ORA-00001")) {
+            alert("이미 사용자께서 담은 제품입니다.");
+          } else {
+            alert("오류가 발생했습니다. 다시 시도해주세요.");
+          }
+        }
+      })
+      .catch((err) => {
+        alert("네트워크 오류: " + err.message);
+      });
+  };
+
   return (
     <div className="flex font-notokr">
       <SideMenu from="/green-product" />
@@ -56,7 +93,7 @@ function GreenDetail() {
                   )}`}
                   alt="제품 이미지"
                 />
-                {product.images && product.images.length > 1 ? (
+                {product.images.length > 1 && (
                   <>
                     <button
                       onClick={prevImage}
@@ -71,7 +108,7 @@ function GreenDetail() {
                       {">"}
                     </button>
                   </>
-                ) : null}
+                )}
               </>
             ) : (
               <img
@@ -84,7 +121,7 @@ function GreenDetail() {
 
           <div className="flex flex-col gap-3 flex-1">
             <span>제품명 : {product.name}</span>
-            <span>가격 : {product.prices * count}원</span>
+            <span>가격 : {(product.prices * count).toLocaleString()}원</span>
             <span>포인트 : {product.mileage * count}포인트</span>
 
             <div className="w-25 flex items-center border border-gray-300 rounded">
@@ -92,11 +129,16 @@ function GreenDetail() {
                 -
               </button>
               <span className="px-3">{count}</span>
-              <button onClick={handleIncrease} className="px-3 py-1 text-lg">+</button>
+              <button onClick={handleIncrease} className="px-3 py-1 text-lg">
+                +
+              </button>
             </div>
 
             <div className="flex">
-              <button className="border border-primary-500 text-primary-500 px-4 py-2 cursor-pointer">
+              <button
+                onClick={handleAddToCart}
+                className="border border-primary-500 text-primary-500 px-4 py-2 cursor-pointer"
+              >
                 장바구니
               </button>
               <button className="bg-primary-500 text-white px-4 py-2 cursor-pointer">
