@@ -68,14 +68,9 @@ function GreenDetail() {
           const text = await res.text();
           if (text.includes("ORA-00001")) {
             alert("이미 사용자께서 담은 제품입니다.");
-          } else {
-            alert("오류가 발생했습니다. 다시 시도해주세요.");
-          }
+          } 
         }
       })
-      .catch((err) => {
-        alert("네트워크 오류: " + err.message);
-      });
   };
 
   return (
