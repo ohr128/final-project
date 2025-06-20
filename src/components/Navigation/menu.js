@@ -36,7 +36,7 @@ export const menuData = [
         },
         {
             subTitle: "배송지관리",
-            subLink: "/editAddress"
+            subLink: "/edit-Address"
         }
     
     ],
