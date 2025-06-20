@@ -36,12 +36,18 @@ function Auth() {
         console.log(userResponse.data);
         const kakaoData = userResponse.data;
         const email = kakaoData.kakao_account.email;
+        const kakaoId = kakaoData.id;
 
+        console.log(kakaoId);
         console.log(email);
 
-        await axios.post("http://localhost:8080/api/auth/kakao", {
+        const response = await axios.post("http://localhost:8080/api/auth/kakao", {
             email: email,
+            kakaoId:kakaoId,
         });
+        sessionStorage.setItem("token", JSON.stringify(response.data));
+        const saveToken = JSON.parse(localStorage.getItem('token'));
+            console.log(saveToken);
       }
     }
 

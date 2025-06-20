@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import check from "../../assets/check.png"
 
 function VerifySuccess() {
   useEffect(() => {
@@ -10,8 +11,13 @@ function VerifySuccess() {
 
   return (
     <div>
-      <h2>인증 성공</h2>
-      <p>창이 곧 닫힙니다...</p>
+      <div>
+      <img src={check} />
+      </div>
+      <div className="flow-root">
+      <h2 className="font-bold text-xl my-4"> 본인 인증 성공 </h2>
+      <p className="my-4"> 인증완료되었습니다. 창이 곧 닫힙니다. </p>
+      </div>
     </div>
   );
 }

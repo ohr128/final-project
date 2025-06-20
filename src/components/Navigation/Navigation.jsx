@@ -6,11 +6,11 @@ function Navigation() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const rawToken = localStorage.getItem("token");
+  const rawToken = sessionStorage.getItem("token");
   const isLoggedIn = rawToken && JSON.parse(rawToken)?.token;
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     navigate("/");
   };
 

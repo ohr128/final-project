@@ -19,7 +19,7 @@ import Auth from "./pages/Login/Auth";
 
 function App() {
   const location = useLocation();
-  const hideHeaderFooter = ["/login", "/signUp", "/findId", "/findPw"].includes(location.pathname);
+  const hideHeaderFooter = ["/login", "/signUp", "/findId", "/findPw", "/verify-success"].includes(location.pathname);
 
   useEffect(() => {
     window.scrollTo(0, 0);
