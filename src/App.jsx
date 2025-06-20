@@ -23,6 +23,8 @@ import Point from "./pages/Point/Point";
 import CheckInfo from "./pages/CheckInfo/CheckInfo";
 import EditInfo from "./pages/EditInfo/EditInfo";
 import DelInfo from "./pages/DelInfo/DelInfo";
+import EditAddress from "./pages/EditAddress/EditAddress";
+
 
 function App() {
   const location = useLocation();
@@ -65,6 +67,7 @@ function App() {
         <Route path="/check-info" element={<CheckInfo />} />
         <Route path="/edit-info" element={<EditInfo />} />
         <Route path="/del-info" element={<DelInfo />} />
+        <Route path="/edit-Address" element={<EditAddress />} />
 
       </Routes>
 
