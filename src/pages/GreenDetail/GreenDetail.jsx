@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
+Link
 
 function GreenDetail() {
   const [searchParams] = useSearchParams();

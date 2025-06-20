@@ -19,7 +19,7 @@ export const menuData = [
             subLink: "/certification"
         },
         {
-            subTitle: "그린리모델링 신청 내역",
+            subTitle: "그린리모델링 신청내역",
             subLink: "/history"
         },
         {
@@ -32,11 +32,11 @@ export const menuData = [
         },
         {
             subTitle: "회원정보수정",
-            subLink: "/editinformation"
+            subLink: "/check-info"
         },
         {
             subTitle: "배송지관리",
-            subLink: "/editaddress"
+            subLink: "/editAddress"
         }
     
     ],

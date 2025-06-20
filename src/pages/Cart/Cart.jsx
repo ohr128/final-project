@@ -127,9 +127,7 @@ function Cart() {
         </div>
 
         <div className="flex justify-center my-16">
-          <button className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer">
-            결제하기
-          </button>
+          <button className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer">결제하기</button>
         </div>
       </div>
     </div>

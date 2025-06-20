@@ -16,10 +16,17 @@ import FindId from "./pages/FindId/FindId";
 import FindPw from "./pages/FindPw/FindPw";
 import VerifySuccess from "./pages/verify/VerifySuccess";
 import Auth from "./pages/Login/Auth";
+import ShowId from "./pages/ShowId/ShowId";
+import Review from "./pages/Review/Review";
+import TakeBack from "./pages/TakeBack/TakeBack";
+import Point from "./pages/Point/Point";
+import CheckInfo from "./pages/CheckInfo/CheckInfo";
+import EditInfo from "./pages/EditInfo/EditInfo";
+import DelInfo from "./pages/DelInfo/DelInfo";
 
 function App() {
   const location = useLocation();
-  const hideHeaderFooter = ["/login", "/signUp", "/findId", "/findPw"].includes(location.pathname);
+  const hideHeaderFooter = ["/login", "/signUp", "/findId", "/findPw", "/verify-success", "/showId"].includes(location.pathname);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -50,7 +57,15 @@ function App() {
         <Route path="/green-product" element={<GreenProduct />} />
         <Route path="/green-energy-product" element={<GreenEnergyProduct />} />
         <Route path="/order-detail" element={<OrderDetail />} />
-        <Route path="/GreenDetail" element={<GreenDetail/>} />
+        <Route path="/green-detail" element={<GreenDetail />} />
+        <Route path="/showId" element={<ShowId />} />
+        <Route path="/review" element={<Review />} />
+        <Route path="/takeback" element={<TakeBack />} />
+        <Route path="/point" element={<Point />} />
+        <Route path="/check-info" element={<CheckInfo />} />
+        <Route path="/edit-info" element={<EditInfo />} />
+        <Route path="/del-info" element={<DelInfo />} />
+
       </Routes>
 
 
