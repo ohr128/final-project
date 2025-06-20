@@ -57,7 +57,7 @@ function App() {
         <Route path="/green-product" element={<GreenProduct />} />
         <Route path="/green-energy-product" element={<GreenEnergyProduct />} />
         <Route path="/order-detail" element={<OrderDetail />} />
-        <Route path="/green-detail" element={<GreenDetail />} />
+        <Route path="/GreenDetail" element={<GreenDetail />} />
         <Route path="/showId" element={<ShowId />} />
         <Route path="/review" element={<Review />} />
         <Route path="/takeback" element={<TakeBack />} />
