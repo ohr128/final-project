@@ -1,5 +1,5 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
-
+import { Link } from "react-router-dom";
 
 function OrderDetail() {
 
@@ -25,8 +25,12 @@ function OrderDetail() {
                 <span>포인트</span>
                 
                 <div className="flex flex-col gap-1">
-                    <button className="border-1 border-primary-500 rounded px-4 py-1  cursor-pointer">반품하기</button>
-                    <button className="bg-primary-500 text-white rounded px-4 py-1  cursor-pointer">리뷰작성</button>
+                    <Link to="/takeback">
+                      <button className="border-1 border-primary-500 rounded px-4 py-1  cursor-pointer">반품하기</button>
+                    </Link>
+                    <Link to="/review">
+                      <button className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1  cursor-pointer">리뷰작성</button>
+                    </Link>
                 </div>
           </div>
 

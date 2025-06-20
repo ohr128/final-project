@@ -15,8 +15,7 @@ function Cart() {
             <button className="border border-primary-500 rounded text-primary-500 px-4 py-2 cursor-pointer">우편번호찾기</button>
           </div>
 
-          <input
-            type="text" placeholder="주소" className="w-full border border-gray-300 p-2"/>
+          <input type="text" placeholder="주소" className="w-full border border-gray-300 p-2"/>
 
           <input type="text"  placeholder="상세주소" className="w-full border border-gray-300 p-2"/>
 
@@ -66,7 +65,7 @@ function Cart() {
         </div>
 
         <div className="flex justify-center my-16">
-            <button className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer">결제하기</button>
+            <button className="bg-primary-500 text-white font-bold rounded py-3 px-8 cursor-pointer">결제하기</button>
         </div>
 
       </div>
