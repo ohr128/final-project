@@ -1,39 +1,103 @@
+import { useEffect, useState } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
-import point from "../../assets/point.jpg";
+import lv1 from "../../assets/lv1.jpg";
+import lv2 from "../../assets/lv2.jpg";
+import lv3 from "../../assets/lv3.jpg";
+import lv4 from "../../assets/lv4.jpg";
+import lv5 from "../../assets/lv5.jpg";
 
-function Point(){
+function Point() {
+  const [userId, setUserId] = useState(null);
+  const [token, setToken] = useState(null);
+  const [mileage, setMileage] = useState(0);
 
-    return(
+  useEffect(() => {
+    const rawToken = sessionStorage.getItem("token");
 
-        <div className="flex font-notokr">
+    if (rawToken) {
+      const parsed = JSON.parse(rawToken);
+      setUserId(parsed?.id || null);
+      setToken(parsed?.token?.token || null);
+    }
+  }, []);
 
-            <SideMenu from="/point" />
+  useEffect(() => {
+    if (!token || !userId) return;
 
-            <div className="w-4/5 px-6">
+    fetch(`http://localhost:8080/api/user/userById?id=${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(async (result) => {
+        if (!result.ok) {
+          const text = await result.text();
+          console.error("서버 응답 오류 상태코드:", result.status);
+          console.error("서버 응답 본문:", text);
+          return;
+        }
+        return result.json();
+      })
+      .then((data) => {
+        if (data?.totalMileage !== undefined) {
+          setMileage(Number(data.totalMileage));
+        }
+      })
+      .catch((err) => {
+        console.error("사용자 정보 조회 실패:", err);
+      });
+  }, [token, userId]);
 
-                 <div className="my-8 flex flex-col justify-center">
+  return (
+    <div className="flex font-notokr">
+      <SideMenu from="/point" />
 
-                    <div className="flex justify-center">
-                        <div className="border border-primary-500 mt-20 flex justify-center">
-                            <span className="p-4 text-2xl font-bold">아이디님의 현재 마일리지는 20,000P 입니다.</span>
-                        </div>
-                        
-                    </div>
-
-                    <img className="p-20" src={point} alt="" />
-
-                    <span className="p-10 text-2xl font-bold text-center">당신의 노력으로 새싹을 피웠습니다.</span>
-
-
-                </div>
-            
-            
-            
+      <div className="w-4/5 px-6 justify-center flex">
+        <div className="my-8 flex flex-col justify-center">
+          <div className="flex justify-center">
+            <div className="border border-primary-500 mt-20 flex justify-center">
+              <span className="p-4 text-2xl font-bold">
+                {userId}님의 현재 마일리지는 {mileage.toLocaleString()}P 입니다.
+              </span>
             </div>
+          </div>
+          {mileage >= 80 ? (
+            <img className="px-20 w-100 " src={lv5} alt="포인트 이미지 (20점 이상)" />
+          ) : mileage >= 60 ? (
+            <img className="px-20 w-100" src={lv4} alt="포인트 이미지 (20점 이상)" />
+          ) : mileage >= 40 ? (
+            <img className="px-20 w-100" src={lv3} alt="포인트 이미지 (40점 이상)" />
+          ) : mileage >= 20 ? (
+            <img className="px-20 w-100" src={lv2} alt="포인트 이미지 (20점 이상)" />
+          ) : mileage >= 0 ? (
+            <img className="px-20 w-100" src={lv1} alt="포인트 이미지 (0점 초과)" />
+          ) : null}
 
-
+          {mileage >= 80 ? (
+            <span className="p-10 text-2xl font-bold text-center">
+              당신의 노력 덕분에 달콤한 열매를 맺게 되었습니다.
+            </span>
+          ) : mileage >= 60 ? (
+            <span className="p-10 text-2xl font-bold text-center">
+              당신의 꾸준한 노력으로 나무가 튼튼하게 성장했습니다.
+            </span>
+          ) : mileage >= 40 ? (
+            <span className="p-10 text-2xl font-bold text-center">
+              당신의 노력 끝에 아름다운 꽃이 피어났습니다.
+            </span>
+          ) : mileage >= 20 ? (
+            <span className="p-10 text-2xl font-bold text-center">
+              당신의 노력으로 새싹을 피웠습니다.
+            </span>
+          ) : mileage >= 0 ? (
+            <span className="p-10 text-2xl font-bold text-center">
+              당신이 세상의 생동감을 부여 할 수 있습니다.
+            </span>
+          ) : null}
         </div>
-    )
+      </div>
+    </div>
+  );
 }
 
 export default Point;

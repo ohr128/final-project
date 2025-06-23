@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
+import Modal from "../../components/Modal/Modal";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [counts, setCounts] = useState({});
   const [checkedItems, setCheckedItems] = useState({});
+  const [isModalShow, setIsModalShow] = useState(false);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState({
+    postAddress: "",
+    address: "",
+    detailAddress: "",
+  });
 
   useEffect(() => {
     const rawToken = sessionStorage.getItem("token");
@@ -30,14 +38,12 @@ function Cart() {
       })
       .then((data) => {
         setCartItems(data);
-
         const initialCounts = {};
         const initialChecked = {};
         data.forEach((item) => {
           initialCounts[item.productId] = item.quantity;
           initialChecked[item.productId] = false;
         });
-
         setCounts(initialCounts);
         setCheckedItems(initialChecked);
       })
@@ -47,25 +53,45 @@ function Cart() {
       });
   }, []);
 
+  const fetchAddresses = async () => {
+    const raw = sessionStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token?.token : null;
+
+    if (!token) return;
+
+    try {
+      const res = await fetch("http://localhost:8080/api/address", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log("Cart.jsx에서 받은 주소 목록:", data);
+        setAddresses(data);
+      } else {
+        const text = await res.text();
+        console.error("주소 API 응답 실패:", text);
+      }
+    } catch (err) {
+      console.error("주소 목록 불러오기 오류:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
+
   const handleIncrease = (id) => {
-    setCounts((prev) => ({
-      ...prev,
-      [id]: Math.min(prev[id] + 1, 10),
-    }));
+    setCounts((prev) => ({ ...prev, [id]: Math.min(prev[id] + 1, 10) }));
   };
 
   const handleDecrease = (id) => {
-    setCounts((prev) => ({
-      ...prev,
-      [id]: Math.max(prev[id] - 1, 1),
-    }));
+    setCounts((prev) => ({ ...prev, [id]: Math.max(prev[id] - 1, 1) }));
   };
 
   const toggleCheckbox = (id) => {
-    setCheckedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+    setCheckedItems((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   const selectAll = () => {
@@ -90,6 +116,15 @@ function Cart() {
       : sum;
   }, 0);
 
+  const handleOpenAddressModal = () => {
+    setIsModalShow(true);
+  };
+
+  const handleSelectAddress = (item) => {
+    setSelectedAddress(item);
+    setIsModalShow(false);
+  };
+
   return (
     <div className="font-notokr p-6">
       <h1 className="text-3xl font-bold text-center my-10">장바구니</h1>
@@ -105,27 +140,31 @@ function Cart() {
             <input
               type="text"
               placeholder="우편번호"
+              value={selectedAddress.postAddress}
+              readOnly
               className="flex-1 border border-gray-300 rounded p-2"
             />
-            <button className="border border-primary-500 rounded text-primary-500 px-4 py-2 cursor-pointer">
-              우편번호찾기
+            <button
+              onClick={handleOpenAddressModal}
+              className="border border-primary-500 rounded text-primary-500 px-4 py-2 cursor-pointer"
+            >
+              배송지 선택
             </button>
           </div>
           <input
             type="text"
             placeholder="주소"
+            value={selectedAddress.address}
+            readOnly
             className="w-full border border-gray-300 p-2"
           />
           <input
             type="text"
             placeholder="상세주소"
+            value={selectedAddress.detailAddress}
+            readOnly
             className="w-full border border-gray-300 p-2"
           />
-          <div className="flex justify-center">
-            <button className="border border-primary-500 rounded text-primary-500 px-4 py-2 cursor-pointer">
-              배송지 선택
-            </button>
-          </div>
         </div>
       </div>
 
@@ -206,6 +245,24 @@ function Cart() {
           </button>
         </div>
       </div>
+
+      {isModalShow && (
+        <Modal msg="배송지를 선택하세요" close={() => setIsModalShow(false)}>
+          <ul className="space-y-2">
+            {addresses.map((item, idx) => (
+              <li
+                key={idx}
+                onClick={() => handleSelectAddress(item)}
+                className="border p-2 rounded cursor-pointer hover:bg-gray-100"
+              >
+                <p className="font-semibold">{item.address}</p>
+                <p className="text-sm">{item.detailAddress}</p>
+                <p className="text-xs text-gray-500">({item.postAddress})</p>
+              </li>
+            ))}
+          </ul>
+        </Modal>
+      )}
     </div>
   );
 }

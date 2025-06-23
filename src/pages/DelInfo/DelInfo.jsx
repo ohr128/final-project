@@ -11,11 +11,13 @@ function DelInfo() {
 
   useEffect(() => {
     const rawToken = sessionStorage.getItem("token");
+
     if (rawToken) {
       const parsed = JSON.parse(rawToken);
       setUserId(parsed?.id || null);
       setToken(parsed?.token?.token || null);
     }
+
   }, []);
 
   const handleDelete = async () => {
@@ -34,7 +36,6 @@ function DelInfo() {
       return;
     }
 
-    // 비밀번호 확인 요청
     try {
       const checkRes = await fetch("http://localhost:8080/api/user/checkPassword", {
         method: "POST",
@@ -56,7 +57,6 @@ function DelInfo() {
       return;
     }
 
-    // 실제 탈퇴 처리
     try {
       const delRes = await fetch("http://localhost:8080/api/user/byebye", {
         method: "POST",
@@ -86,7 +86,7 @@ function DelInfo() {
     <div className="flex font-notokr">
       <SideMenu from="/checkpw2" />
 
-      <div className="w-4/5  flex justify-center">
+      <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-3xl flex flex-col mt-20 gap-5">
           <h1 className="p-10 text-2xl font-bold text-center">회원탈퇴</h1>
 
@@ -117,8 +117,7 @@ function DelInfo() {
               <span className="font-bold mb-4">본인확인을 위해 비밀번호를 입력해주세요.</span>
 
               <div className="flex justify-around">
-                <span>이름 홍길동</span>
-                <span>이메일 hong@naver.com</span>
+                <span>아이디 : {userId}</span>
                 <span>
                   비밀번호{" "}
                   <input
@@ -134,7 +133,7 @@ function DelInfo() {
             <div className="flex justify-center my-16">
               <button
                 onClick={handleDelete}
-                className=" w-1/4 bg-primary-500 text-white rounded px-4 py-2 cursor-pointer"
+                className="w-1/4 bg-primary-500 text-white rounded px-4 py-2 cursor-pointer"
               >
                 탈퇴하기
               </button>
