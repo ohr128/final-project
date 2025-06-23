@@ -67,4 +67,21 @@ export const menuData = [
       },
     ],
   },
+  {
+    title: "관리자 페이지",
+    link:"/admin",
+    sub: [
+      {
+        subTitle: "사업실적",
+        subLink: "/performance",
+      },{
+        subTitle: "그린리모델링 예측",
+        subLink: "/forecast",
+      },{
+        subTitle: "리뷰관리",
+        subLink:"/management",
+      },
+    ],
+    adminOnly:true,
+  },
 ];

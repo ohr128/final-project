@@ -38,7 +38,7 @@ function FindId() {
           headers: { "Content-Type": "application/json" },
         }
       );
-      alert("인증완료");
+      alert("인증성공");
     } catch (error) {
       console.log(error);
     }
