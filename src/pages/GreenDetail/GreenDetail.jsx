@@ -46,7 +46,7 @@ function GreenDetail() {
   };
 
   const handleAddToCart = () => {
-    const token = JSON.parse(sessionStorage.getItem("token"))?.token;
+    const token = JSON.parse(sessionStorage.getItem("token"))?.token.token;
     if (!token) {
       alert("로그인이 필요합니다.");
       return;

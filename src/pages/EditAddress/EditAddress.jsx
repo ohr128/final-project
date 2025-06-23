@@ -7,7 +7,7 @@ function EditAddress(){
 
         <div className="flex font-notokr">
             
-            <SideMenu from="/edit-Address" />
+            <SideMenu from="/checkpw" />
 
             <div className="w-4/5  flex justify-center">
 

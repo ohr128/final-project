@@ -7,7 +7,8 @@ function Cart() {
 
   useEffect(() => {
     const rawToken = sessionStorage.getItem("token");
-    const token = JSON.parse(rawToken)?.token;
+    const parsedToken = JSON.parse(rawToken);
+    const token = parsedToken?.token?.token;
 
     if (!token) {
       alert("로그인이 필요합니다.");
@@ -34,7 +35,7 @@ function Cart() {
         const initialChecked = {};
         data.forEach((item) => {
           initialCounts[item.productId] = item.quantity;
-          initialChecked[item.productId] = false; 
+          initialChecked[item.productId] = false;
         });
 
         setCounts(initialCounts);
@@ -95,17 +96,31 @@ function Cart() {
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
         <div className="w-30">
-          <span className="text-left block text-lg font-semibold">배송정보</span>
+          <span className="text-left block text-lg font-semibold">
+            배송정보
+          </span>
         </div>
         <div className="flex-1 space-y-3">
           <div className="flex gap-2">
-            <input type="text" placeholder="우편번호" className="flex-1 border border-gray-300 rounded p-2" />
+            <input
+              type="text"
+              placeholder="우편번호"
+              className="flex-1 border border-gray-300 rounded p-2"
+            />
             <button className="border border-primary-500 rounded text-primary-500 px-4 py-2 cursor-pointer">
               우편번호찾기
             </button>
           </div>
-          <input type="text" placeholder="주소" className="w-full border border-gray-300 p-2" />
-          <input type="text" placeholder="상세주소" className="w-full border border-gray-300 p-2" />
+          <input
+            type="text"
+            placeholder="주소"
+            className="w-full border border-gray-300 p-2"
+          />
+          <input
+            type="text"
+            placeholder="상세주소"
+            className="w-full border border-gray-300 p-2"
+          />
           <div className="flex justify-center">
             <button className="border border-primary-500 rounded text-primary-500 px-4 py-2 cursor-pointer">
               배송지 선택
@@ -116,7 +131,9 @@ function Cart() {
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
         <div>
-          <span className="text-left block text-lg font-semibold">배송요청사항</span>
+          <span className="text-left block text-lg font-semibold">
+            배송요청사항
+          </span>
         </div>
         <div className="ml-4 flex-1">
           <textarea
@@ -154,18 +171,28 @@ function Cart() {
               alt="상품 이미지"
             />
             <span>
-              {item.name.length > 13 ? item.name.slice(0, 13) + "..." : item.name}
+              {item.name.length > 13
+                ? item.name.slice(0, 13) + "..."
+                : item.name}
             </span>
             <div className="flex items-center border border-gray-300 rounded">
-              <button onClick={() => handleDecrease(item.productId)} className="px-3 py-1">
+              <button
+                onClick={() => handleDecrease(item.productId)}
+                className="px-3 py-1"
+              >
                 -
               </button>
               <span className="px-3">{counts[item.productId]}</span>
-              <button onClick={() => handleIncrease(item.productId)} className="px-3 py-1 text-lg">
+              <button
+                onClick={() => handleIncrease(item.productId)}
+                className="px-3 py-1 text-lg"
+              >
                 +
               </button>
             </div>
-            <span>{(item.prices * counts[item.productId]).toLocaleString()}원</span>
+            <span>
+              {(item.prices * counts[item.productId]).toLocaleString()}원
+            </span>
           </div>
         ))}
 
