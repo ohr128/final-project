@@ -15,7 +15,7 @@ function Navigation() {
   };
 
   return (
-    <nav className="font-notokr">
+    <nav className="font-notokr relative z-10">
       <div className="flex justify-end items-center mt-4">
         <Link to="/">
           <img className="w-40" src={logo} alt="/" />

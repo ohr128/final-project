@@ -20,9 +20,11 @@ import ShowId from "./pages/ShowId/ShowId";
 import Review from "./pages/Review/Review";
 import TakeBack from "./pages/TakeBack/TakeBack";
 import Point from "./pages/Point/Point";
-import CheckInfo from "./pages/CheckInfo/CheckInfo";
 import EditInfo from "./pages/EditInfo/EditInfo";
 import DelInfo from "./pages/DelInfo/DelInfo";
+import EditAddress from "./pages/EditAddress/EditAddress";
+import Checkpw from "./pages/EditAddress/checkpw";
+import Checkpw2 from "./pages/EditInfo/checkpw2";
 
 function App() {
   const location = useLocation();
@@ -62,10 +64,11 @@ function App() {
         <Route path="/review" element={<Review />} />
         <Route path="/takeback" element={<TakeBack />} />
         <Route path="/point" element={<Point />} />
-        <Route path="/check-info" element={<CheckInfo />} />
         <Route path="/edit-info" element={<EditInfo />} />
         <Route path="/del-info" element={<DelInfo />} />
-
+        <Route path="/edit-Address" element={<EditAddress />} />
+        <Route path="/checkpw2" element= {<Checkpw2/>} />
+        <Route path="/checkpw" element= {<Checkpw/>} />
       </Routes>
 
 

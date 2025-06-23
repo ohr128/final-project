@@ -10,9 +10,12 @@ function SideMenu(props) {
   const [bigMenu, setBigMenu] = useState({});
 
   useEffect(() => {
+    console.log(from);
     menuData.forEach((big) => {
       big.sub.forEach((subMenu) => {
+        console.log(subMenu.subLink);
         if (subMenu.subLink == from) {
+          console.log(big);
           setBigMenu(big);
         }
       });
