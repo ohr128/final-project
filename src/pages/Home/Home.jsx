@@ -79,6 +79,7 @@ function Home() {
           minLevel: 6,
         });
 
+        console.log(error);
         setClusterer(createdClusterer);
       }
     );
