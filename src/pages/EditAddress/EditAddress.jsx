@@ -34,10 +34,8 @@ function EditAddress() {
 
   useEffect(() => {
     if (!window.kakao || !window.daum) return;
-
     const mapContainer = document.getElementById("map");
     if (!mapContainer) return;
-
     const mapOption = {
       center: new window.kakao.maps.LatLng(33.450701, 126.570667),
       level: 3,

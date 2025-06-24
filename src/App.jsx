@@ -23,12 +23,20 @@ import Point from "./pages/Point/Point";
 import EditInfo from "./pages/EditInfo/EditInfo";
 import DelInfo from "./pages/DelInfo/DelInfo";
 import EditAddress from "./pages/EditAddress/EditAddress";
+import CertifyGreen from "./pages/CertifyGreen/CertifyGreen";
+import RegisterGreen from "./pages/RegisterGreen/RegisterGreen";
+import GreenRegisterList from "./pages/GreenRegisterList/GreenRegisterList";
+import EditGreen from "./pages/EditGreen/EditGreen";
+import CertifyBusiness from "./pages/CertifyBusiness/CertifyBusiness";
+import RemodelingRequest from "./pages/RemodelingRequest/RemodelingRequest";
+import Estimate from "./pages/Estimate/Estimate";
+import RemodelingList from "./pages/RemodelingList/RemodelingList";
 import Checkpw from "./pages/EditAddress/checkpw";
 import Checkpw2 from "./pages/EditInfo/checkpw2";
 
 function App() {
   const location = useLocation();
-  const hideHeaderFooter = ["/login", "/signUp", "/findId", "/findPw", "/verify-success", "/showId"].includes(location.pathname);
+  const hideHeaderFooter = ["/login", "/signUp", "/findId", "/findPw", "/verify-success", "/showId"].includes(location.pathname); 
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,25 +60,35 @@ function App() {
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/findId" element={<FindId />} />
         <Route path="/findPw" element={<FindPw />} />
+
         <Route path="/verify-success" element={<VerifySuccess />} />
         <Route path="/login" element={<Login />} />
         <Route path="/login/auth" element={<Auth />} />
+
         <Route path="/cart" element={<Cart />} />
         <Route path="/green-product" element={<GreenProduct />} />
         <Route path="/green-energy-product" element={<GreenEnergyProduct />} />
         <Route path="/order-detail" element={<OrderDetail />} />
-        <Route path="/GreenDetail" element={<GreenDetail />} />
+        <Route path="/green-detail" element={<GreenDetail />} />
         <Route path="/showId" element={<ShowId />} />
+        
         <Route path="/review" element={<Review />} />
         <Route path="/takeback" element={<TakeBack />} />
         <Route path="/point" element={<Point />} />
         <Route path="/edit-info" element={<EditInfo />} />
         <Route path="/del-info" element={<DelInfo />} />
         <Route path="/edit-Address" element={<EditAddress />} />
+        <Route path="/certify-green" element={<CertifyGreen />} />
+        <Route path="/register-green" element={<RegisterGreen />} />
+        <Route path="/green-register-list" element={<GreenRegisterList />} />
+        <Route path="/edit-green" element={<EditGreen />} />
+        <Route path="/certify-business" element={<CertifyBusiness />} />
+        <Route path="/remodeling-request" element={<RemodelingRequest />} />
+        <Route path="/estimate" element={<Estimate />} />
+        <Route path="/remodeling-list" element={<RemodelingList />} />
         <Route path="/checkpw2" element= {<Checkpw2/>} />
         <Route path="/checkpw" element= {<Checkpw/>} />
       </Routes>
-
 
       {!hideHeaderFooter && <Footer />}
     </div>

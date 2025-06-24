@@ -1,11 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
 function Auth() {
   const urlSearchParams = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
- 
 
   (async function () {
     const tokenResponse = await axios.post(
@@ -25,12 +23,15 @@ function Auth() {
 
     if (tokenResponse.status === 200) {
       const { access_token } = tokenResponse.data;
-      const userResponse = await axios.get("https://kapi.kakao.com/v2/user/me", {
-        headers: {
-          Authorization: `bearer ${access_token}`,
-          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-      });
+      const userResponse = await axios.get(
+        "https://kapi.kakao.com/v2/user/me",
+        {
+          headers: {
+            Authorization: `bearer ${access_token}`,
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+        }
+      );
 
       if (userResponse.status === 200) {
         console.log(userResponse.data);
@@ -41,18 +42,21 @@ function Auth() {
         console.log(kakaoId);
         console.log(email);
 
-        const response = await axios.post("http://localhost:8080/api/auth/kakao", {
+        await axios.post(
+          "http://localhost:8080/api/auth/kakao",
+          {
             email: email,
-            kakaoId:kakaoId,
-        });
-        sessionStorage.setItem("token", JSON.stringify(response.data));
-        const saveToken = JSON.parse(localStorage.getItem('token'));
-            console.log(saveToken);
+            kakaoId: kakaoId,
+          },
+          { withCredentials: true }
+        );
+        // sessionStorage.setItem("token", JSON.stringify(response.data));
+        // const saveToken = JSON.parse(localStorage.getItem('token'));
+        // console.log(saveToken);
       }
     }
 
     navigate("/");
-
   })();
 
   return null;

@@ -169,7 +169,7 @@ function GreenEnergyProduct() {
                 <div
                   key={item.productId}
                   onClick={() =>
-                    nav("/GreenDetail?productId=" + item.productId)
+                    nav("/green-detail?productId=" + item.productId)
                   }
                   className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden"
                 >

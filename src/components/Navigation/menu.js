@@ -1,43 +1,43 @@
 export const menuData = [
-  {
-    title: "마이페이지",
-    link: "/point",
-    sub: [
-      {
-        subTitle: "마일리지",
-        subLink: "/point",
-      },
-      {
-        subTitle: "주문내역",
-        subLink: "/order-detail",
-      },
-      {
-        subTitle: "사업자등록증",
-        subLink: "/certification",
-      },
-      {
-        subTitle: "그린리모델링 신청내역",
-        subLink: "/history",
-      },
-      {
-        subTitle: "녹색제품 인증",
-        subLink: "/green-certification",
-      },
-      {
-        subTitle: "녹색제품 등록내역",
-        subLink: "/show-green-certification",
-      },
-      {
-        subTitle: "회원정보수정",
-        subLink: "/checkpw2",
-      },
-      {
-        subTitle: "배송지관리",
-        subLink: "/checkpw",
-      }
+    {
+        title: "마이페이지",
+        link: "/point",
+        sub:[
+
+        {
+            subTitle: "마일리지",
+            subLink: "/point"
+        },
+        {
+            subTitle: "주문내역",
+            subLink: "/order-detail"
+        },
+        {
+            subTitle: "사업자등록증",
+            subLink: "/certify-business"
+        },
+        {
+            subTitle: "그린리모델링 신청내역",
+            subLink: "/history"
+        },
+        {
+            subTitle: "녹색제품 인증",
+            subLink: "/certify-green"
+        },
+        {
+            subTitle: "녹색제품 등록내역",
+            subLink: "/green-register-list"
+        },
+        {
+          subTitle: "회원정보수정",
+          subLink: "/checkpw2",
+        },
+        {
+          subTitle: "배송지관리",
+          subLink: "/checkpw",
+        }
     ],
   },
-
   {
     title: "스토어",
     link: "/green-product ",

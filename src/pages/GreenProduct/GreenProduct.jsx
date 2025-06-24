@@ -127,7 +127,7 @@ function GreenProduct() {
               </div>
             ) : (
               filteredProducts.slice(startIdx, endIdx).map((item) => (
-                <div key={item.productId} onClick={() => nav("/GreenDetail?productId=" + item.productId)} className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden">
+                <div key={item.productId} onClick={() => nav("/green-detail?productId=" + item.productId)} className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden">
                   <div className="h-3/5 flex justify-center items-center overflow-hidden">
                     <img
                       src={
