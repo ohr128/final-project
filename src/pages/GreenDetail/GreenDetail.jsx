@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import Cookies from "js-cookie";
 Link
 
 function GreenDetail() {
@@ -46,7 +47,7 @@ function GreenDetail() {
   };
 
   const handleAddToCart = () => {
-    const token = JSON.parse(sessionStorage.getItem("token"))?.token.token;
+    const token = JSON.parse(localStorage.getItem("token"))?.token;
     if (!token) {
       alert("로그인이 필요합니다.");
       return;
