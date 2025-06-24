@@ -63,6 +63,7 @@ function Navigation() {
         method: "POST",
         credentials: "include",
       });
+      localStorage.removeItem("token");
     } catch(error) {
       console.error("로그아웃 실패", error);
     }
