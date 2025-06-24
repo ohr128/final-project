@@ -42,7 +42,9 @@ function Auth() {
         console.log(kakaoId);
         console.log(email);
 
-        const response = await axios.post("http://localhost:8080/api/auth/kakao", {
+        await axios.post(
+          "http://localhost:8080/api/auth/kakao",
+          {
             email: email,
             kakaoId: kakaoId,
           },
