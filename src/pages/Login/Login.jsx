@@ -20,18 +20,9 @@ function Login() {
         {
           id,
           password,
-        }
+        }, {withCredentials: true}
       );
       console.log(response);
-      sessionStorage.setItem(
-        "token",
-        JSON.stringify({
-          token: response.data.token,
-          id: id,
-        })
-      );
-      const saveToken = JSON.parse(localStorage.getItem("token"));
-      console.log(saveToken);
       alert("로그인 성공");
       navigate("/");
     } catch (error) {
