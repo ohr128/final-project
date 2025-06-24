@@ -38,7 +38,7 @@ function TakeBack() {
             <button className="border border-primary-500 rounded text-primary-500 px-4 py-2 cursor-pointer">우편번호찾기</button>
           </div>
 
-          <input type="text" placeholder="주소" className="w-full border border-gray-300 p-2"/>
+          <input type="text" placeholder="주소" className="w-full rounded border border-gray-300 p-2"/>
 
           <input type="text"  placeholder="상세주소" className="w-full border border-gray-300 p-2"/>
             <button className="border border-primary-500 rounded text-primary-500 px-2 py-1 cursor-pointer">반품지 선택</button>

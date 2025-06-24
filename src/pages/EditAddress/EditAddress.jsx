@@ -11,7 +11,7 @@ function EditAddress(){
 
             <div className="w-4/5  flex justify-center">
 
-                <div className="w-full max-w-3xl flex flex-col mt-20">
+                <div className="w-full max-w-3xl flex flex-col mt-20">     
                     <h1 className="p-10 text-2xl font-bold text-center">배송지 관리</h1>
 
                     <div className="flex flex-col w-full gap-2">

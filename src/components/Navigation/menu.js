@@ -16,7 +16,7 @@ export const menuData = [
         },
         {
             subTitle: "사업자등록증",
-            subLink: "/certification"
+            subLink: "/certify-business"
         },
         {
             subTitle: "그린리모델링 신청내역",
@@ -24,11 +24,11 @@ export const menuData = [
         },
         {
             subTitle: "녹색제품 인증",
-            subLink: "/green-certification"
+            subLink: "/certify-green"
         },
         {
             subTitle: "녹색제품 등록내역",
-            subLink: "/show-green-certification"
+            subLink: "/green-register-list"
         },
         {
             subTitle: "회원정보수정",
