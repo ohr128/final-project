@@ -20,10 +20,8 @@ function Navigation() {
         const accessToken = parsed?.token;
         if (accessToken) {
           const decoded = jwtDecode(accessToken);
-          // 백엔드 토큰에 따라 "role" 혹은 "authorities" 키 이름 맞춰서 사용
           const role = decoded.role || decoded.authorities || null;
           if (role) {
-            // role이 배열일 경우 첫번째 값 사용, 아니면 그냥 사용
             setUserRole(Array.isArray(role) ? role[0] : role);
             sessionStorage.setItem("role", Array.isArray(role) ? role[0] : role);
           } else {

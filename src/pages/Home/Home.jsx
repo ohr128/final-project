@@ -21,6 +21,10 @@ function Home() {
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 
+    fetch("http://localhost:8080/api/FirstEnergy")
+      .then((res) => res.json())
+      .then((data) => setEnergy(data));
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const currentLat = position.coords.latitude;
@@ -159,7 +163,6 @@ function Home() {
 
   return (
     <div className="container font-notokr">
-
       <div className="my-8">
         <span className="font-extrabold">녹색 제품 목록</span>
 
@@ -167,13 +170,18 @@ function Home() {
           {products.slice(0, 5).map((item, idx) => (
             <div
               key={idx}
-              onClick={() =>
-                    nav("/GreenDetail?productId=" + item.productId)}
+              onClick={() => nav("/GreenDetail?productId=" + item.productId)}
               className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden"
             >
               <div className="h-3/5 flex justify-center items-center overflow-hidden">
                 <img
-                  src={item.image ? `http://localhost:8080/${encodeURIComponent(item.image)}` : `http://localhost:8080/no_image.jpg`}
+                  src={
+                    item.image
+                      ? `http://localhost:8080/${encodeURIComponent(
+                          item.image
+                        )}`
+                      : `http://localhost:8080/no_image.jpg`
+                  }
                 />
               </div>
 
@@ -202,11 +210,16 @@ function Home() {
           {energy.slice(0, 5).map((item, idx) => (
             <div
               key={idx}
+              onClick={() => nav("/GreenDetail?productId=" + item.productId)}
               className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden"
             >
               <div className="h-3/5 flex justify-center items-center overflow-hidden">
                 <img
-                  src={item.image ? `http://localhost:8080/${item.image}` : `http://localhost:8080/no_image.jpg`}
+                  src={
+                    item.image
+                      ? `http://localhost:8080/${item.image}`
+                      : `http://localhost:8080/no_image.jpg`
+                  }
                 />
               </div>
 
