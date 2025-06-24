@@ -1,49 +1,236 @@
+import { useEffect, useState } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
 
-function EditAddress(){
+function EditAddress() {
+  const [addresses, setAddresses] = useState([]);
+  const [address, setAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
+  const [postAddress, setPostAddress] = useState("");
+  const [showInput, setShowInput] = useState(false);
+  const fetchAddresses = async () => {
+    const raw = sessionStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token?.token : null;
 
-    return(
+    if (!token) return;
 
+    try {
+      const res = await fetch("http://localhost:8080/api/address", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAddresses(data);
+      }
+    } catch (err) {
+      console.error("주소 목록 불러오기 오류:", err);
+    }
+  };
 
-        <div className="flex font-notokr">
-            
-            <SideMenu from="/edit-Address" />
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
 
-            <div className="w-4/5  flex justify-center">
+  useEffect(() => {
+    if (!window.kakao || !window.daum) return;
+    const mapContainer = document.getElementById("map");
+    if (!mapContainer) return;
+    const mapOption = {
+      center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+      level: 3,
+    };
+    const map = new window.kakao.maps.Map(mapContainer, mapOption);
+    const geocoder = new window.kakao.maps.services.Geocoder();
 
-                <div className="w-full max-w-3xl flex flex-col mt-20">     
-                    <h1 className="p-10 text-2xl font-bold text-center">배송지 관리</h1>
+    window.getAddress = () => {
+      new window.daum.Postcode({
+        oncomplete: function (data) {
+          setAddress(data.roadAddress);
+          setPostAddress(data.zonecode);
+          document.getElementById("detail")?.focus();
 
-                    <div className="flex flex-col w-full gap-2">
+          geocoder.addressSearch(data.roadAddress, function (result, status) {
+            if (status === window.kakao.maps.services.Status.OK) {
+              const coords = new window.kakao.maps.LatLng(
+                result[0].y,
+                result[0].x
+              );
+              const marker = new window.kakao.maps.Marker({
+                map,
+                position: coords,
+              });
 
-                        <div className="flex justify-between font-semibold border-b border-b-gray-500 px-20 pb-3">
-                            <span className="ml-20">주소</span>
-                            <span className="mr-4">관리</span>
-                        </div>
+              const infowindow = new window.kakao.maps.InfoWindow({
+                content:
+                  '<div style="width:150px;text-align:center;padding:6px 0;">배송지</div>',
+              });
 
-                        <div className="flex justify-between border-b border-b-gray-200 px-20 py-2">
-                            <span>대전광역시 중구 용두동 138-11...</span>
-                            <button className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer">삭제</button>
-                        </div>
+              infowindow.open(map, marker);
+              map.setCenter(coords);
+            }
+          });
+        },
+      }).open();
+    };
+  }, [showInput]);
 
-                        <div className="flex justify-between border-b border-b-gray-200 px-20 py-2">
-                            <span>대전광역시 중구 용두동 138-11...</span>
-                            <button className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer">삭제</button>
-                        </div>
+  const handleSave = async () => {
+    const raw = sessionStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token?.token : null;
 
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
 
-                    </div>
-                </div>
+    const dto = {
+      address,
+      detailAddress,
+      postAddress,
+    };
+
+    try {
+      const res = await fetch("http://localhost:8080/api/address", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dto),
+      });
+
+      if (res.ok) {
+        alert("주소가 저장되었습니다.");
+        fetchAddresses();
+        setAddress("");
+        setDetailAddress("");
+        setPostAddress("");
+        setShowInput(false);
+      }
+    } catch (err) {
+      console.error("에러:", err);
+      alert("네트워크 오류 발생");
+    }
+  };
+
+  const handleDelete = async (no) => {
+    const raw = sessionStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token?.token : null;
+
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:8080/api/deleteAddress", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ no }),
+      });
+
+      if (res.ok) {
+        alert("삭제되었습니다.");
+        fetchAddresses();
+      }
+    } catch (err) {
+      console.error("삭제 에러:", err);
+    }
+  };
+
+  return (
+    <div className="flex font-notokr">
+      <SideMenu from="/checkpw" />
+      <div className="w-4/5 flex justify-center">
+        <div className="w-full max-w-3xl flex flex-col mt-20">
+          <h1 className="p-10 text-2xl font-bold text-center">배송지 관리</h1>
+
+          <div className="flex flex-col w-full gap-2 px-20">
+            <div className="flex justify-between font-semibold border-b border-b-gray-500 pb-3">
+              <span className="ml-20">주소</span>
+              <span className="ml-20">상세주소</span>
+              <span className="mr-4">관리</span>
             </div>
-        
-        
-        
-        
-        
+
+            {addresses.map((item, idx) => (
+              <div
+                key={idx}
+                className="flex justify-between border-b border-b-gray-200 py-2"
+              >
+                <span>{item.address}</span>
+                <span>{item.detailAddress}</span>
+                <button
+                  className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
+                  onClick={() => handleDelete(item.no)}
+                >
+                  삭제
+                </button>
+              </div>
+            ))}
+
+            <div className="flex justify-center my-4">
+              <button
+                onClick={() => setShowInput(true)}
+                className="bg-primary-500 text-white px-6 py-2 rounded"
+              >
+                배송지 추가
+              </button>
+            </div>
+
+            {showInput && (
+              <div className="flex flex-col gap-3 border p-4 rounded mb-4">
+                <input
+                  type="text"
+                  value={postAddress}
+                  placeholder="우편번호"
+                  className="border border-gray-300 rounded px-3 py-2"
+                  readOnly
+                  onClick={() => window.getAddress()}
+                />
+                <input
+                  type="text"
+                  value={address}
+                  placeholder="주소"
+                  className="border border-gray-300 rounded px-3 py-2"
+                  readOnly
+                  onClick={() => window.getAddress()}
+                />
+                <input
+                  id="detail"
+                  type="text"
+                  value={detailAddress}
+                  onChange={(e) => setDetailAddress(e.target.value)}
+                  placeholder="상세 주소"
+                  className="border border-gray-300 rounded px-3 py-2"
+                />
+
+                <div id="map" className="w-full h-[350px] border mt-2" />
+
+                <div className="flex justify-center gap-2">
+                  <button
+                    className="bg-gray-400 text-white px-6 py-2 rounded"
+                    onClick={() => setShowInput(false)}
+                  >
+                    취소
+                  </button>
+                  <button
+                    className="bg-primary-500 text-white px-6 py-2 rounded"
+                    onClick={handleSave}
+                  >
+                    주소 저장
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-
-    )
+      </div>
+    </div>
+  );
 }
-
 
 export default EditAddress;

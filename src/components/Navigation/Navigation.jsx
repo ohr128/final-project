@@ -1,13 +1,46 @@
 import logo from "../../assets/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { menuData } from "./menu";
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 function Navigation() {
+  const [userRole, setUserRole] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
   const rawToken = sessionStorage.getItem("token");
   const isLoggedIn = rawToken && JSON.parse(rawToken)?.token;
+  console.log("userRole", userRole);
+
+  useEffect(() => {
+    if (rawToken) {
+      try {
+        const parsed = JSON.parse(rawToken);
+        const accessToken = parsed?.token;
+        if (accessToken) {
+          const decoded = jwtDecode(accessToken);
+          // 백엔드 토큰에 따라 "role" 혹은 "authorities" 키 이름 맞춰서 사용
+          const role = decoded.role || decoded.authorities || null;
+          if (role) {
+            // role이 배열일 경우 첫번째 값 사용, 아니면 그냥 사용
+            setUserRole(Array.isArray(role) ? role[0] : role);
+            sessionStorage.setItem("role", Array.isArray(role) ? role[0] : role);
+          } else {
+            setUserRole(null);
+            sessionStorage.removeItem("role");
+          }
+        }
+      } catch (error) {
+        console.error("JWT decode error:", error);
+        setUserRole(null);
+        sessionStorage.removeItem("role");
+      }
+    } else {
+      setUserRole(null);
+      sessionStorage.removeItem("role");
+    }
+  }, [rawToken]);
 
   const handleLogout = () => {
     sessionStorage.removeItem("token");
@@ -15,7 +48,7 @@ function Navigation() {
   };
 
   return (
-    <nav className="font-notokr">
+    <nav className="font-notokr relative z-10">
       <div className="flex justify-end items-center mt-4">
         <Link to="/">
           <img className="w-40" src={logo} alt="/" />
@@ -39,6 +72,7 @@ function Navigation() {
 
       <ul className="flex justify-around font-bold">
         {menuData.map((data, idx) => {
+          if(data.adminOnly && userRole?.includes("Admin")) return null;
           const isMainLinkActive = location.pathname === data.link;
           const isSubLinkActive = data.sub?.some(
             (menu) => location.pathname === menu.subLink

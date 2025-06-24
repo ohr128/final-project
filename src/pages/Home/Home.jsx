@@ -1,6 +1,7 @@
 /* global kakao */
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -10,7 +11,7 @@ function Home() {
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
   const [infoWindows, setInfoWindws] = useState([]);
-
+  const nav = useNavigate();
   useEffect(() => {
     fetch("http://localhost:8080/api/green-object-list")
       .then((res) => res.json())
@@ -79,6 +80,7 @@ function Home() {
           minLevel: 6,
         });
 
+        console.log(error);
         setClusterer(createdClusterer);
       }
     );
@@ -165,6 +167,8 @@ function Home() {
           {products.slice(0, 5).map((item, idx) => (
             <div
               key={idx}
+              onClick={() =>
+                    nav("/GreenDetail?productId=" + item.productId)}
               className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden"
             >
               <div className="h-3/5 flex justify-center items-center overflow-hidden">
