@@ -42,27 +42,30 @@ function Navigation() {
         // 예: ["ROLE_ADMIN", "ROLE_USER"]
         if (Array.isArray(roleArray) && roleArray.length > 0) {
           setUserRole(roleArray);
-          sessionStorage.setItem("role", JSON.stringify(roleArray));  // 디버깅용으로도 좋음
           console.log("userRole if", userRole);
         } else {
           setUserRole([]);
-          sessionStorage.removeItem("role");
           console.log("userRole else", userRole);
         }
 
     } catch (error) {
       console.error("JWT decode error:", error);
       setUserRole([]);
-      sessionStorage.removeItem("role");
     }
   } else {
     setUserRole([]);
-    sessionStorage.removeItem("role");
   }
 }, []);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("token");
+  const handleLogout = async () => {
+    try{
+      await fetch ("http://localhost:8080/api/user/sign-out",{
+        method: "POST",
+        credentials: "include",
+      });
+    } catch(error) {
+      console.error("로그아웃 실패", error);
+    }
     navigate("/");
   };
 
