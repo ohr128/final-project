@@ -1,8 +1,8 @@
-import logo from "../../assets/logo.png";
-import kakao from "../../assets/KakaoTalk_logo.png";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import kakao from "../../assets/KakaoTalk_logo.png";
+import logo from "../../assets/logo.png";
 
 const { Kakao } = window;
 
@@ -22,10 +22,11 @@ function Login() {
           password,
         }
       );
+      console.log(response);
       sessionStorage.setItem(
         "token",
         JSON.stringify({
-          token: response.data,
+          token: response.data.token,
           id: id,
         })
       );

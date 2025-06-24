@@ -44,10 +44,10 @@ function Auth() {
         const response = await axios.post("http://localhost:8080/api/auth/kakao", {
             email: email,
             kakaoId:kakaoId,
-        });
-        sessionStorage.setItem("token", JSON.stringify(response.data));
-        const saveToken = JSON.parse(localStorage.getItem('token'));
-            console.log(saveToken);
+        },  { withCredentials: true });
+        // sessionStorage.setItem("token", JSON.stringify(response.data));
+        // const saveToken = JSON.parse(localStorage.getItem('token'));
+        // console.log(saveToken);
       }
     }
 
