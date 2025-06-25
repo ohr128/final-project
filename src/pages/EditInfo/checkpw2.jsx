@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function Checkpw2() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleCheck = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const parsed = token ? JSON.parse(token) : null;
     const userId = parsed?.id;
 
     try {
-      const response = await fetch("http://localhost:8080/api/user/checkPassword", {
+      const response = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

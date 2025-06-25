@@ -2,6 +2,8 @@ import { useState } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function EditInfo() {
     const [email, setEmail] = useState("");
@@ -16,14 +18,14 @@ function EditInfo() {
     const navigate = useNavigate();
 
 
-    const stored = sessionStorage.getItem("token");
+    const stored = localStorage.getItem("token");
     const parsed = stored ? JSON.parse(stored) : {};
     const userId = parsed?.id;
-    const token = parsed?.token?.token;
+    const token = parsed?.token;
 
   const handleSendCode = async () => {
     try{
-        const res = await fetch("http://localhost:8080/mail/sendCode", {
+        const res = await fetch(`${API_BASE_URL}/mail/sendCode`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({email}),
@@ -41,7 +43,7 @@ function EditInfo() {
 
 const handleVerifyCode = async () => {
     try {
-        await axios.post("http://localhost:8080/mail/verifyCode",{
+        await axios.post(`${API_BASE_URL}/mail/verifyCode`,{
             email: email,
             code:code,
         },
@@ -88,7 +90,7 @@ const checkPasswordMatch = async (confirm) => {
 
     try {
         if(password) {
-            const checkRes = await fetch("http://localhost:8080/api/user/checkPassword", {
+            const checkRes = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
                 method: "POST",
                  headers: {
                     "Content-Type": "application/json",
@@ -104,7 +106,7 @@ const checkPasswordMatch = async (confirm) => {
         return;
       }
     }
-        await axios.patch("http://localhost:8080/api/user/update", payload,{
+        await axios.patch(`${API_BASE_URL}/api/user/update"`, payload,{
             headers: {"Content-Type": "application/json"},
         });
             alert("회원정보가 수정되었습니다.");
@@ -164,7 +166,7 @@ const checkPasswordMatch = async (confirm) => {
             />
             <input
               placeholder="새로운 비밀번호 입력"
-              type="password"
+              type="text"
               className="border border-gray-300 rounded px-3 py-2"
               value={password} onChange={e => setPassword(e.target.value)}
               onBlur={() => checkPasswordMatch(passwordConfirm)}

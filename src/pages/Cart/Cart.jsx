@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "../../components/Modal/Modal";
+import { jwtDecode } from "jwt-decode";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -13,10 +14,13 @@ function Cart() {
     detailAddress: "",
   });
 
+  const [memo, setMemo] = useState("");
+  const [email, setEmail] = useState("");
+
   useEffect(() => {
-    const rawToken = sessionStorage.getItem("token");
+    const rawToken = localStorage.getItem("token");
     const parsedToken = JSON.parse(rawToken);
-    const token = parsedToken?.token?.token;
+    const token = parsedToken?.token;
 
     if (!token) {
       alert("로그인이 필요합니다.");
@@ -54,8 +58,8 @@ function Cart() {
   }, []);
 
   const fetchAddresses = async () => {
-    const raw = sessionStorage.getItem("token");
-    const token = raw ? JSON.parse(raw)?.token?.token : null;
+    const raw = localStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) return;
 
@@ -125,6 +129,93 @@ function Cart() {
     setIsModalShow(false);
   };
 
+  const getUidFromToken = () => {
+    const tokenStr = localStorage.getItem("token");
+    if(!tokenStr) return null;
+
+    try {
+    const tokenObj = JSON.parse(tokenStr);
+    const decoded = jwtDecode(tokenObj.token);
+    return decoded.sub; // JWT 안에 있는 필드 이름에 따라 변경
+  } catch (error) {
+    console.error("토큰 디코딩 실패:", error);
+    return null;
+    }
+  };
+
+  useEffect(() => {
+     console.log("email useEffect 실행됨");
+    const uId = getUidFromToken();
+    if(!uId) return;
+
+    fetch(`http://localhost:8080/api/user/email?id=${uId}`)
+    .then(res => res.text())
+    .then(setEmail)
+    .catch(err => console.error("이메일 불러오기 실패", err))
+
+    console.log(email);
+  },[]);
+
+  const handlePayment = () => {
+    const IMP = window.IMP;
+    IMP.init("imp38151585");
+
+    const selectedItems = cartItems.filter(items => checkedItems[items.productId]);
+    if(selectedItems.length === 0){
+      alert("결제할 상품을 선택해주세요");
+      return;
+    }
+    console.log(cartItems);
+    
+
+    const productName = selectedItems.length === 1 ? selectedItems[0].name : `${selectedItems[0].name} 외 ${selectedItems.length - 1} 건`;
+    const pIdList = selectedItems.map((item) => item.productId);
+    const quantity = selectedItems.map((item) => item.quantity);
+    console.log(pIdList);
+    console.log(quantity);
+
+    IMP.request_pay(
+      {
+        pg: "html5_inicis",
+        pay_method: "card",
+        name: productName,
+        amount: totalPrice,
+        buyer_name: getUidFromToken(),
+        buyer_email: "",
+      },
+      async function(rsp) {
+        if(rsp.success) {
+          const raw = localStorage.getItem("token");
+          const token = raw? JSON.parse(raw).token : null;
+          const uId = getUidFromToken();
+          console.log(uId);
+          try {
+            const res = await fetch("http://localhost:8080/order/complete", {
+              method: "POST",
+              headers: {
+                "Content-Type" : "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                uId: uId,
+                productId: pIdList,
+                memo: memo,
+                quantity:quantity,
+              }),
+            });
+            const text = await res.text();
+            alert(text);
+          } catch (err) {
+            alert("주문처리 실패");
+            console.log(err);
+          }
+        } else {
+          alert("결제 실패");
+        }
+      }
+    )
+  }
+
   return (
     <div className="font-notokr p-6">
       <h1 className="text-3xl font-bold text-center my-10">장바구니</h1>
@@ -179,6 +270,8 @@ function Cart() {
             className="w-full border border-gray-300 p-2"
             placeholder="(선택) 요청사항을 입력해주세요."
             rows={5}
+            value={memo}
+            onChange={e => setMemo(e.target.value)}
           />
         </div>
       </div>
@@ -240,7 +333,7 @@ function Cart() {
         </div>
 
         <div className="flex justify-center my-16">
-          <button className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer">
+          <button className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer" onClick={handlePayment}>
             결제하기
           </button>
         </div>

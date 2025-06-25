@@ -4,7 +4,8 @@ import { menuData } from "./menu";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { getCookieValue } from "../../helpers/cookieHelper";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 
 
@@ -34,7 +35,7 @@ function Navigation() {
   if (jwtToken) {
     try {
         const decoded = jwtDecode(jwtToken);
-        const rawRoles = decoded.role || decoded.authorities || "";
+        const rawRoles = decoded.authorities || "";
         
         // 쉼표로 구분된 문자열을 배열로 변환
         const roleArray = typeof rawRoles === "string" ? rawRoles.split(",") : rawRoles;
@@ -42,27 +43,31 @@ function Navigation() {
         // 예: ["ROLE_ADMIN", "ROLE_USER"]
         if (Array.isArray(roleArray) && roleArray.length > 0) {
           setUserRole(roleArray);
-          sessionStorage.setItem("role", JSON.stringify(roleArray));  // 디버깅용으로도 좋음
           console.log("userRole if", userRole);
         } else {
           setUserRole([]);
-          sessionStorage.removeItem("role");
           console.log("userRole else", userRole);
         }
 
     } catch (error) {
       console.error("JWT decode error:", error);
       setUserRole([]);
-      sessionStorage.removeItem("role");
     }
   } else {
     setUserRole([]);
-    sessionStorage.removeItem("role");
   }
 }, []);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("token");
+  const handleLogout = async () => {
+    try{
+      await fetch (`${API_BASE_URL}/api/user/sign-out`,{
+        method: "POST",
+        credentials: "include",
+      });
+      localStorage.removeItem("token");
+    } catch(error) {
+      console.error("로그아웃 실패", error);
+    }
     navigate("/");
   };
 

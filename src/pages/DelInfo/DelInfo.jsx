@@ -10,7 +10,7 @@ function DelInfo() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    const rawToken = sessionStorage.getItem("token");
+    const rawToken = localStorage.getItem("token");
 
     if (rawToken) {
       const parsed = JSON.parse(rawToken);

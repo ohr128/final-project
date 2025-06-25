@@ -1,6 +1,8 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function GreenProduct() {
   const [pageNoArray, setPageNoArray] = useState([1, 2, 3, 4, 5]);
@@ -15,7 +17,7 @@ function GreenProduct() {
   const endIdx = startIdx + itemsPerPage;
   const nav = useNavigate();
   useEffect(() => {
-    fetch("http://localhost:8080/api/green-object-list")
+    fetch(`${API_BASE_URL}/api/green-object-list`)
       .then((res) => res.json())
       .then((data) => {setProducts(data);});
   }, []);
@@ -127,13 +129,13 @@ function GreenProduct() {
               </div>
             ) : (
               filteredProducts.slice(startIdx, endIdx).map((item) => (
-                <div key={item.productId} onClick={() => nav("/GreenDetail?productId=" + item.productId)} className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden">
+                <div key={item.productId} onClick={() => nav("/green-detail?productId=" + item.productId)} className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden">
                   <div className="h-3/5 flex justify-center items-center overflow-hidden">
                     <img
                       src={
                         item.image
-                          ? `http://localhost:8080/${encodeURIComponent(item.image)}`
-                          : `http://localhost:8080/no_image.jpg`
+                          ? `${API_BASE_URL}/${encodeURIComponent(item.image)}`
+                          : `${API_BASE_URL}/no_image.jpg`
                       }
                     />
                   </div>

@@ -2,6 +2,8 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -12,12 +14,13 @@ function Home() {
   const [lon, setLon] = useState(null);
   const [infoWindows, setInfoWindws] = useState([]);
   const nav = useNavigate();
+  
   useEffect(() => {
-    fetch("http://localhost:8080/api/green-object-list")
+    fetch(`${API_BASE_URL}/api/green-object-list`)
       .then((res) => res.json())
       .then((data) => setProducts(data));
 
-    fetch("http://localhost:8080/api/FirstEnergy")
+    fetch(`${API_BASE_URL}/api/FirstEnergy`)
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 
@@ -159,7 +162,6 @@ function Home() {
 
   return (
     <div className="container font-notokr">
-
       <div className="my-8">
         <span className="font-extrabold">녹색 제품 목록</span>
 
@@ -167,13 +169,18 @@ function Home() {
           {products.slice(0, 5).map((item, idx) => (
             <div
               key={idx}
-              onClick={() =>
-                    nav("/GreenDetail?productId=" + item.productId)}
+              onClick={() => nav("/green-detail?productId=" + item.productId)}
               className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden"
             >
               <div className="h-3/5 flex justify-center items-center overflow-hidden">
                 <img
-                  src={item.image ? `http://localhost:8080/${encodeURIComponent(item.image)}` : `http://localhost:8080/no_image.jpg`}
+                  src={
+                    item.image
+                      ? `${API_BASE_URL}/${encodeURIComponent(
+                          item.image
+                        )}`
+                      : `${API_BASE_URL}/no_image.jpg`
+                  }
                 />
               </div>
 
@@ -202,11 +209,16 @@ function Home() {
           {energy.slice(0, 5).map((item, idx) => (
             <div
               key={idx}
+              onClick={() => nav("/green-detail?productId=" + item.productId)}
               className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden"
             >
               <div className="h-3/5 flex justify-center items-center overflow-hidden">
                 <img
-                  src={item.image ? `http://localhost:8080/${item.image}` : `http://localhost:8080/no_image.jpg`}
+                  src={
+                    item.image
+                      ? `${API_BASE_URL}/${item.image}`
+                      : `${API_BASE_URL}/no_image.jpg`
+                  }
                 />
               </div>
 

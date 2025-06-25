@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function EditAddress() {
   const [addresses, setAddresses] = useState([]);
@@ -14,7 +16,7 @@ function EditAddress() {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:8080/api/address", {
+      const res = await fetch(`${API_BASE_URL}/api/address`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -91,7 +93,7 @@ function EditAddress() {
     };
 
     try {
-      const res = await fetch("http://localhost:8080/api/address", {
+      const res = await fetch(`${API_BASE_URL}/api/address`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,7 +126,7 @@ function EditAddress() {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/deleteAddress", {
+      const res = await fetch(`${API_BASE_URL}/api/deleteAddress`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
