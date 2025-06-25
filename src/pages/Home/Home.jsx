@@ -22,6 +22,10 @@ function Home() {
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 
+    fetch("http://localhost:8080/api/FirstEnergy")
+      .then((res) => res.json())
+      .then((data) => setEnergy(data));
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const currentLat = position.coords.latitude;
@@ -97,7 +101,7 @@ function Home() {
 
     const options = {
       location: new kakao.maps.LatLng(lat, lon),
-      radius: 800,
+      radius: 3000,
     };
 
     ps.keywordSearch(
@@ -212,6 +216,7 @@ function Home() {
           {energy.slice(0, 5).map((item, idx) => (
             <div
               key={idx}
+              onClick={() => nav("/green-detail?productId=" + item.productId)}
               className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden"
             >
               <div className="h-3/5 flex justify-center items-center overflow-hidden">

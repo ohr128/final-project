@@ -7,7 +7,7 @@ function Checkpw() {
   const navigate = useNavigate();
 
   const handleCheck = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const parsed = token ? JSON.parse(token) : null;
     const userId = parsed?.id;
 

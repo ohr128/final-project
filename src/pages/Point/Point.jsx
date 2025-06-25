@@ -12,12 +12,12 @@ function Point() {
   const [mileage, setMileage] = useState(0);
 
   useEffect(() => {
-    const rawToken = sessionStorage.getItem("token");
+    const rawToken = localStorage.getItem("token");
 
     if (rawToken) {
       const parsed = JSON.parse(rawToken);
       setUserId(parsed?.id || null);
-      setToken(parsed?.token?.token || null);
+      setToken(parsed?.token || null);
     }
   }, []);
 

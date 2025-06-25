@@ -6,7 +6,9 @@ import axios from "axios";
 function FindId() {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
   const navigate = useNavigate();
+
   const handleSendCode = async () => {
     try {
       const res = await fetch("http://localhost:8080/mail/sendCode", {
@@ -22,30 +24,50 @@ function FindId() {
       }
     } catch (error) {
       console.error(error);
+      alert("서버 오류: 인증번호 전송 실패");
     }
   };
-
 
   const handleVerifyCode = async () => {
     try {
-      await axios.post(
+      const res = await axios.post(
         "http://localhost:8080/mail/verifyCode",
-        {
-          email: email,
-          code: code,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+        { email, code },
+        { headers: { "Content-Type": "application/json" } }
       );
-      alert("인증성공");
+
+      if (res.status === 200) {
+        alert("인증 성공! 아이디 찾기를 눌러주세요.");
+        setIsVerified(true);
+      } else {
+        alert("인증번호가 일치하지 않습니다.");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("인증 실패:", error);
+      alert("인증번호가 일치하지 않거나 만료되었습니다.");
     }
   };
 
-  const GoShowId = () => {
-    navigate("/showId");
+  const handleFindId = async () => {
+    if (!isVerified) {
+      alert("먼저 인증번호를 확인해주세요.");
+      return;
+    }
+
+    try {
+      const res = await axios.get("http://localhost:8080/api/user/Id", {
+        params: { email },
+      });
+
+      if (res.data?.id) {
+        navigate("/showId", { state: { userId: res.data.id } });
+      } else {
+        alert("아이디를 찾을 수 없습니다.");
+      }
+    } catch (error) {
+      console.error("아이디 조회 실패:", error);
+      alert("서버 오류로 아이디를 찾을 수 없습니다.");
+    }
   };
 
   return (
@@ -53,7 +75,7 @@ function FindId() {
       <div className="mt-30">
         <div className="flex justify-center mb-16">
           <Link to="/">
-            <img className="w-50" src={logo} alt="" />
+            <img className="w-50" src={logo} alt="로고" />
           </Link>
         </div>
 
@@ -92,7 +114,7 @@ function FindId() {
 
           <button
             className="bg-primary-500 text-white rounded py-2 px-8 cursor-pointer mt-10"
-            onClick={GoShowId}
+            onClick={handleFindId}
           >
             아이디 찾기
           </button>

@@ -3,47 +3,70 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { menuData } from "./menu";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import { getCookieValue } from "../../helpers/cookieHelper";
+
+
+
+
+// function getJwtPayload(cookieName) {
+//   const token = getCookieValue(cookieName);
+//   try {
+//     const payloadBase64 = token.split('.')[1];
+//     const decodedPayload = JSON.parse(atob(payloadBase64));
+//     return decodedPayload;
+//   } catch (e) {
+//     console.error('Invalid JWT token:', e);
+//     return null;
+//   }
+// }
+
 
 function Navigation() {
   const [userRole, setUserRole] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const rawToken = sessionStorage.getItem("token");
-  const isLoggedIn = rawToken && JSON.parse(rawToken)?.token;
+  const jwtToken = getCookieValue('jwt_cookie');
+  const isLoggedIn = !!jwtToken;
   console.log("userRole", userRole);
 
-  useEffect(() => {
-    if (rawToken) {
-      try {
-        const parsed = JSON.parse(rawToken);
-        const accessToken = parsed?.token;
-        if (accessToken) {
-          const decoded = jwtDecode(accessToken);
-          // 백엔드 토큰에 따라 "role" 혹은 "authorities" 키 이름 맞춰서 사용
-          const role = decoded.role || decoded.authorities || null;
-          if (role) {
-            // role이 배열일 경우 첫번째 값 사용, 아니면 그냥 사용
-            setUserRole(Array.isArray(role) ? role[0] : role);
-            sessionStorage.setItem("role", Array.isArray(role) ? role[0] : role);
-          } else {
-            setUserRole(null);
-            sessionStorage.removeItem("role");
-          }
-        }
-      } catch (error) {
-        console.error("JWT decode error:", error);
-        setUserRole(null);
-        sessionStorage.removeItem("role");
-      }
-    } else {
-      setUserRole(null);
-      sessionStorage.removeItem("role");
-    }
-  }, [rawToken]);
+ useEffect(() => {
+  if (jwtToken) {
+    try {
+        const decoded = jwtDecode(jwtToken);
+        const rawRoles = decoded.role || decoded.authorities || "";
+        
+        // 쉼표로 구분된 문자열을 배열로 변환
+        const roleArray = typeof rawRoles === "string" ? rawRoles.split(",") : rawRoles;
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("token");
+        // 예: ["ROLE_ADMIN", "ROLE_USER"]
+        if (Array.isArray(roleArray) && roleArray.length > 0) {
+          setUserRole(roleArray);
+          console.log("userRole if", userRole);
+        } else {
+          setUserRole([]);
+          console.log("userRole else", userRole);
+        }
+
+    } catch (error) {
+      console.error("JWT decode error:", error);
+      setUserRole([]);
+    }
+  } else {
+    setUserRole([]);
+  }
+}, []);
+
+  const handleLogout = async () => {
+    try{
+      await fetch ("http://localhost:8080/api/user/sign-out",{
+        method: "POST",
+        credentials: "include",
+      });
+      localStorage.removeItem("token");
+    } catch(error) {
+      console.error("로그아웃 실패", error);
+    }
     navigate("/");
   };
 
@@ -72,7 +95,7 @@ function Navigation() {
 
       <ul className="flex justify-around font-bold">
         {menuData.map((data, idx) => {
-          if(data.adminOnly && userRole?.includes("Admin")) return null;
+          if(data.adminOnly && !userRole?.includes("ROLE_ADMIN")) return null;
           const isMainLinkActive = location.pathname === data.link;
           const isSubLinkActive = data.sub?.some(
             (menu) => location.pathname === menu.subLink
