@@ -43,7 +43,6 @@ function EditGreen() {
           <span className="mb-10 text-2xl font-semibold">녹색기술제품 수정</span>
 
           <div className="flex gap-30">
-            {/* 제품 사진 */}
             <div>
               <span className="font-semibold">제품사진</span>
               <div

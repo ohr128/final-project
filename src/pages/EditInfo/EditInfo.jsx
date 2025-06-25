@@ -16,10 +16,10 @@ function EditInfo() {
     const navigate = useNavigate();
 
 
-    const stored = sessionStorage.getItem("token");
+    const stored = localStorage.getItem("token");
     const parsed = stored ? JSON.parse(stored) : {};
     const userId = parsed?.id;
-    const token = parsed?.token?.token;
+    const token = parsed?.token;
 
   const handleSendCode = async () => {
     try{

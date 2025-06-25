@@ -14,9 +14,9 @@ function Cart() {
   });
 
   useEffect(() => {
-    const rawToken = sessionStorage.getItem("token");
+    const rawToken = localStorage.getItem("token");
     const parsedToken = JSON.parse(rawToken);
-    const token = parsedToken?.token?.token;
+    const token = parsedToken?.token;
 
     if (!token) {
       alert("로그인이 필요합니다.");
@@ -54,8 +54,8 @@ function Cart() {
   }, []);
 
   const fetchAddresses = async () => {
-    const raw = sessionStorage.getItem("token");
-    const token = raw ? JSON.parse(raw)?.token?.token : null;
+    const raw = localStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) return;
 
