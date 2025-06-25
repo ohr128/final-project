@@ -20,7 +20,8 @@ function Login() {
         {
           id,
           password,
-        },{ withCredentials: true }
+        },
+        { withCredentials: true }
       );
       console.log(response);
       localStorage.setItem(
@@ -54,7 +55,7 @@ function Login() {
             <img className="w-50" src={logo} alt="" />
           </Link>
         </div>
-
+        <form onSubmit={handleLogin}>
         <div className="flex justify-center items-center flex-col">
           <input
             className="border border-gray-300 w-100 h-10 pl-2 rounded"
@@ -73,6 +74,7 @@ function Login() {
           />
 
           <button
+            type="submit"
             className="bg-primary-500 w-100 h-10 text-white rounded cursor-pointer"
             onClick={handleLogin}
           >
@@ -99,6 +101,7 @@ function Login() {
             <p>카카오톡 로그인</p>
           </button>
         </div>
+        </form>
       </div>
     </div>
   );

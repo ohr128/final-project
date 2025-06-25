@@ -10,6 +10,8 @@ function GreenDetail() {
   const productId = searchParams.get("productId");
   const [product, setProduct] = useState({});
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  
   const [count, setCount] = useState(1);
   const nav = useNavigate();
 
