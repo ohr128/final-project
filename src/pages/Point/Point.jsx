@@ -55,7 +55,7 @@ function Point() {
       <div className="w-4/5 px-6 justify-center flex">
         <div className="my-8 flex flex-col justify-center">
           <div className="flex justify-center">
-            <div className="border border-primary-500 mt-20 flex justify-center">
+            <div className="border border-primary-500 mt-10 flex justify-center">
               <span className="p-4 text-2xl font-bold">
                 {userId}님의 현재 마일리지는 {mileage.toLocaleString()}P 입니다.
               </span>

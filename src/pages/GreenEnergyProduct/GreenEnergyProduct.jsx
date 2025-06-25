@@ -105,19 +105,19 @@ function GreenEnergyProduct() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/green-energy-product" />
-      <div className="w-4/5 px-6">
-        <div className="my-8">
-          <h1 className="px-10 text-3xl font-bold text-center">
+      <div className="w-4/5 flex justify-center">
+        <div className="w-full max-w-5xl flex-col mt-26">
+          <h1 className="px-10 text-3xl font-semibold text-center">
             에너지 효율 1등급 제품
           </h1>
-          <ul className="w-4/5 max-sm:w-full grid grid-cols-4 m-auto mt-10 border border-gray-500 mb-4 ">
+          <ul className="w-4/5 max-sm:w-full grid grid-cols-4 m-auto mt-10 border border-gray-300 mb-10 ">
             {quickBtnArray.map((name, idx) => (
               <li
                 key={idx}
                 onClick={() => quickBtnClick(idx)}
-                className={`font-bold cursor-pointer border-r border-r-gray500 text-center py-3 ${
+                className={`font-bold cursor-pointer border border-gray-300 text-center py-3 ${
                   activeBtnIndex == idx
-                    ? "bg-green-500 text-white"
+                    ? "bg-primary-500  text-white"
                     : "text-gray-700"
                 } `}
               >
@@ -133,7 +133,7 @@ function GreenEnergyProduct() {
                   setCurrentPage(1);
                 }}
                 className={`mx-2 cursor-pointer ${
-                  sortOption === "price" ? "font-bold underline" : ""
+                  sortOption === "price" ? "font-bold underline text-primary-500" : ""
                 }`}
               >
                 가격순
@@ -144,7 +144,7 @@ function GreenEnergyProduct() {
                   setCurrentPage(1);
                 }}
                 className={`cursor-pointer ${
-                  sortOption === "date" ? "font-bold underline" : ""
+                  sortOption === "date" ? "font-bold underline text-primary-500" : ""
                 }`}
               >
                 신상품
@@ -169,7 +169,7 @@ function GreenEnergyProduct() {
                 <div
                   key={item.productId}
                   onClick={() =>
-                    nav("/GreenDetail?productId=" + item.productId)
+                    nav("/green-detail?productId=" + item.productId)
                   }
                   className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden"
                 >
@@ -193,9 +193,7 @@ function GreenEnergyProduct() {
                     <span className="font-bold">
                       ₩ {item.prices.toLocaleString()}원
                     </span>
-                    <span className="text-xs mb-3">
-                      포인트 {item.mileage.toLocaleString()}P 적립
-                    </span>
+                    <p className="text-xs mb-3">포인트 <span className="text-primary-500">{item.mileage.toLocaleString()}P </span> 적립</p>
                   </div>
                 </div>
               ))

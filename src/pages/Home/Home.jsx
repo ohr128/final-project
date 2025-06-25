@@ -1,5 +1,4 @@
 /* global kakao */
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +10,9 @@ function Home() {
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
   const [infoWindows, setInfoWindws] = useState([]);
+  const [activeButton, setActiveButton] = useState(null); // New state for active button
   const nav = useNavigate();
+
   useEffect(() => {
     fetch("http://localhost:8080/api/green-object-list")
       .then((res) => res.json())
@@ -89,6 +90,9 @@ function Home() {
   const handleSearch = (keyword) => {
     if (!map || !lat || !lon || !window.kakao?.maps?.services) return;
 
+    // Set the active button when a search is performed
+    setActiveButton(keyword);
+
     const ps = new kakao.maps.services.Places();
 
     const options = {
@@ -118,17 +122,17 @@ function Home() {
 
             const infowindow = new kakao.maps.InfoWindow({
               content: `
-              <div style="display: flex; justify-content: center; align-items: center;
-                text-align: center; font-family: 'Arial', 'Malgun Gothic', sans-serif;
-                font-size: 14px; font-weight: bold; width: 200px; height: 40px;
-                padding: 5px; overflow: hidden; white-space: nowrap;">
-                <a href="${place.place_url}" target="_blank"
-                  style="color: black; text-decoration: none; width: 100%; height: 100%;
-                  display: flex; justify-content: center; align-items: center;">
-                  ${place.place_name}
-                </a>
-              </div>
-            `,
+                <div style="display: flex; justify-content: center; align-items: center;
+                  text-align: center; font-family: 'Arial', 'Malgun Gothic', sans-serif;
+                  font-size: 14px; font-weight: bold; width: 200px; height: 40px;
+                  padding: 5px; overflow: hidden; white-space: nowrap;">
+                  <a href="${place.place_url}" target="_blank"
+                    style="color: black; text-decoration: none; width: 100%; height: 100%;
+                    display: flex; justify-content: center; align-items: center;">
+                    ${place.place_name}
+                  </a>
+                </div>
+              `,
             });
 
             setInfoWindws((prev) => [...prev, infowindow]);
@@ -159,21 +163,23 @@ function Home() {
 
   return (
     <div className="container font-notokr">
-
       <div className="my-8">
-        <span className="font-extrabold">녹색 제품 목록</span>
+        <span className="font-semibold">녹색 제품 목록</span>
 
         <div className="grid grid-cols-5 mt-3 gap-6">
           {products.slice(0, 5).map((item, idx) => (
             <div
               key={idx}
-              onClick={() =>
-                    nav("/GreenDetail?productId=" + item.productId)}
+              onClick={() => nav("/green-detail?productId=" + item.productId)}
               className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden"
             >
               <div className="h-3/5 flex justify-center items-center overflow-hidden">
                 <img
-                  src={item.image ? `http://localhost:8080/${encodeURIComponent(item.image)}` : `http://localhost:8080/no_image.jpg`}
+                  src={
+                    item.image
+                      ? `http://localhost:8080/${encodeURIComponent(item.image)}`
+                      : `http://localhost:8080/no_image.jpg`
+                  }
                 />
               </div>
 
@@ -186,9 +192,13 @@ function Home() {
                 <span className="font-bold">
                   ₩ {item.prices.toLocaleString()}
                 </span>
-                <span className="text-xs mb-3">
-                  포인트 {item.mileage.toLocaleString()}P 적립
-                </span>
+                <p className="text-xs mb-3">
+                  포인트
+                  <span className="text-primary-500">
+                    {item.mileage.toLocaleString()}P
+                  </span>{" "}
+                  적립
+                </p>
               </div>
             </div>
           ))}
@@ -196,7 +206,7 @@ function Home() {
       </div>
 
       <div className="my-8">
-        <span className="font-extrabold">에너지 효율 1등급 제품(에어컨)</span>
+        <span className="font-semibold">에너지 효율 1등급 제품(에어컨)</span>
 
         <div className="grid grid-cols-5 mt-3 gap-6">
           {energy.slice(0, 5).map((item, idx) => (
@@ -206,7 +216,11 @@ function Home() {
             >
               <div className="h-3/5 flex justify-center items-center overflow-hidden">
                 <img
-                  src={item.image ? `http://localhost:8080/${item.image}` : `http://localhost:8080/no_image.jpg`}
+                  src={
+                    item.image
+                      ? `http://localhost:8080/${item.image}`
+                      : `http://localhost:8080/no_image.jpg`
+                  }
                 />
               </div>
 
@@ -219,9 +233,13 @@ function Home() {
                 <span className="font-bold">
                   ₩ {item.prices.toLocaleString()}
                 </span>
-                <span className="text-xs mb-3">
-                  포인트 {item.mileage.toLocaleString()}P 적립
-                </span>
+                <p className="text-xs mb-3">
+                  포인트{" "}
+                  <span className="text-primary-500">
+                    {item.mileage.toLocaleString()}P
+                  </span>{" "}
+                  적립
+                </p>
               </div>
             </div>
           ))}
@@ -229,7 +247,7 @@ function Home() {
       </div>
 
       <div className="my-4 flex gap-2 justify-center">
-        <span className="font-extrabold mr-6 mt-2.5">오프라인 적립매장</span>
+        <span className="font-semibold mr-6 mt-2.5">오프라인 적립매장</span>
       </div>
 
       <div className="flex w-full my-8 gap-6 justify-center">
@@ -239,7 +257,9 @@ function Home() {
         <div className="flex flex-col gap-4">
           <button
             onClick={() => handleSearch("이마트")}
-            className=" text-whiterounded h-30 hover:cursor-pointer"
+            className={`text-whiterounded h-30 hover:cursor-pointer ${
+              activeButton === "이마트" ? "border-4 border-green-500 rounded-2xl" : ""
+            }`}
           >
             <img
               src="https://cdn.psnews.co.kr/news/photo/202403/2050553_100280_4015.jpg"
@@ -247,9 +267,12 @@ function Home() {
               style={{ width: "100%", height: "100%", borderRadius: "10px" }}
             />
           </button>
+
           <button
             onClick={() => handleSearch("홈플러스")}
-            className=" text-whiterounded h-30 hover:cursor-pointer"
+            className={`text-whiterounded h-30 hover:cursor-pointer ${
+              activeButton === "홈플러스" ? "border-4 border-green-500 rounded-2xl" : ""
+            }`}
           >
             <img
               src="https://blog.kakaocdn.net/dn/rfvNk/btrbgodbV2k/Ycz0kkfmFREQhlKkxIduJK/img.jpg"
@@ -257,9 +280,12 @@ function Home() {
               style={{ width: "100%", height: "100%", borderRadius: "10px" }}
             />
           </button>
+
           <button
             onClick={() => handleSearch("gs")}
-            className=" text-whiterounded h-30 hover:cursor-pointer"
+            className={`text-whiterounded h-30 hover:cursor-pointer ${
+              activeButton === "gs" ? "border-4 border-green-500 rounded-2xl" : ""
+            }`}
           >
             <img
               src="https://18db109adea2ac8c.kinxzone.com/upfile/image/additionFacilities/6e320139-605d-4f82-804e-b1fba89e4f31.jpg"

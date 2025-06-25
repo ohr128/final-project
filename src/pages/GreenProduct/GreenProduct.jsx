@@ -86,9 +86,9 @@ function GreenProduct() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/green-product" />
-      <div className="w-4/5 px-6">
-        <div className="my-8">
-          <h1 className="p-10 text-3xl font-bold text-center">녹색 제품</h1>
+       <div className="w-4/5 flex justify-center">
+        <div className="w-full max-w-5xl flex-col mt-16">
+          <h1 className="p-10 text-3xl font-semibold text-center">녹색 제품</h1>
 
           <div className="flex items-center justify-between">
             <div>
@@ -97,7 +97,7 @@ function GreenProduct() {
                   setSortOption("price");
                   setCurrentPage(1);
                 }}
-                className={`mx-2 cursor-pointer ${sortOption === "price" ? "font-bold underline" : ""}`}
+                className={`mx-2 cursor-pointer ${sortOption === "price" ? "font-bold underline text-primary-500" : ""}`}
               >
                 가격순
               </span>
@@ -106,7 +106,7 @@ function GreenProduct() {
                   setSortOption("mileage");
                   setCurrentPage(1);
                 }}
-                className={`cursor-pointer ${sortOption === "mileage" ? "font-bold underline" : ""}`}
+                className={`cursor-pointer ${sortOption === "mileage" ? "font-bold underline text-primary-500" : ""}`}
               >
                 적립순
               </span>
@@ -127,7 +127,7 @@ function GreenProduct() {
               </div>
             ) : (
               filteredProducts.slice(startIdx, endIdx).map((item) => (
-                <div key={item.productId} onClick={() => nav("/GreenDetail?productId=" + item.productId)} className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden">
+                <div key={item.productId} onClick={() => nav("/green-detail?productId=" + item.productId)} className="aspect-9/12 group cursor-pointer shadow rounded-xl overflow-hidden">
                   <div className="h-3/5 flex justify-center items-center overflow-hidden">
                     <img
                       src={
@@ -142,7 +142,7 @@ function GreenProduct() {
                       {item.name.length > 18 ? item.name.slice(0, 18) + "..." : item.name}
                     </span>
                     <span className="font-bold">₩ {item.prices.toLocaleString()}원</span>
-                    <span className="text-xs mb-3">포인트 {item.mileage.toLocaleString()}P 적립</span>
+                    <p className="text-xs mb-3">포인트 <span className="text-primary-500">{item.mileage.toLocaleString()}P</span> 적립</p>
                   </div>
                 </div>
               ))

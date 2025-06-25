@@ -8,8 +8,10 @@ function RegisterGreen() {
   const maxImages = 3;
 
   const handleBoxClick = () => {
-    fileInputRef.current.click();
-  };
+  if (selectedImages.length >= maxImages) return;
+  fileInputRef.current.click();
+};
+
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -62,9 +64,9 @@ function RegisterGreen() {
                     {currentIndex > 0 && (
                       <button
                         onClick={handlePrev}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-primary-500 text-white p-2 rounded-full cursor-pointer"
+                        className="absolute left-2 top-1/2 -translate-y-1/2  text-white  cursor-pointer"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" class="bi bi-chevron-left" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
                         </svg>
                       </button>
@@ -72,9 +74,9 @@ function RegisterGreen() {
                     {currentIndex < selectedImages.length - 1 && (
                       <button
                         onClick={handleNext}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary-500 text-white p-2 rounded-full cursor-pointer"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-white  cursor-pointer"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" class="bi bi-chevron-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
                         </svg> 
                       </button>
