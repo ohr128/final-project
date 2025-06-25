@@ -67,7 +67,6 @@ function Cart() {
       });
       if (res.ok) {
         const data = await res.json();
-        console.log("Cart.jsx에서 받은 주소 목록:", data);
         setAddresses(data);
       } else {
         const text = await res.text();
@@ -75,6 +74,37 @@ function Cart() {
       }
     } catch (err) {
       console.error("주소 목록 불러오기 오류:", err);
+    }
+  };
+
+  const handleDelete = async (pId) => {
+    const raw = localStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token : null;
+
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:8080/api/deleteCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ pId }),
+      });
+
+      if (res.ok) {
+        alert("삭제되었습니다.");
+        window.location.reload(); // 데이터 갱신
+      } else {
+        const text = await res.text();
+        console.error("삭제 실패:", text);
+      }
+    } catch (err) {
+      console.error("삭제 에러:", err);
     }
   };
 
@@ -232,6 +262,12 @@ function Cart() {
             <span>
               {(item.prices * counts[item.productId]).toLocaleString()}원
             </span>
+            <button
+              className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
+              onClick={() => handleDelete(item.productId)} // ✅ 여기 수정
+            >
+              삭제
+            </button>
           </div>
         ))}
 

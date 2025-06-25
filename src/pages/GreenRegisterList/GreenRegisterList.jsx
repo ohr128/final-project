@@ -15,7 +15,9 @@ function GreenRegisterList() {
 
       if (!userId) return;
 
-      fetch(`http://localhost:8080/api/findUserProduct?registrationNum=${userId}`)
+      fetch(
+        `http://localhost:8080/api/findUserProduct?registrationNum=${userId}`
+      )
         .then((res) => res.json())
         .then((data) => {
           setProductList(data);
@@ -38,7 +40,7 @@ function GreenRegisterList() {
           <span className="mb-6 text-2xl font-semibold">녹색제품 등록내역</span>
 
           <div className="flex justify-end mb-4">
-            <Link to="/register-green">
+            <Link to="/certify-green">
               <button className="bg-primary-500 border-2 border-primary-500 text-white rounded px-4 cursor-pointer">
                 등록하기
               </button>
@@ -55,17 +57,7 @@ function GreenRegisterList() {
               >
                 <span>{item.name}</span>
                 <span>{item.productId}</span>
-
-                <div className="flex flex-col gap-1">
-                  <Link to={`/edit-green?productId=${item.productId}`}>
-                    <button className="border border-primary-500 rounded px-4 cursor-pointer">
-                      수정하기
-                    </button>
-                  </Link>
-                  <button className="bg-primary-500 border-2 border-primary-500 text-white rounded px-4 cursor-pointer">
-                    삭제하기
-                  </button>
-                </div>
+                <span>{item.prices}원</span>
               </div>
             ))
           )}

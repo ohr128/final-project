@@ -9,6 +9,7 @@ function RegisterGreen() {
   const passedAuthNum = location.state?.authNum || "";
 
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]); // ✅ 파일 상태 관리
   const [currentIndex, setCurrentIndex] = useState(0);
   const fileInputRef = useRef(null);
   const maxImages = 3;
@@ -43,8 +44,10 @@ function RegisterGreen() {
       alert(`최대 ${maxImages}장까지만 등록할 수 있습니다.`);
       return;
     }
+
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setSelectedImages((prev) => [...prev, ...imageUrls]);
+    setSelectedFiles((prev) => [...prev, ...files]); // ✅ 이미지 파일 추가
   };
 
   const handlePrev = (e) => {
@@ -74,32 +77,32 @@ function RegisterGreen() {
       const res = await axios.post("http://localhost:8080/api/addobject", data);
 
       if (res.status === 200 || res.status === 201) {
+        const formData = new FormData();
+        formData.append("productId", authNum);
+        formData.append("productName", name);
+
+        for (let i = 0; i < selectedFiles.length; i++) {
+          formData.append("files", selectedFiles[i]);
+        }
+
+        await axios.post("http://localhost:8080/api/uploadImage", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
         alert("제품이 성공적으로 등록되었습니다.");
         navigate("/green-register-list");
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const msg = error.response?.data?.message || "";
-        if (
-          error.response?.status === 409 ||
-          msg.includes("ORA-00001") 
-        ) {
-          alert("이미 등록된 제품입니다.");
-        } else {
-          console.error("서버 오류:", error.response?.data || error.message);
-          alert("등록에 실패했습니다. 입력값을 다시 확인해 주세요.");
-        }
-      } else {
-        console.error(error);
-        alert("알 수 없는 오류가 발생했습니다.");
-      }
+      console.error(error);
+      alert("등록 실패");
     }
   };
 
   return (
     <div className="flex font-notokr">
       <SideMenu from="/green-register-list" />
-
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-3xl flex flex-col text-center mt-20">
           <span className="mb-10 text-2xl font-semibold">

@@ -97,7 +97,7 @@ function Home() {
 
     const options = {
       location: new kakao.maps.LatLng(lat, lon),
-      radius: 800,
+      radius: 3000,
     };
 
     ps.keywordSearch(
