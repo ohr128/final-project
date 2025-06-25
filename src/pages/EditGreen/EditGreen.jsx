@@ -94,7 +94,6 @@ function EditGreen() {
               <span className="text-primary-500 text-sm">※ 최대 3장 사진첨부 가능</span>
             </div>
 
-            {/* 제품 정보 */}
             <div className="mt-10 flex flex-col gap-10">
               <div className="flex items-center gap-6">
                 <span>확인번호</span>
