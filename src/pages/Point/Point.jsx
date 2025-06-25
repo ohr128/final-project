@@ -5,6 +5,9 @@ import lv2 from "../../assets/lv2.jpg";
 import lv3 from "../../assets/lv3.jpg";
 import lv4 from "../../assets/lv4.jpg";
 import lv5 from "../../assets/lv5.jpg";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
+
 
 function Point() {
   const [userId, setUserId] = useState(null);
@@ -24,7 +27,7 @@ function Point() {
   useEffect(() => {
     if (!token || !userId) return;
 
-    fetch(`http://localhost:8080/api/user/userById?id=${userId}`, {
+    fetch(`${API_BASE_URL}/api/user/userById?id=${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -2,6 +2,8 @@ import { useState } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function EditInfo() {
   const [email, setEmail] = useState("");
@@ -15,36 +17,34 @@ function EditInfo() {
   const [currentPassword, setCurrentPassword] = useState("");
   const navigate = useNavigate();
 
-  const stored = localStorage.getItem("token");
-  const parsed = stored ? JSON.parse(stored) : {};
-  const userId = parsed?.id;
-  const token = parsed?.token;
+    const stored = localStorage.getItem("token");
+    const parsed = stored ? JSON.parse(stored) : {};
+    const userId = parsed?.id;
+    const token = parsed?.token;
 
   const handleSendCode = async () => {
-    try {
-      const res = await fetch("http://localhost:8080/mail/sendCode", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+    try{
+        const res = await fetch(`${API_BASE_URL}/mail/sendCode`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email}),
+        });
 
-      if (res.ok) {
-        alert("인증번호가 이메일로 발송되었습니다.");
-      } else {
-        alert("이메일 주소를 확인해 주세요");
-      }
-    } catch (error) {
-      console.log(error);
+        if(res.ok) {
+            alert("인증번호가 이메일로 발송되었습니다.");
+        } else {
+            alert("이메일 주소를 확인해 주세요");
+        }
+    }catch (error){ 
+        console.log(error);
     }
   };
 
   const handleVerifyCode = async () => {
     try {
-      await axios.post(
-        "http://localhost:8080/mail/verifyCode",
-        {
-          email: email,
-          code: code,
+        await axios.post(`${API_BASE_URL}/mail/verifyCode`,{
+            email: email,
+            code:code,
         },
         {
           headers: { "Content-Type": "application/json" },
@@ -88,14 +88,12 @@ function EditInfo() {
     console.log("payload to backend:", payload);
 
     try {
-      if (password) {
-        const checkRes = await fetch(
-          "http://localhost:8080/api/user/checkPassword",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+        if(password) {
+            const checkRes = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
+                method: "POST",
+                 headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ id: userId, password: currentPassword }),
           }
@@ -108,7 +106,7 @@ function EditInfo() {
           return;
         }
       }
-      await axios.patch("http://localhost:8080/api/user/update", payload, {
+      await axios.patch(`${API_BASE_URL}/api/user/update"`, payload,{
         headers: { "Content-Type": "application/json" },
       });
       alert("회원정보가 수정되었습니다.");
@@ -173,7 +171,7 @@ function EditInfo() {
             />
             <input
               placeholder="새로운 비밀번호 입력"
-              type="password"
+              type="text"
               className="border border-gray-300 rounded px-3 py-2"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

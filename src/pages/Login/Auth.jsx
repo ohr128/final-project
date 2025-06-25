@@ -1,5 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = import.meta.env.VITE_API_BASE;
+console.log("API_BASE_URL", API_BASE_URL);
+console.log("API_BASE", API_BASE);
 
 function Auth() {
   const urlSearchParams = new URLSearchParams(useLocation().search);
@@ -11,7 +15,7 @@ function Auth() {
       {
         grant_type: "authorization_code",
         client_id: "1364798dc5ed2d92b8449b3afc8c6f10",
-        redirect_uri: "http://localhost:5173/login/auth",
+        redirect_uri: `${API_BASE}/login/auth`,
         code: urlSearchParams.get("code"),
       },
       {
@@ -42,9 +46,7 @@ function Auth() {
         console.log(kakaoId);
         console.log(email);
 
-        await axios.post(
-          "http://localhost:8080/api/auth/kakao",
-          {
+        await axios.post(`${API_BASE_URL}/api/auth/kakao`, {
             email: email,
             kakaoId: kakaoId,
           },

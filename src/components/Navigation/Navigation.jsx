@@ -4,7 +4,8 @@ import { menuData } from "./menu";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { getCookieValue } from "../../helpers/cookieHelper";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 
 
@@ -34,7 +35,7 @@ function Navigation() {
   if (jwtToken) {
     try {
         const decoded = jwtDecode(jwtToken);
-        const rawRoles = decoded.role || decoded.authorities || "";
+        const rawRoles = decoded.authorities || "";
         
         // 쉼표로 구분된 문자열을 배열로 변환
         const roleArray = typeof rawRoles === "string" ? rawRoles.split(",") : rawRoles;
@@ -59,7 +60,7 @@ function Navigation() {
 
   const handleLogout = async () => {
     try{
-      await fetch ("http://localhost:8080/api/user/sign-out",{
+      await fetch (`${API_BASE_URL}/api/user/sign-out`,{
         method: "POST",
         credentials: "include",
       });

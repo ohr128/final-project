@@ -1,8 +1,13 @@
+
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import kakao from "../../assets/KakaoTalk_logo.png";
 import logo from "../../assets/logo.png";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = import.meta.env.VITE_API_BASE;
+console.log("API_BASE_URL", API_BASE_URL);
+console.log("API_BASE", API_BASE);
 
 const { Kakao } = window;
 
@@ -16,19 +21,18 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/user/sign-in",
+        `${API_BASE_URL}/api/user/sign-in`,
         {
           id,
           password,
-        },
-        { withCredentials: true }
+        },{ withCredentials: true}
       );
       console.log(response);
       localStorage.setItem(
         "token",
         JSON.stringify({
-          token: response.data.token,
           id: id,
+          token: response.data.token,
         })
       );
       const saveToken = JSON.parse(localStorage.getItem("token"));
@@ -43,7 +47,7 @@ function Login() {
 
   const handleKakaoLogin = () => {
     Kakao.Auth.authorize({
-      redirectUri: "http://localhost:5173/login/auth",
+      redirectUri: `${API_BASE}/login/auth`,
     });
   };
 
@@ -66,7 +70,7 @@ function Login() {
           />
 
           <input
-            className="border border-gray-300 w-100 h-10 pl-2 my-2 rounded"
+            className="border border-gray-300 w-100 h-10 pl-2  my-2"
             placeholder="비밀번호"
             type="password"
             value={password}
@@ -74,7 +78,7 @@ function Login() {
           />
 
           <button
-            type="submit"
+           type="submit"
             className="bg-primary-500 w-100 h-10 text-white rounded cursor-pointer"
             onClick={handleLogin}
           >

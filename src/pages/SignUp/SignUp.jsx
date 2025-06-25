@@ -2,6 +2,8 @@ import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function SignUp(){
 
@@ -22,7 +24,7 @@ function SignUp(){
   const sendEmail = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8080/mail/send",
+        `${API_BASE_URL}/mail/send`,
         { email }, // 객체로 감싸기
         {
           headers: { "Content-Type": "application/json" },
@@ -42,7 +44,7 @@ function SignUp(){
   const findId = async () => {
     try {
         await axios.get(
-            "http://localhost:8080/api/user/check-userId", {
+            `${API_BASE_URL}api/user/check-userId`, {
             params: {id: userId},
         });
         setIdMessage("사용 가능한 아이디입니다.");
@@ -81,7 +83,7 @@ function SignUp(){
     }
 
     try{
-      await axios.post("http://localhost:8080/api/user/sign-up", {
+      await axios.post(`${API_BASE_URL}/api/user/sign-up`, {
         id: userId,
         email: email,
         password: password

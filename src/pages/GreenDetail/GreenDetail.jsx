@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 import Cookies from "js-cookie";
-Link
+
 
 function GreenDetail() {
   const [searchParams] = useSearchParams();
@@ -16,7 +18,7 @@ function GreenDetail() {
   const nav = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/product/${productId}`)
+    fetch(`${API_BASE_URL}/api/product/${productId}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -55,7 +57,7 @@ function GreenDetail() {
       return;
     }
 
-    fetch("http://localhost:8080/api/cart", {
+    fetch(`${API_BASE_URL}/api/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +90,7 @@ function GreenDetail() {
               <>
                 <img
                   className="w-full h-full object-contain"
-                  src={`http://localhost:8080/${encodeURIComponent(
+                  src={`${API_BASE_URL}/${encodeURIComponent(
                     product.images[currentImageIndex]
                   )}`}
                   alt="제품 이미지"
@@ -113,7 +115,7 @@ function GreenDetail() {
             ) : (
               <img
                 className="w-full h-full"
-                src="http://localhost:8080/no_image.jpg"
+                src={`${API_BASE_URL}/no_image.jpg`}
                 alt="기본 이미지"
               />
             )}

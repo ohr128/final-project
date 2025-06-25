@@ -1,6 +1,8 @@
 /* global kakao */
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -14,11 +16,11 @@ function Home() {
   const nav = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/green-object-list")
+    fetch(`${API_BASE_URL}/api/green-object-list`)
       .then((res) => res.json())
       .then((data) => setProducts(data));
 
-    fetch("http://localhost:8080/api/FirstEnergy")
+    fetch(`${API_BASE_URL}/api/FirstEnergy`)
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 
@@ -181,8 +183,10 @@ function Home() {
                 <img
                   src={
                     item.image
-                      ? `http://localhost:8080/${encodeURIComponent(item.image)}`
-                      : `http://localhost:8080/no_image.jpg`
+                      ? `${API_BASE_URL}/${encodeURIComponent(
+                          item.image
+                        )}`
+                      : `${API_BASE_URL}/no_image.jpg`
                   }
                 />
               </div>
@@ -223,8 +227,8 @@ function Home() {
                 <img
                   src={
                     item.image
-                      ? `http://localhost:8080/${item.image}`
-                      : `http://localhost:8080/no_image.jpg`
+                      ? `${API_BASE_URL}/${item.image}`
+                      : `${API_BASE_URL}/no_image.jpg`
                   }
                 />
               </div>

@@ -1,6 +1,8 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function GreenEnergyProduct() {
   const [pageNoArray, setPageNoArray] = useState([1, 2, 3, 4, 5]);
@@ -17,7 +19,7 @@ function GreenEnergyProduct() {
   const [activeBtnIndex, setActiveBtnIndex] = useState(0);
   const nav = useNavigate();
   useEffect(() => {
-    fetch("http://localhost:8080/api/FirstEnergy")
+    fetch(`${API_BASE_URL}/api/FirstEnergy`)
       .then((res) => res.json())
       .then((data) => setEnergy(data));
   }, []);
@@ -177,10 +179,10 @@ function GreenEnergyProduct() {
                     <img
                       src={
                         item.image
-                          ? `http://localhost:8080/${encodeURIComponent(
+                          ? `${API_BASE_URL}/${encodeURIComponent(
                               item.image
                             )}`
-                          : `http://localhost:8080/no_image.jpg`
+                          : `${API_BASE_URL}/no_image.jpg`
                       }
                     />
                   </div>

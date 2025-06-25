@@ -2,6 +2,8 @@ import { useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function FindId() {
   const [email, setEmail] = useState("");
@@ -11,7 +13,7 @@ function FindId() {
 
   const handleSendCode = async () => {
     try {
-      const res = await fetch("http://localhost:8080/mail/sendCode", {
+      const res = await fetch(`${API_BASE_URL}/mail/sendCode`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -30,10 +32,15 @@ function FindId() {
 
   const handleVerifyCode = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:8080/mail/verifyCode",
-        { email, code },
-        { headers: { "Content-Type": "application/json" } }
+      await axios.post(
+        `${API_BASE_URL}/mail/verifyCode`,
+        {
+          email: email,
+          code: code,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
       );
 
       if (res.status === 200) {
