@@ -18,7 +18,7 @@ export const menuData = [
         },
         {
             subTitle: "그린리모델링 신청내역",
-            subLink: "/history"
+            subLink: "/remodeling-request-list"
         },
         {
             subTitle: "녹색제품 인증",
@@ -40,7 +40,7 @@ export const menuData = [
   },
   {
     title: "스토어",
-    link: "/green-product ",
+    link: "/green-product",
     sub: [
       {
         subTitle: "녹색제품",
@@ -62,14 +62,15 @@ export const menuData = [
         subLink: "/remodeling-request",
       },
       {
-        subTitle: "그린리모델링 내역",
+        subTitle: "그린리모델링 목록",
         subLink: "/remodeling-list",
       },
     ],
   },
+
   {
     title: "관리자 페이지",
-    link:"/admin",
+    link:"/performance",
     sub: [
       {
         subTitle: "사업실적",
@@ -82,6 +83,6 @@ export const menuData = [
         subLink:"/management",
       },
     ],
-    adminOnly:true,
+    adminOnly:true,     
   },
 ];

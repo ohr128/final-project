@@ -33,6 +33,10 @@ import Estimate from "./pages/Estimate/Estimate";
 import RemodelingList from "./pages/RemodelingList/RemodelingList";
 import Checkpw from "./pages/EditAddress/checkpw";
 import Checkpw2 from "./pages/EditInfo/checkpw2";
+import RemodelingRequestList from "./pages/RemodelingRequestList/RemodelingRequestList";
+import Performance from "./pages/Performance/Performance";
+import Forecast from "./pages/Forecast/Forecast";
+import Management from "./pages/Management/Management";
 
 function App() {
   const location = useLocation();
@@ -83,11 +87,23 @@ function App() {
         <Route path="/green-register-list" element={<GreenRegisterList />} />
         <Route path="/edit-green" element={<EditGreen />} />
         <Route path="/certify-business" element={<CertifyBusiness />} />
+
+
         <Route path="/remodeling-request" element={<RemodelingRequest />} />
         <Route path="/estimate" element={<Estimate />} />
         <Route path="/remodeling-list" element={<RemodelingList />} />
+        <Route path="/remodeling-request-list" element={<RemodelingRequestList />} />
+
         <Route path="/checkpw2" element= {<Checkpw2/>} />
         <Route path="/checkpw" element= {<Checkpw/>} />
+
+
+        <Route path="/performance" element= {<Performance/>} />
+        <Route path="/forecast" element= {<Forecast/>} />
+        <Route path="/management" element= {<Management/>} />
+
+
+
       </Routes>
 
       {!hideHeaderFooter && <Footer />}
