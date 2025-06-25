@@ -4,12 +4,16 @@ import { Link } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log("API_BASE_URL", API_BASE_URL);
+import Cookies from "js-cookie";
+
 
 function GreenDetail() {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
   const [product, setProduct] = useState({});
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  
   const [count, setCount] = useState(1);
   const nav = useNavigate();
 

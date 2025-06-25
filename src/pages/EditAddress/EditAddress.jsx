@@ -10,8 +10,8 @@ function EditAddress() {
   const [postAddress, setPostAddress] = useState("");
   const [showInput, setShowInput] = useState(false);
   const fetchAddresses = async () => {
-    const raw = sessionStorage.getItem("token");
-    const token = raw ? JSON.parse(raw)?.token?.token : null;
+    const raw = localStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) return;
 
@@ -78,8 +78,8 @@ function EditAddress() {
   }, [showInput]);
 
   const handleSave = async () => {
-    const raw = sessionStorage.getItem("token");
-    const token = raw ? JSON.parse(raw)?.token?.token : null;
+    const raw = localStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) {
       alert("로그인이 필요합니다.");
@@ -117,8 +117,8 @@ function EditAddress() {
   };
 
   const handleDelete = async (no) => {
-    const raw = sessionStorage.getItem("token");
-    const token = raw ? JSON.parse(raw)?.token?.token : null;
+    const raw = localStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) {
       alert("로그인이 필요합니다.");

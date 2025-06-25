@@ -14,7 +14,7 @@ function TakeBack() {
 
         <div className="ml-4 flex-1">
           <textarea
-            className="w-full border border-gray-300 p-2"
+            className="w-full border border-gray-300 p-2 rounded"
             placeholder="(필수) 반품사유를 입력해주세요."
             rows={6}
           />
@@ -40,7 +40,7 @@ function TakeBack() {
 
           <input type="text" placeholder="주소" className="w-full rounded border border-gray-300 p-2"/>
 
-          <input type="text"  placeholder="상세주소" className="w-full border border-gray-300 p-2"/>
+          <input type="text"  placeholder="상세주소" className="w-full border border-gray-300 p-2 rounded"/>
             <button className="border border-primary-500 rounded text-primary-500 px-2 py-1 cursor-pointer">반품지 선택</button>
 
         </div>

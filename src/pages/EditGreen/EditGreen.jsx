@@ -43,7 +43,6 @@ function EditGreen() {
           <span className="mb-10 text-2xl font-semibold">녹색기술제품 수정</span>
 
           <div className="flex gap-30">
-            {/* 제품 사진 */}
             <div>
               <span className="font-semibold">제품사진</span>
               <div
@@ -95,7 +94,6 @@ function EditGreen() {
               <span className="text-primary-500 text-sm">※ 최대 3장 사진첨부 가능</span>
             </div>
 
-            {/* 제품 정보 */}
             <div className="mt-10 flex flex-col gap-10">
               <div className="flex items-center gap-6">
                 <span>확인번호</span>

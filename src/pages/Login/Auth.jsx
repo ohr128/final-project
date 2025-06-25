@@ -5,11 +5,9 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 console.log("API_BASE_URL", API_BASE_URL);
 console.log("API_BASE", API_BASE);
 
-
 function Auth() {
   const urlSearchParams = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
- 
 
   (async function () {
     const tokenResponse = await axios.post(
@@ -29,12 +27,15 @@ function Auth() {
 
     if (tokenResponse.status === 200) {
       const { access_token } = tokenResponse.data;
-      const userResponse = await axios.get("https://kapi.kakao.com/v2/user/me", {
-        headers: {
-          Authorization: `bearer ${access_token}`,
-          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-      });
+      const userResponse = await axios.get(
+        "https://kapi.kakao.com/v2/user/me",
+        {
+          headers: {
+            Authorization: `bearer ${access_token}`,
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+        }
+      );
 
       if (userResponse.status === 200) {
         console.log(userResponse.data);
@@ -47,8 +48,10 @@ function Auth() {
 
         await axios.post(`${API_BASE_URL}/api/auth/kakao`, {
             email: email,
-            kakaoId:kakaoId,
-        },  { withCredentials: true });
+            kakaoId: kakaoId,
+          },
+          { withCredentials: true }
+        );
         // sessionStorage.setItem("token", JSON.stringify(response.data));
         // const saveToken = JSON.parse(localStorage.getItem('token'));
         // console.log(saveToken);
@@ -56,7 +59,6 @@ function Auth() {
     }
 
     navigate("/");
-
   })();
 
   return null;

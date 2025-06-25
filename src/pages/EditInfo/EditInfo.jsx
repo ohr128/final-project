@@ -6,17 +6,16 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log("API_BASE_URL", API_BASE_URL);
 
 function EditInfo() {
-    const [email, setEmail] = useState("");
-    const [code, setCode] = useState("");
-    
-    const [password, setPassword] = useState("");
-    const [passwordConfirm, setPwConfirm] = useState("");
-    const [pwMessage, setPwMessage] = useState("");
-    const [pwColor, setPwColor] = useState("black");
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
 
-    const [currentPassword, setCurrentPassword] = useState("");
-    const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPwConfirm] = useState("");
+  const [pwMessage, setPwMessage] = useState("");
+  const [pwColor, setPwColor] = useState("black");
 
+  const [currentPassword, setCurrentPassword] = useState("");
+  const navigate = useNavigate();
 
     const stored = localStorage.getItem("token");
     const parsed = stored ? JSON.parse(stored) : {};
@@ -39,53 +38,53 @@ function EditInfo() {
     }catch (error){ 
         console.log(error);
     }
-}
+  };
 
-const handleVerifyCode = async () => {
+  const handleVerifyCode = async () => {
     try {
         await axios.post(`${API_BASE_URL}/mail/verifyCode`,{
             email: email,
             code:code,
         },
         {
-            headers: {"Content-Type": "application/json"},
+          headers: { "Content-Type": "application/json" },
         }
-    );
-    alert("이메일 인증 완료");
-    }catch(error) {
-        console.log(error);
+      );
+      alert("이메일 인증 완료");
+    } catch (error) {
+      console.log(error);
     }
-}
+  };
 
-const checkPasswordMatch = async (confirm) => {
-    if(password === "" || confirm === "") {
-        setPwMessage("");
-        setPwColor("black");
-        return;
+  const checkPasswordMatch = async (confirm) => {
+    if (password === "" || confirm === "") {
+      setPwMessage("");
+      setPwColor("black");
+      return;
     }
-    if(password !== confirm) {
-        setPwMessage("비밀번호가 다릅니다.");
-        setPwColor("red");
+    if (password !== confirm) {
+      setPwMessage("비밀번호가 다릅니다.");
+      setPwColor("red");
     }
-  }
+  };
 
   const handleChange = async () => {
     if (!userId || !token) {
-    alert("로그인 정보가 유효하지 않습니다. 다시 로그인해주세요.");
-    return;
-  }
-    if(!email && !password) {
-        alert("수정할 항목이 없습니다.");
-        return;
+      alert("로그인 정보가 유효하지 않습니다. 다시 로그인해주세요.");
+      return;
+    }
+    if (!email && !password) {
+      alert("수정할 항목이 없습니다.");
+      return;
     }
 
-    if(password && password !== passwordConfirm) {
-        alert("비밀번호가 일치하지 않습니다.");
-        return;
+    if (password && password !== passwordConfirm) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
     }
     const payload = { id: userId, password };
-    if(email) payload.email = email;
-    if(password) payload.password = password;
+    if (email) payload.email = email;
+    if (password) payload.password = password;
     console.log("payload to backend:", payload);
 
     try {
@@ -96,31 +95,31 @@ const checkPasswordMatch = async (confirm) => {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
             },
-        body: JSON.stringify({ id: userId, password: currentPassword }),
-      });
-      const isValid = await checkRes.json();
-      console.log(userId);
+            body: JSON.stringify({ id: userId, password: currentPassword }),
+          }
+        );
+        const isValid = await checkRes.json();
+        console.log(userId);
 
-      if (!isValid) {
-        alert("현재 비밀번호가 일치하지 않습니다.");
-        return;
+        if (!isValid) {
+          alert("현재 비밀번호가 일치하지 않습니다.");
+          return;
+        }
+      }
+      await axios.patch(`${API_BASE_URL}/api/user/update"`, payload,{
+        headers: { "Content-Type": "application/json" },
+      });
+      alert("회원정보가 수정되었습니다.");
+      navigate("/point");
+    } catch (error) {
+      console.log(error);
+      if (error.response && error.response.status === 500) {
+        alert("이미 존재하는 이메일 입니다.");
+      } else {
+        alert("회원정보 수정 중 오류가 발생하였습니다.");
       }
     }
-        await axios.patch(`${API_BASE_URL}/api/user/update"`, payload,{
-            headers: {"Content-Type": "application/json"},
-        });
-            alert("회원정보가 수정되었습니다.");
-            navigate("/point");
-    }catch(error) {
-        console.log(error);
-        if(error.response && error.response.status === 500) {
-            alert("이미 존재하는 이메일 입니다.");
-        } else {
-            alert("회원정보 수정 중 오류가 발생하였습니다.");
-        }
-    }
-
-  }
+  };
 
   return (
     <div className="flex font-notokr">
@@ -137,9 +136,12 @@ const checkPasswordMatch = async (confirm) => {
                 placeholder="이메일 주소"
                 type="text"
                 value={email}
-                onChange={e => setEmail(e.target.value)} 
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <button className="bg-primary-500 w-28 h-10 text-white ml-1 rounded cursor-pointer" onClick={handleSendCode}>
+              <button
+                className="bg-primary-500 w-28 h-10 text-white ml-1 rounded cursor-pointer"
+                onClick={handleSendCode}
+              >
                 인증번호 전송
               </button>
             </div>
@@ -150,9 +152,12 @@ const checkPasswordMatch = async (confirm) => {
                 placeholder="인증번호"
                 type="text"
                 value={code}
-                onChange={e => setCode(e.target.value)}
+                onChange={(e) => setCode(e.target.value)}
               />
-              <button className="bg-primary-500 w-28 h-10 text-white ml-1 rounded cursor-pointer" onClick={handleVerifyCode}>
+              <button
+                className="bg-primary-500 w-28 h-10 text-white ml-1 rounded cursor-pointer"
+                onClick={handleVerifyCode}
+              >
                 인증하기
               </button>
             </div>
@@ -162,21 +167,23 @@ const checkPasswordMatch = async (confirm) => {
               type="password"
               className="border border-gray-300 rounded px-3 py-2"
               value={currentPassword}
-              onChange={e => setCurrentPassword(e.target.value)}
+              onChange={(e) => setCurrentPassword(e.target.value)}
             />
             <input
               placeholder="새로운 비밀번호 입력"
               type="text"
               className="border border-gray-300 rounded px-3 py-2"
-              value={password} onChange={e => setPassword(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               onBlur={() => checkPasswordMatch(passwordConfirm)}
             />
             <input
               placeholder="비밀번호 확인"
               type="password"
               className="border border-gray-300 rounded px-3 py-2"
-               value={passwordConfirm} onChange={(e) => setPwConfirm(e.target.value)}
-               onBlur={() => checkPasswordMatch(passwordConfirm)}
+              value={passwordConfirm}
+              onChange={(e) => setPwConfirm(e.target.value)}
+              onBlur={() => checkPasswordMatch(passwordConfirm)}
             />
 
             <div className="flex justify-baseline">
@@ -187,7 +194,7 @@ const checkPasswordMatch = async (confirm) => {
                 회원탈퇴
               </button>
             </div>
-            <p style={{color:pwColor}}> {pwMessage} </p>
+            <p style={{ color: pwColor }}> {pwMessage} </p>
 
             <div className="flex justify-center gap-3 my-20">
               <Link to="/order-detail">
@@ -195,7 +202,10 @@ const checkPasswordMatch = async (confirm) => {
                   뒤로가기
                 </button>
               </Link>
-              <button className="w-1/4 bg-primary-500 text-white rounded px-4 py-2 cursor-pointer" onClick={handleChange}>
+              <button
+                className="w-1/4 bg-primary-500 text-white rounded px-4 py-2 cursor-pointer"
+                onClick={handleChange}
+              >
                 수정하기
               </button>
             </div>
