@@ -186,14 +186,14 @@ function Cart() {
             placeholder="주소"
             value={selectedAddress.address}
             readOnly
-            className="w-full border border-gray-300 p-2"
+            className="w-full border border-gray-300 p-2 rounded"
           />
           <input
             type="text"
             placeholder="상세주소"
             value={selectedAddress.detailAddress}
             readOnly
-            className="w-full border border-gray-300 p-2"
+            className="w-full border border-gray-300 p-2 rounded"
           />
         </div>
       </div>
@@ -206,7 +206,7 @@ function Cart() {
         </div>
         <div className="ml-4 flex-1">
           <textarea
-            className="w-full border border-gray-300 p-2"
+            className="w-full border border-gray-300 p-2 rounded"
             placeholder="(선택) 요청사항을 입력해주세요."
             rows={5}
           />
@@ -276,7 +276,7 @@ function Cart() {
         </div>
 
         <div className="flex justify-center my-16">
-          <button className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer">
+          <button className="bg-primary-500 text-white font-semibold rounded py-2 px-7 cursor-pointer">
             결제하기
           </button>
         </div>
