@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import Cookies from "js-cookie";
-Link
+Link;
 
 function GreenDetail() {
   const [searchParams] = useSearchParams();
@@ -11,7 +11,6 @@ function GreenDetail() {
   const [product, setProduct] = useState({});
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  
   const [count, setCount] = useState(1);
   const nav = useNavigate();
 
@@ -65,17 +64,48 @@ function GreenDetail() {
         pId: product.productId,
         quantity: count,
       }),
-    })
-      .then(async (res) => {
-        if (res.ok) {
-          nav("/cart");
-        } else {
-          const text = await res.text();
-          if (text.includes("ORA-00001")) {
-            alert("이미 사용자께서 담은 제품입니다.");
-          } 
+    }).then(async (res) => {
+      if (res.ok) {
+        nav("/cart");
+      } else {
+        const text = await res.text();
+        if (text.includes("ORA-00001")) {
+          alert("이미 사용자께서 담은 제품입니다.");
         }
-      })
+      }
+    });
+  };
+
+  const handleBuyNow = () => {
+    const token = JSON.parse(localStorage.getItem("token"))?.token;
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    const item = {
+      pId: product.productId,
+      quantity: count,
+    };
+
+    localStorage.setItem("immediatePurchase", JSON.stringify(item));
+    fetch("http://localhost:8080/api/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(item),
+    }).then(async (res) => {
+      if (res.ok) {
+        nav("/cart");
+      } else {
+        const text = await res.text();
+        if (text.includes("ORA-00001")) {
+          alert("이미 사용자께서 담은 제품입니다.");
+        }
+      }
+    });
   };
 
   return (
@@ -141,7 +171,10 @@ function GreenDetail() {
               >
                 장바구니
               </button>
-              <button className="bg-primary-500 text-white px-4 py-2 cursor-pointer">
+              <button
+                onClick={handleBuyNow}
+                className="bg-primary-500 text-white px-4 py-2 cursor-pointer"
+              >
                 바로구매
               </button>
             </div>

@@ -28,8 +28,7 @@ function CertifyGreen() {
     formData.append("file", imageFile);
 
     try {
-      // 1. OCR 인증번호 추출
-      const ocrRes = await axios.post("http://localhost:8000/ocr", formData, {
+      const ocrRes = await axios.post("http://localhost:8000/ocr/certification", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
