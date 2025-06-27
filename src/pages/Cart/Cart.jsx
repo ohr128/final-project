@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Modal from "../../components/Modal/Modal";
 import { jwtDecode } from "jwt-decode";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -75,7 +76,7 @@ function Cart() {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:8080/api/address", {
+      const res = await fetch(`${API_BASE_URL}/api/address`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

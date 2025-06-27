@@ -2,12 +2,15 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log("API_BASE_URL", API_BASE_URL);
 
 function CertifyGreen() {
   const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
   const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
+  const [isLoding, setIsLoding] = useState(false);
 
   const handleBoxClick = () => {
     fileInputRef.current.click();
@@ -24,6 +27,8 @@ function CertifyGreen() {
   const handleSubmit = async () => {
     if (!imageFile) return alert("이미지를 선택하세요.");
 
+    setIsLoding(true);
+
     const formData = new FormData();
     formData.append("file", imageFile);
 
@@ -37,12 +42,13 @@ function CertifyGreen() {
 
       if (!authNum) {
         alert("인증번호 추출 실패");
+        setIsLoding(false);
         return;
       }
 
       try {
         await axios.get(
-          `http://localhost:8080/api/green-check?authNum=${encodeURIComponent(authNum)}`
+          `${API_BASE_URL}/api/green-check?authNum=${encodeURIComponent(authNum)}`
         );
         alert("인증 완료")
         navigate("/register-green", { state: { authNum } });
@@ -58,6 +64,7 @@ function CertifyGreen() {
       console.error("OCR 처리 실패:", err);
       alert("OCR 처리에 실패했습니다.");
     }
+    setIsLoding(false);
   };
 
   return (
@@ -100,6 +107,11 @@ function CertifyGreen() {
             </button>
           </div>
         </div>
+          {isLoding &&
+          <div className="absolute top-90 left-20 size-full bg-[#ffffff88] flex justify-center pt-70">
+            <div className="size-40 border-6 border-primary-500 border-t-gray-200 rounded-full animate-spin"></div>
+          </div>
+          }
       </div>
     </div>
   );
