@@ -9,7 +9,7 @@ function RegisterGreen() {
   const passedAuthNum = location.state?.authNum || "";
 
   const [selectedImages, setSelectedImages] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]); // ✅ 파일 상태 관리
+  const [selectedFiles, setSelectedFiles] = useState([]); 
   const [currentIndex, setCurrentIndex] = useState(0);
   const fileInputRef = useRef(null);
   const maxImages = 3;
@@ -42,8 +42,6 @@ function RegisterGreen() {
     }
   }, []);
 
-  const handleBoxClick = () => fileInputRef.current.click();
-
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (selectedImages.length + files.length > maxImages) {
@@ -53,7 +51,7 @@ function RegisterGreen() {
 
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setSelectedImages((prev) => [...prev, ...imageUrls]);
-    setSelectedFiles((prev) => [...prev, ...files]); // ✅ 이미지 파일 추가
+    setSelectedFiles((prev) => [...prev, ...files]); 
   };
 
   const handlePrev = (e) => {
