@@ -20,9 +20,9 @@ function Login() {
         {
           id,
           password,
-        },{ withCredentials: true }
+        },{withCredentials: true}
       );
-      console.log(response);
+
       localStorage.setItem(
         "token",
         JSON.stringify({
@@ -30,6 +30,7 @@ function Login() {
           id: id,
         })
       );
+
       const saveToken = JSON.parse(localStorage.getItem("token"));
       console.log(saveToken);
       alert("로그인 성공");
