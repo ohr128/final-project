@@ -42,14 +42,25 @@ function Cart() {
       })
       .then((data) => {
         setCartItems(data);
+
         const initialCounts = {};
         const initialChecked = {};
+        const immediate = JSON.parse(localStorage.getItem("immediatePurchase"));
+
         data.forEach((item) => {
           initialCounts[item.productId] = item.quantity;
-          initialChecked[item.productId] = false;
+
+          if (immediate?.pId === item.productId) {
+            initialChecked[item.productId] = true;
+          } else {
+            initialChecked[item.productId] = false;
+          }
         });
+
         setCounts(initialCounts);
         setCheckedItems(initialChecked);
+
+        localStorage.removeItem("immediatePurchase");
       })
       .catch((err) => {
         console.error(err);
@@ -102,7 +113,7 @@ function Cart() {
 
       if (res.ok) {
         alert("삭제되었습니다.");
-        window.location.reload(); // 데이터 갱신
+        window.location.reload();
       } else {
         const text = await res.text();
         console.error("삭제 실패:", text);
@@ -355,9 +366,10 @@ function Cart() {
             <span>
               {(item.prices * counts[item.productId]).toLocaleString()}원
             </span>
+            
             <button
               className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
-              onClick={() => handleDelete(item.productId)} // ✅ 여기 수정
+              onClick={() => handleDelete(item.productId)}
             >
               삭제
             </button>

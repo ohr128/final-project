@@ -27,7 +27,7 @@ function Login() {
           password,
         },{ withCredentials: true}
       );
-      console.log(response);
+
       localStorage.setItem(
         "token",
         JSON.stringify({
@@ -35,6 +35,7 @@ function Login() {
           token: response.data.token,
         })
       );
+
       const saveToken = JSON.parse(localStorage.getItem("token"));
       console.log(saveToken);
       alert("로그인 성공");
