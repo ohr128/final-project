@@ -6,7 +6,6 @@ import lv3 from "../../assets/lv3.jpg";
 import lv4 from "../../assets/lv4.jpg";
 import lv5 from "../../assets/lv5.jpg";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 
 function Point() {
@@ -15,7 +14,7 @@ function Point() {
   const [mileage, setMileage] = useState(0);
 
   useEffect(() => {
-    const rawToken = sessionStorage.getItem("token");
+    const rawToken = localStorage.getItem("token");
 
     if (rawToken) {
       const parsed = JSON.parse(rawToken);
@@ -55,7 +54,7 @@ function Point() {
     <div className="flex font-notokr">
       <SideMenu from="/point" />
 
-      <div className="w-4/5 px-6 justify-center flex">
+      <div className="w-4/5 px-6 justify-center flex m-auto mt-5">
         <div className="my-8 flex flex-col justify-center">
           <div className="flex justify-center">
             <div className="border border-primary-500 mt-20 flex justify-center">
@@ -64,36 +63,37 @@ function Point() {
               </span>
             </div>
           </div>
+          
           {mileage >= 80 ? (
-            <img className="px-20 w-100 " src={lv5} alt="포인트 이미지 (20점 이상)" />
+            <img className="px-10 w-100 mx-20 mt-10" src={lv5} alt="포인트 이미지 (20점 이상)" />
           ) : mileage >= 60 ? (
-            <img className="px-20 w-100" src={lv4} alt="포인트 이미지 (20점 이상)" />
+            <img className="px-10 w-100 mx-20 mt-10 h-[337px]" src={lv4} alt="포인트 이미지 (20점 이상)" />
           ) : mileage >= 40 ? (
-            <img className="px-20 w-100" src={lv3} alt="포인트 이미지 (40점 이상)" />
+            <img className="px-10 w-100 mx-20 mt-10 h-[337px]" src={lv3} alt="포인트 이미지 (40점 이상)" />
           ) : mileage >= 20 ? (
-            <img className="px-20 w-100" src={lv2} alt="포인트 이미지 (20점 이상)" />
+            <img className="px-10 pt-15 w-100 mx-11 mt-4 h-[337px]" src={lv2} alt="포인트 이미지 (20점 이상)" />
           ) : mileage >= 0 ? (
-            <img className="px-20 w-100" src={lv1} alt="포인트 이미지 (0점 초과)" />
+            <img className="px-10 pt-16 w-100 mx-20 mt-3 h-[337px]" src={lv1} alt="포인트 이미지 (0점 초과)" />
           ) : null}
 
           {mileage >= 80 ? (
-            <span className="p-10 text-2xl font-bold text-center">
+            <span className="p-5 text-2xl font-bold text-center">
               당신의 노력 덕분에 달콤한 열매를 맺게 되었습니다.
             </span>
           ) : mileage >= 60 ? (
-            <span className="p-10 text-2xl font-bold text-center">
+            <span className="p-5 text-2xl font-bold text-center">
               당신의 꾸준한 노력으로 나무가 튼튼하게 성장했습니다.
             </span>
           ) : mileage >= 40 ? (
-            <span className="p-10 text-2xl font-bold text-center">
+            <span className="p-5 text-2xl font-bold text-center">
               당신의 노력 끝에 아름다운 꽃이 피어났습니다.
             </span>
           ) : mileage >= 20 ? (
-            <span className="p-10 text-2xl font-bold text-center">
+            <span className="p-6 text-2xl font-bold text-center">
               당신의 노력으로 새싹을 피웠습니다.
             </span>
           ) : mileage >= 0 ? (
-            <span className="p-10 text-2xl font-bold text-center">
+            <span className="p-5 text-2xl font-bold text-center">
               당신이 세상의 생동감을 부여 할 수 있습니다.
             </span>
           ) : null}
