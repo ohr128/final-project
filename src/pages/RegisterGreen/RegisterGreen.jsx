@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function RegisterGreen() {
+  console.log('test');
   const location = useLocation();
   const navigate = useNavigate();
   const passedAuthNum = location.state?.authNum || "";
