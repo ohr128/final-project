@@ -14,6 +14,7 @@ function Cart() {
     address: "",
     detailAddress: "",
   });
+  console.log("주소:", selectedAddress);
 
   const [memo, setMemo] = useState("");
   const [email, setEmail] = useState("");
@@ -212,9 +213,13 @@ function Cart() {
 
     const productName = selectedItems.length === 1 ? selectedItems[0].name : `${selectedItems[0].name} 외 ${selectedItems.length - 1} 건`;
     const pIdList = selectedItems.map((item) => item.productId);
-    const quantity = selectedItems.map((item) => item.quantity);
+    const quantity = selectedItems.map((item) => counts[item.productId]);
+    const address = selectedAddress.address;
+    const detailAddress = selectedAddress.detailAddress;
     console.log(pIdList);
     console.log(quantity);
+    console.log(address);
+    console.log(detailAddress)
 
     IMP.request_pay(
       {
@@ -243,6 +248,8 @@ function Cart() {
                 productId: pIdList,
                 memo: memo,
                 quantity:quantity,
+                address: address,
+                detailAddress: detailAddress,
               }),
             });
             const text = await res.text();

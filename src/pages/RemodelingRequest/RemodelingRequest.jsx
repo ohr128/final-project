@@ -1,6 +1,7 @@
 import axios from "axios";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const parseAddress = (fullAddress) => {
@@ -32,6 +33,8 @@ function RemodelingRequest() {
   const [bathroomCount, setBathRoomCount] = useState("");
   console.log("욕실 개수",bathroomCount);
   console.log("방 개수",roomCount);
+
+  const navigate = useNavigate();
   
   const stored = localStorage.getItem("token");
     const parsed = stored ? JSON.parse(stored) : {};
@@ -50,7 +53,7 @@ function RemodelingRequest() {
   const handleClick = () => {
     new window.daum.Postcode({
       oncomplete: (data) => {
-        const fullAddress = data.jibunAddress;
+        const fullAddress = data.roadAddress || data.jibunAddress;
         const zoneCode = data.zonecode;
 
         setPostAddress(zoneCode);
@@ -158,15 +161,25 @@ function RemodelingRequest() {
   };
 
   const handleGeneration = async () => {
-    await axios.post(`${API_BASE_URL}/api/save-remodeling`, {
-        uId: userId,
-        roomSize: pyeong,
-        room:roomCount,
-        bathroom: bathroomCount,
-        address: address,
-        dong:dong,
-        ho: ho,
-    })
+    try{
+      await axios.post(`${API_BASE_URL}/api/save-remodeling`, {
+          uId: userId,
+          roomSize: pyeong,
+          room:roomCount,
+          bathroom: bathroomCount,
+          address: address,
+          dong:dong,
+          ho: ho,
+      });
+      alert("신청이 완료되었습니다.");
+      navigate("/estimate");
+    } catch (error) {
+      if(error.response && error.response.status === 500) {
+        alert("방개수, 욕실개수를 확인해주세요.");
+      } else {
+        alert("신청 중 오류 발생했습니다.");
+      }
+    }
   }
   console.log("보내는 데이터:",
     {
