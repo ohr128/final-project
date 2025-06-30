@@ -43,10 +43,8 @@ function Navigation() {
         // 예: ["ROLE_ADMIN", "ROLE_USER"]
         if (Array.isArray(roleArray) && roleArray.length > 0) {
           setUserRole(roleArray);
-          console.log("userRole if", userRole);
         } else {
           setUserRole([]);
-          console.log("userRole else", userRole);
         }
 
     } catch (error) {
