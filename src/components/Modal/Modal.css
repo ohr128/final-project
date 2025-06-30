@@ -1,6 +1,6 @@
 .modal-close {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     cursor: pointer;
   }
   
@@ -10,7 +10,6 @@
   
   .modal {
     width: 320px;
-    height: 260px;
     position: fixed;
     left: 50%;
     top: 20%;

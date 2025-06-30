@@ -4,7 +4,7 @@ import close from "../../assets/close.png";
 function Modal(props) {
   return (
     <div className="modal">
-      <div className="modal-top">
+      <div className="modal-top justify-end flex mr-2">
         <img
           className="modal-close"
           src={close}
@@ -13,10 +13,10 @@ function Modal(props) {
         />
       </div>
 
-      <div className="modal-bottom">
-        <div className="modal-title">{props.msg}</div>
-
+      <div className="modal-bottom flex">
+        <div className="modal-title mb-4">{props.msg}
         {props.children}
+        </div>
       </div>
     </div>
   );

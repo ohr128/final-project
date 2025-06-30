@@ -7,6 +7,7 @@ function CertifyBusiness() {
   const [imageFile, setImageFile] = useState();
   const [existingImage, setExistingImage] = useState();
   const [uId, setUId] = useState(null);
+  const [isLoding, setIsLoding] = useState(false);
   const fileInputRef = useRef();
 
   useEffect(() => {
@@ -49,7 +50,7 @@ function CertifyBusiness() {
 
   const handleSubmit = async () => {
     if (!imageFile) return alert("이미지를 선택하세요.");
-
+    setIsLoding(true);
     try {
       const ocrForm = new FormData();
       ocrForm.append("file", imageFile);
@@ -101,19 +102,20 @@ function CertifyBusiness() {
 
       await axios.post(
         "http://localhost:8080/api/user/UserRole",
-        { uId }, 
+        { uId },
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        } 
+        }
       );
       alert("사업자 전환");
     } catch (err) {
       console.error("등록 실패:", err);
       alert("등록 중 오류 발생");
     }
+    setIsLoding(false);
   };
 
   const handledelete = async (uId) => {
@@ -206,6 +208,11 @@ function CertifyBusiness() {
             </div>
           )}
         </div>
+        {isLoding && (
+          <div className="absolute top-90 left-20 size-full bg-[#ffffff88] flex justify-center pt-70">
+            <div className="size-40 border-6 border-primary-500 border-t-gray-200 rounded-full animate-spin"></div>
+          </div>
+        )}
       </div>
     </div>
   );

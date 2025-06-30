@@ -178,7 +178,7 @@ function Cart() {
     try {
     const tokenObj = JSON.parse(tokenStr);
     const decoded = jwtDecode(tokenObj.token);
-    return decoded.sub; // JWT 안에 있는 필드 이름에 따라 변경
+    return decoded.sub; 
   } catch (error) {
     console.error("토큰 디코딩 실패:", error);
     return null;
@@ -242,7 +242,7 @@ function Cart() {
                 uId: uId,
                 productId: pIdList,
                 memo: memo,
-                quantity:quantity,
+                quantity:counts,
               }),
             });
             const text = await res.text();
