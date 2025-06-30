@@ -186,7 +186,7 @@ function Cart() {
   };
 
   useEffect(() => {
-     console.log("email useEffect 실행됨");
+    console.log("email useEffect 실행됨");
     const uId = getUidFromToken();
     if(!uId) return;
 
