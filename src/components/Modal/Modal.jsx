@@ -22,6 +22,7 @@ function Modal(props) {
       <div className="modal-bottom flex-col">
         <div className="modal-title">{props.msg}</div>
         {props.children}
+        </div>
       </div>
     </div>
   );

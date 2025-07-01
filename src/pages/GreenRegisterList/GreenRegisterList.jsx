@@ -41,12 +41,16 @@ function GreenRegisterList() {
 
           <div className="flex justify-end mb-4">
             <Link to="/certify-green">
-              <button className="bg-primary-500 border-2 border-primary-500 text-white rounded px-4 cursor-pointer">
+              <button className="w-20 h-10 bg-primary-500 border-primary-500 text-white rounded cursor-pointer">
                 등록하기
               </button>
             </Link>
           </div>
-
+          <div className="flex font-semibold border-b border-b-gray-500 pb-3">
+            <span className="ml-25">이름</span>
+            <span className="ml-55">인증번호</span>
+            <span className="ml-57">가격</span>
+          </div>
           {productList.length === 0 ? (
             <div className="text-gray-500 py-10">등록된 제품이 없습니다.</div>
           ) : (

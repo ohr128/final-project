@@ -8,10 +8,12 @@ function Checkpw2() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleCheck = async () => {
+  const handleCheck = async (e) => {
     const token = localStorage.getItem("token");
     const parsed = token ? JSON.parse(token) : null;
     const userId = parsed?.id;
+
+    e.preventDefault();
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
@@ -47,22 +49,23 @@ function Checkpw2() {
           <div className="flex flex-col w-full gap-4">
             <span>회원정보 보안을 위해 비밀번호를 입력해주세요.</span>
 
-            <input
-              placeholder="비밀번호 입력"
-              type="password"
-              className="border border-gray-300 rounded px-3 py-2"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <div className="flex justify-center my-6">
-              <button
-                onClick={handleCheck}
-                className="w-1/4 bg-primary-500 border-primary-500 text-white rounded px-4 py-2 cursor-pointer"
-              >
-                확인
-              </button>
-            </div>
+            <form onSubmit={handleCheck}>
+              <input
+                placeholder="비밀번호 입력"
+                type="password"
+                className="w-100 border border-gray-300 rounded px-3 py-2"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div className="flex justify-center my-6">
+                <button
+                  type="submit"
+                  className="w-1/4 bg-primary-500 border-primary-500 text-white rounded px-4 py-2 cursor-pointer"
+                >
+                  확인
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

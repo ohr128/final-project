@@ -13,7 +13,9 @@
     "@tailwindcss/vite": "^4.1.10",
     "axios": "^1.10.0",
     "chart.js": "^4.5.0",
+    "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
+    "jspdf": "^3.0.1",
     "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
     "react-chartjs-2": "^5.3.0",
@@ -32,5 +34,17 @@
     "globals": "^16.0.0",
     "vite": "^6.3.5"
   },
-  "homepage": "https://github.com/ohr128/final-project.git"
+  "homepage": "https://github.com/ohr128/final-project.git",
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohr128/final-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ohr128/final-project/issues"
+  }
 }
