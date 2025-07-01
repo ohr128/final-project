@@ -183,6 +183,7 @@ function Cart() {
     if (!tokenStr) return null;
 
     try {
+
       const tokenObj = JSON.parse(tokenStr);
       const decoded = jwtDecode(tokenObj.token);
       return decoded.sub; // JWT 안에 있는 필드 이름에 따라 변경

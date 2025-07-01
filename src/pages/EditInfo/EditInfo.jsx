@@ -132,7 +132,7 @@ function EditInfo() {
           <div className="flex flex-col w-full gap-2">
             <div>
               <input
-                className="border border-gray-300 w-80 h-10 pl-2 rounded"
+                className="border border-gray-300 w-82 h-10 pl-2 rounded mr-1"
                 placeholder="이메일 주소"
                 type="text"
                 value={email}
@@ -148,7 +148,7 @@ function EditInfo() {
 
             <div>
               <input
-                className="border border-gray-300 w-80 h-10 pl-2 rounded"
+                className="border border-gray-300 w-82 h-10 pl-2 rounded mr-1"
                 placeholder="인증번호"
                 type="text"
                 value={code}
@@ -189,7 +189,7 @@ function EditInfo() {
             <div className="flex justify-baseline">
               <button
                 onClick={() => navigate("/del-info")}
-                className="w-1/4 bg-primary-500 border-primary-500 text-white rounded cursor-pointer"
+                className="w-1/4 h-10 bg-primary-500 border-primary-500 text-white rounded cursor-pointer"
               >
                 회원탈퇴
               </button>
@@ -203,7 +203,7 @@ function EditInfo() {
                 </button>
               </Link>
               <button
-                className="w-1/4 bg-primary-500 text-white rounded px-4 py-2 cursor-pointer"
+                className=" bg-primary-500 text-white rounded px-4 py-2 cursor-pointer"
                 onClick={handleChange}
               >
                 수정하기
