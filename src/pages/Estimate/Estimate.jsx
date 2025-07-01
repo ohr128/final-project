@@ -16,9 +16,6 @@ function Estimate() {
   console.log(remodelingList);
 
   useEffect(() => {
-    //   console.log("시작1");
-    // if (!uId || !token) return;
-    // console.log("시작2");
     fetch(`${API_BASE_URL}/api/findUid?uId=` + uId, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -61,34 +58,33 @@ function Estimate() {
           <h1 className="p-10 text-2xl font-bold text-center">
             그린리모델링 견적서
           </h1>
+          <div className="flex justify-end m-4">
+                <button className="border-2 rounded flex justify-center items-center gap-2 p-1" onClick={handleDownloadPdf} style={{color: "#30a63e"}}>
+                  <span className="font-bold" style={{color: "#30a63e"}}>
+                    PDF 다운로드
+                  </span>
+                </button>
+              </div>
           {remodelingList ? (
             <div id="pdfContent">
-              <div className="border-y border-y-gray-300 flex flex-col gap-6 p-6">
+              <div className="flex flex-col gap-6 p-6" style={{borderWidth: "1px solid #d1d5dc"}}>
                 <span>{`견적대상: ${remodelingList.address} ${remodelingList.dong}동 ${remodelingList.ho}호`}</span>
                 <span>{`공사규모: ${remodelingList.roomSize}평(${Math.ceil(
                   remodelingList.roomSize * 3.3508
                 )}m²)  방 ${remodelingList.room}, 욕실 ${
                   remodelingList.bathroom
                 }`}</span>
-                <span className="font-bold">{`견적합계: ${remodelingList.totalsum.toLocaleString()}`}</span>
-              </div>
-
-              <div className="flex justify-end m-4">
-                <button className="border-2 border-primary-500 rounded flex justify-center items-center gap-2 p-1" onClick={handleDownloadPdf}>
-                  <span className="text-primary-500 font-bold">
-                    PDF 다운로드
-                  </span>
-                </button>
+                <span className="font-bold">{`견적합계: ${remodelingList.totalsum.toLocaleString()}원`}</span>
               </div>
 
               <div className="flex justify-center mt-10 mb-30">
                 <table className="border-collapse block">
                   <thead>
                     <tr>
-                      <td className="py-2 px-10 border border-gray-200 bg-green-100 text-center font-bold">
+                      <td className="py-2 px-10 text-center font-bold" style={{border:"1px solid #e5e7eb", backgroundColor:"#dcfce7", verticalAlign: 'middle'}}>
                         공사명
                       </td>
-                      <td className="py-2 px-10 border border-gray-200 bg-green-100 text-center font-bold">
+                      <td className="py-2 px-10 bg-green-100 text-center font-bold" style={{border:"1px solid #e5e7eb", backgroundColor:"#dcfce7", verticalAlign: 'middle'}}>
                         금액
                       </td>
                     </tr>
@@ -96,38 +92,38 @@ function Estimate() {
 
                   <tbody>
                     <tr>
-                      <td className="py-2 px-10 border border-gray-200">
+                      <td className="py-2 px-10" style={{border:"1px solid #e5e7eb", verticalAlign: 'middle'}}>
                         창호공사
                       </td>
-                      <td className="py-2 px-10 border border-gray-200">
-                        {remodelingList.windows.toLocaleString()}
+                      <td className="py-2 px-10" style={{border:"1px solid #e5e7eb", verticalAlign: 'middle'}}>
+                        {remodelingList.windows.toLocaleString()} 원
                       </td>
                     </tr>
 
                     <tr>
-                      <td className="py-2 px-10 border border-gray-200">
+                      <td className="py-2 px-10" style={{border:"1px solid #e5e7eb", verticalAlign: 'middle'}}>
                         조명공사
                       </td>
-                      <td className="py-2 px-10 border border-gray-200">
-                        {remodelingList.light.toLocaleString()}
+                      <td className="py-2 px-10" style={{border:"1px solid #e5e7eb", verticalAlign: 'middle'}}>
+                        {remodelingList.light.toLocaleString()} 원
                       </td>
                     </tr>
 
                     <tr>
-                      <td className="py-2 px-10 border border-gray-200">
+                      <td className="py-2 px-10" style={{border:"1px solid #e5e7eb", verticalAlign: 'middle'}}>
                         바닥공사
                       </td>
-                      <td className="py-2 px-10 border border-gray-200">
-                        {remodelingList.break.toLocaleString()}
+                      <td className="py-2 px-10" style={{border:"1px solid #e5e7eb", verticalAlign: 'middle'}}>
+                        {remodelingList.break.toLocaleString()} 원
                       </td>
                     </tr>
 
                     <tr>
-                      <td className="py-2 px-10 border border-gray-200">
+                      <td className="py-2 px-10" style={{border:"1px solid #e5e7eb", verticalAlign: 'middle'}}>
                         철거공사
                       </td>
-                      <td className="py-2 px-10 border border-gray-200">
-                        {remodelingList.break.toLocaleString()}
+                      <td className="py-2 px-10" style={{border:"1px solid #e5e7eb", verticalAlign: 'middle'}}>
+                        {remodelingList.break.toLocaleString()} 원
                       </td>
                     </tr>
                   </tbody>

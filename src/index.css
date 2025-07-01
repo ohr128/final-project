@@ -6,3 +6,7 @@
     --color-primary-500: #30A63E;
 
 }
+
+img {
+  display: inline-block;
+}
