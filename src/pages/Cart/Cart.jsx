@@ -163,6 +163,12 @@ function Cart() {
       : sum;
   }, 0);
 
+  const totalmileage = cartItems.reduce((sum, item) => {
+    return checkedItems[item.productId]
+      ? sum + item.mileage * counts[item.productId]
+      : sum;
+  }, 0);
+
   const handleOpenAddressModal = () => {
     setIsModalShow(true);
   };
@@ -174,52 +180,61 @@ function Cart() {
 
   const getUidFromToken = () => {
     const tokenStr = localStorage.getItem("token");
-    if(!tokenStr) return null;
+    if (!tokenStr) return null;
 
     try {
-    const tokenObj = JSON.parse(tokenStr);
-    const decoded = jwtDecode(tokenObj.token);
-    return decoded.sub; // JWT 안에 있는 필드 이름에 따라 변경
-  } catch (error) {
-    console.error("토큰 디코딩 실패:", error);
-    return null;
+      const tokenObj = JSON.parse(tokenStr);
+      const decoded = jwtDecode(tokenObj.token);
+      return decoded.sub; // JWT 안에 있는 필드 이름에 따라 변경
+    } catch (error) {
+      console.error("토큰 디코딩 실패:", error);
+      return null;
     }
   };
 
   useEffect(() => {
-     console.log("email useEffect 실행됨");
+    console.log("email useEffect 실행됨");
     const uId = getUidFromToken();
-    if(!uId) return;
+    if (!uId) return;
 
     fetch(`http://localhost:8080/api/user/email?id=${uId}`)
-    .then(res => res.text())
-    .then(setEmail)
-    .catch(err => console.error("이메일 불러오기 실패", err))
+      .then((res) => res.text())
+      .then(setEmail)
+      .catch((err) => console.error("이메일 불러오기 실패", err));
 
     console.log(email);
-  },[]);
+  }, []);
 
   const handlePayment = () => {
     const IMP = window.IMP;
     IMP.init("imp38151585");
 
-    const selectedItems = cartItems.filter(items => checkedItems[items.productId]);
-    if(selectedItems.length === 0){
+    const selectedItems = cartItems.filter(
+      (items) => checkedItems[items.productId]
+    );
+    if (selectedItems.length === 0) {
       alert("결제할 상품을 선택해주세요");
       return;
     }
     console.log(cartItems);
-    
 
-    const productName = selectedItems.length === 1 ? selectedItems[0].name : `${selectedItems[0].name} 외 ${selectedItems.length - 1} 건`;
+    const productName =
+      selectedItems.length === 1
+        ? selectedItems[0].name
+        : `${selectedItems[0].name} 외 ${selectedItems.length - 1} 건`;
     const pIdList = selectedItems.map((item) => item.productId);
     const quantity = selectedItems.map((item) => counts[item.productId]);
     const address = selectedAddress.address;
     const detailAddress = selectedAddress.detailAddress;
+    if(!address || !detailAddress) {
+      alert("주소를 입력해주세요");
+      return;
+    }
     console.log(pIdList);
     console.log(quantity);
     console.log(address);
-    console.log(detailAddress)
+    console.log(detailAddress);
+    console.log(totalmileage); 
 
     IMP.request_pay(
       {
@@ -230,28 +245,48 @@ function Cart() {
         buyer_name: getUidFromToken(),
         buyer_email: "",
       },
-      async function(rsp) {
-        if(rsp.success) {
+      async function (rsp) {
+        if (rsp.success) {
           const raw = localStorage.getItem("token");
-          const token = raw? JSON.parse(raw).token : null;
+          const token = raw ? JSON.parse(raw).token : null;
           const uId = getUidFromToken();
           console.log(uId);
           try {
             const res = await fetch("http://localhost:8080/order/complete", {
               method: "POST",
               headers: {
-                "Content-Type" : "application/json",
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
               },
               body: JSON.stringify({
                 uId: uId,
                 productId: pIdList,
                 memo: memo,
-                quantity:quantity,
+                quantity: quantity,
                 address: address,
                 detailAddress: detailAddress,
+                mileage: totalmileage,
               }),
             });
+
+            await fetch("http://localhost:8080/order/saveMileage", {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                uId: uId,
+                mileage: totalmileage,
+              }),
+            });
+
+            const selectedProductIds = selectedItems.map((item) => item.productId);
+        const newCartItems = cartItems.filter(
+          (item) => !selectedProductIds.includes(item.productId)
+        );
+        setCartItems(newCartItems);
+
             const text = await res.text();
             alert(text);
           } catch (err) {
@@ -262,8 +297,8 @@ function Cart() {
           alert("결제 실패");
         }
       }
-    )
-  }
+    );
+  };
 
   return (
     <div className="font-notokr p-6">
@@ -320,7 +355,7 @@ function Cart() {
             placeholder="(선택) 요청사항을 입력해주세요."
             rows={5}
             value={memo}
-            onChange={e => setMemo(e.target.value)}
+            onChange={(e) => setMemo(e.target.value)}
           />
         </div>
       </div>
@@ -374,7 +409,7 @@ function Cart() {
             <span>
               {(item.prices * counts[item.productId]).toLocaleString()}원
             </span>
-            
+
             <button
               className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
               onClick={() => handleDelete(item.productId)}
@@ -388,8 +423,15 @@ function Cart() {
           최종 결제 금액: {totalPrice.toLocaleString()}원
         </div>
 
+        <div className="flex justify-end">
+          최종 마일리지: {totalmileage.toLocaleString()}포인트
+        </div>
+
         <div className="flex justify-center my-16">
-          <button className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer" onClick={handlePayment}>
+          <button
+            className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer"
+            onClick={handlePayment}
+          >
             결제하기
           </button>
         </div>

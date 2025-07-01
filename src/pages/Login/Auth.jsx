@@ -46,15 +46,15 @@ function Auth() {
         console.log(kakaoId);
         console.log(email);
 
-        await axios.post(`${API_BASE_URL}/api/auth/kakao`, {
+        const response = await axios.post(`${API_BASE_URL}/api/auth/kakao`, {
             email: email,
             kakaoId: kakaoId,
           },
           { withCredentials: true }
         );
-        // sessionStorage.setItem("token", JSON.stringify(response.data));
-        // const saveToken = JSON.parse(localStorage.getItem('token'));
-        // console.log(saveToken);
+        localStorage.setItem("token", JSON.stringify(response.data));
+        const saveToken = JSON.parse(localStorage.getItem('token'));
+        console.log(saveToken);
       }
     }
 
