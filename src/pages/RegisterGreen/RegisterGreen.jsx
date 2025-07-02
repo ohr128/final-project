@@ -25,7 +25,7 @@ function RegisterGreen() {
   const [authNum, setAuthNum] = useState(passedAuthNum);
   const [name, setName] = useState("");
   const [prices, setPrices] = useState("");
-  const [classification, setClassification] = useState("");
+  const [classification, setClassification] = useState("녹색 제품");
   const [company, setCompany] = useState("");
   const [makeDate, setMakeDate] = useState("");
   const [registrationNum, setRegistrationNum] = useState("");
@@ -206,7 +206,7 @@ function RegisterGreen() {
                   className="border border-gray-300 p-1"
                   type="text"
                   value={classification}
-                  onChange={(e) => setClassification(e.target.value)}
+                  readOnly
                 />
               </div>
               <div className="flex items-center gap-10">
@@ -228,7 +228,7 @@ function RegisterGreen() {
                   onChange={(e) => setMakeDate(e.target.value)}
                 />
               </div>
-              <div className="flex items-center gap-10">
+              <div className="flex items-center gap-2">
                 <span>사업자 등록</span>
                 <input
                   className="border border-gray-300 p-1"
@@ -237,7 +237,7 @@ function RegisterGreen() {
                   readOnly
                 />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-6">
                 <span>마일리지</span>
                 <input
                   className="border border-gray-300 p-1"

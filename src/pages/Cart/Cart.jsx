@@ -162,6 +162,12 @@ function Cart() {
       : sum;
   }, 0);
 
+  const totalmileage = cartItems.reduce((sum, item) => {
+    return checkedItems[item.productId]
+      ? sum + item.mileage * counts[item.productId]
+      : sum;
+  }, 0);
+
   const handleOpenAddressModal = () => {
     setIsModalShow(true);
   };
@@ -178,7 +184,7 @@ function Cart() {
     try {
     const tokenObj = JSON.parse(tokenStr);
     const decoded = jwtDecode(tokenObj.token);
-    return decoded.sub; // JWT 안에 있는 필드 이름에 따라 변경
+    return decoded.sub; 
   } catch (error) {
     console.error("토큰 디코딩 실패:", error);
     return null;
@@ -242,7 +248,7 @@ function Cart() {
                 uId: uId,
                 productId: pIdList,
                 memo: memo,
-                quantity:quantity,
+                quantity:counts,
               }),
             });
             const text = await res.text();
@@ -327,8 +333,12 @@ function Cart() {
             전체해제
           </span>
         </div>
-
-        {cartItems.map((item, idx) => (
+        {cartItems.length === 0 ? (
+            <div className="flex justify-center items-center h-60 text-gray-500 text-lg">
+              장바구니에 제품이 없습니다.
+            </div>
+          ) : (
+        cartItems.map((item, idx) => (
           <div
             key={idx}
             className="h-40 flex items-center justify-around border-y border-y-gray-400"
@@ -340,11 +350,11 @@ function Cart() {
               onChange={() => toggleCheckbox(item.productId)}
             />
             <img
-              className="h-30"
+              className="h-30 w-30" 
               src={`http://localhost:8080/${encodeURIComponent(item.images)}`}
               alt="상품 이미지"
             />
-            <span>
+            <span className="w-1/5">
               {item.name.length > 13
                 ? item.name.slice(0, 13) + "..."
                 : item.name}
@@ -375,10 +385,15 @@ function Cart() {
               삭제
             </button>
           </div>
-        ))}
+        ))
+      )}
 
         <div className="flex justify-end">
           최종 결제 금액: {totalPrice.toLocaleString()}원
+        </div>
+
+        <div className="flex justify-end">
+          최종 마일리지: {totalmileage.toLocaleString()}포인트
         </div>
 
         <div className="flex justify-center my-16">
@@ -394,6 +409,8 @@ function Cart() {
             {addresses.map((item, idx) => (
               <li
                 key={idx}
+
+                
                 onClick={() => handleSelectAddress(item)}
                 className="border p-2 rounded cursor-pointer hover:bg-gray-100"
               >

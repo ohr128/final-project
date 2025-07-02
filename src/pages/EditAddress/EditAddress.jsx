@@ -154,26 +154,30 @@ function EditAddress() {
           <div className="flex flex-col w-full gap-2 px-20">
             <div className="flex justify-between font-semibold border-b border-b-gray-500 pb-3">
               <span className="ml-20">주소</span>
-              <span className="ml-20">상세주소</span>
+              <span className="ml-32">상세주소</span>
               <span className="mr-4">관리</span>
             </div>
-
-            {addresses.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex justify-between border-b border-b-gray-200 py-2"
-              >
-                <span>{item.address}</span>
-                <span>{item.detailAddress}</span>
-                <button
-                  className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
-                  onClick={() => handleDelete(item.no)}
-                >
-                  삭제
-                </button>
+            {addresses.length === 0 ? (
+              <div className="flex justify-center items-center h-60 text-gray-500 text-lg">
+                주소를 등록을 해주셔야 합니다.
               </div>
-            ))}
-
+            ) : (
+              addresses.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex justify-between border-b border-b-gray-200 py-2"
+                >
+                  <span className="w-5/12">{item.address}</span>
+                  <span>{item.detailAddress}</span>
+                  <button
+                    className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
+                    onClick={() => handleDelete(item.no)}
+                  >
+                    삭제
+                  </button>
+                </div>
+              ))
+            )}
             <div className="flex justify-center my-4">
               <button
                 onClick={() => setShowInput(true)}

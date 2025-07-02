@@ -7,6 +7,7 @@ function CertifyBusiness() {
   const [imageFile, setImageFile] = useState();
   const [existingImage, setExistingImage] = useState();
   const [uId, setUId] = useState(null);
+  const [isLoding, setIsLoding] = useState(false);
   const fileInputRef = useRef();
 
   useEffect(() => {
@@ -49,7 +50,7 @@ function CertifyBusiness() {
 
   const handleSubmit = async () => {
     if (!imageFile) return alert("이미지를 선택하세요.");
-
+    setIsLoding(true);
     try {
       const ocrForm = new FormData();
       ocrForm.append("file", imageFile);
@@ -101,19 +102,20 @@ function CertifyBusiness() {
 
       await axios.post(
         "http://localhost:8080/api/user/UserRole",
-        { uId }, 
+        { uId },
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        } 
+        }
       );
       alert("사업자 전환");
     } catch (err) {
       console.error("등록 실패:", err);
       alert("등록 중 오류 발생");
     }
+    setIsLoding(false);
   };
 
   const handledelete = async (uId) => {
@@ -135,15 +137,27 @@ function CertifyBusiness() {
         body: JSON.stringify({ uId }),
       });
       console.log("uId:", uId);
+
       if (res.ok) {
-        alert("삭제되었습니다.");
-        window.location.reload();
-      } else {
-        const text = await res.text();
-        console.error("삭제 실패:", text);
-      }
+        const businessRes = await fetch(
+          "http://localhost:8080/api/user/deleteBusiness",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ id: uId }),
+          }
+        );
+        if (businessRes.ok) {
+          alert("사업자 등록 및 권한이 모두 삭제되었습니다.");
+          window.location.reload();
+        } 
+      } 
     } catch (err) {
       console.error("삭제 에러:", err);
+      alert("삭제 중 오류 발생");
     }
   };
 
@@ -206,6 +220,11 @@ function CertifyBusiness() {
             </div>
           )}
         </div>
+        {isLoding && (
+          <div className="absolute top-90 left-20 size-full bg-[#ffffff88] flex justify-center pt-70">
+            <div className="size-40 border-6 border-primary-500 border-t-gray-200 rounded-full animate-spin"></div>
+          </div>
+        )}
       </div>
     </div>
   );

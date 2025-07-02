@@ -101,19 +101,19 @@ function OrderList() {
                         <div>
                           <div className="font-medium">{order.name}</div>
                           <div className="text-gray-600">
-                            {order.prices.toLocaleString()}원 /{" "}
-                            <span className="text-primary-500">{order.mileage}P</span>
+                            {order.prices * order.quantity.toLocaleString()}원 /{" "}
+                            <span className="text-primary-500">{order.mileage * order.quantity}P</span>
                           </div>
                         </div>
                       </div>
 
                       <div className="flex flex-col gap-1">
-                        <Link to="/takeback">
+                        <Link to={`/takeback?no=${order.no}`}>
                           <button className="border border-primary-500 rounded px-2 py-1 hover:bg-primary-50 cursor-pointer">
                             반품하기
                           </button>
                         </Link>
-                        <Link to="/review">
+                        <Link to={`/review?pId=${order.productId}`}>
                           <button className="bg-primary-500 text-white rounded px-2 py-1 hover:bg-primary-600 cursor-pointer">
                             리뷰작성
                           </button>

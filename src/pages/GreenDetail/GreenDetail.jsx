@@ -6,14 +6,14 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log("API_BASE_URL", API_BASE_URL);
 import Cookies from "js-cookie";
 
-
 function GreenDetail() {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
   const [product, setProduct] = useState({});
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
   const [count, setCount] = useState(1);
+  const [reviews, setReviews] = useState([]);
+
   const nav = useNavigate();
 
   useEffect(() => {
@@ -24,6 +24,13 @@ function GreenDetail() {
         setProduct(data);
         setCurrentImageIndex(0);
         setCount(1);
+      });
+
+    fetch(`${API_BASE_URL}/api/reviews?pId=${productId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("리뷰 데이터", data);
+        setReviews(data);
       });
   }, [productId]);
 
@@ -154,7 +161,7 @@ function GreenDetail() {
           <div className="flex flex-col gap-3 flex-1">
             <span>제품명 : {product.name}</span>
             <span>가격 : {(product.prices * count).toLocaleString()}원</span>
-            <span>포인트 : {product.mileage * count}포인트</span>
+            <span>포인트 : {(product.mileage * count).toLocaleString()}포인트</span>
 
             <div className="w-25 flex items-center border border-gray-300 rounded">
               <button onClick={handleDecrease} className="px-3 py-1">
@@ -205,14 +212,36 @@ function GreenDetail() {
 
         <div className="border-y border-y-gray-200">
           <span className="text-xl">리뷰</span>
-          <div className="border-y border-y-gray-200 p-10 flex items-center justify-around">
-            <img
-              className="w-1/5"
-              src="https://sitem.ssgcdn.com/61/73/61/item/1000188617361_i1_750.jpg"
-              alt="리뷰 이미지"
-            />
-            <span>잘쓰고있습니다.</span>
-          </div>
+          {reviews.length === 0 ? (
+            <div className="flex justify-center items-center h-60 text-gray-500 text-lg">
+              리뷰가 없습니다.
+            </div>
+          ) : (
+            reviews.map((review, idx) => (
+              <div
+                key={idx}
+                className="border-y border-y-gray-200 p-10 flex flex-col gap-2"
+              >
+                <div className="flex gap-2">
+                  {(review.rimages || []).map((img, i) => (
+                    <img
+                      key={i}
+                      className="w-1/5 h-32 object-cover"
+                      src={`${API_BASE_URL}/${encodeURIComponent(img.rimage)}`}
+                      alt="리뷰 이미지"
+                    />
+                  ))}
+                </div>
+                <div className="flex items-center">
+                  <strong className="mr-2">{review.uid}</strong>
+                  <span className="text-sm text-gray-500">
+                    <span>{new Date(review.rdate).toLocaleString()}</span>
+                  </span>
+                </div>
+                <span>{review.rreview}</span>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

@@ -105,17 +105,17 @@ const checkPasswordMatch = async (confirm) => {
 
                  <div className="flex justify-center items-center flex-col gap-4 " >
                         
-                    <input type="text" placeholder="아이디 입력" className="w-90 border rounded border-gray-300 p-2" value={id} onChange={e => setId(e.target.value)}/>
-                    <input type="text" placeholder="비밀번호 입력" className="w-90 border rounded border-gray-300 p-2"  value={password} onChange={e => setPassword(e.target.value)} onBlur={() => checkPasswordMatch(passwordConfirm)}/>
-                    <input type="password" placeholder="비밀번호 확인" className="w-90 border rounded border-gray-300 p-2" value={passwordConfirm} onChange={(e) => setPwConfirm(e.target.value)} onBlur={() => checkPasswordMatch(passwordConfirm)} />
+                    <input type="text" placeholder="아이디 입력" className="w-113 border rounded border-gray-300 p-2" value={id} onChange={e => setId(e.target.value)}/>
+                    <input type="text" placeholder="비밀번호 입력" className="w-113 border rounded border-gray-300 p-2"  value={password} onChange={e => setPassword(e.target.value)} onBlur={() => checkPasswordMatch(passwordConfirm)}/>
+                    <input type="password" placeholder="비밀번호 확인" className="w-113 border rounded border-gray-300 p-2" value={passwordConfirm} onChange={(e) => setPwConfirm(e.target.value)} onBlur={() => checkPasswordMatch(passwordConfirm)} />
 
-                    <div className="flex gap-1 ml-10">
-                        <input className="border border-gray-300 w-70 h-10 pl-2 rounded" placeholder="이메일 주소를 입력해주세요." type="text" value={email} onChange={e => setEmail(e.target.value)}/>
+                    <div className="flex">
+                        <input className="border border-gray-300 w-80 h-10 pl-2 rounded mr-2" placeholder="이메일 주소를 입력해주세요." type="text" value={email} onChange={e => setEmail(e.target.value)}/>
                         <button className="bg-primary-500 rounded text-white px-4 py-2 cursor-pointer" onClick={handleSendCode}>인증번호 받기</button>
                     </div>
 
-                    <div className="flex gap-1 ml-10">
-                        <input className="border border-gray-300 w-70 h-10 pl-2 rounded" placeholder="인증번호" type="text" value={code} onChange={e => setCode(e.target.value)} />
+                    <div className="flex">
+                        <input className="border border-gray-300 w-80 h-10 pl-2 rounded mr-2" placeholder="인증번호" type="text" value={code} onChange={e => setCode(e.target.value)} />
                         <button className="bg-primary-500 rounded text-white px-4 py-2 cursor-pointer" onClick={handleVerifyCode}>인증번호 확인</button>
                     </div>
 
