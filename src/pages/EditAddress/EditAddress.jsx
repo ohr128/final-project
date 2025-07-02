@@ -154,7 +154,7 @@ function EditAddress() {
           <div className="flex flex-col w-full gap-2 px-20">
             <div className="flex justify-between font-semibold border-b border-b-gray-500 pb-3">
               <span className="ml-20">주소</span>
-              <span className="ml-20">상세주소</span>
+              <span className="ml-32">상세주소</span>
               <span className="mr-4">관리</span>
             </div>
 
@@ -163,7 +163,7 @@ function EditAddress() {
                 key={idx}
                 className="flex justify-between border-b border-b-gray-200 py-2"
               >
-                <span>{item.address}</span>
+                <span className="w-5/12">{item.address}</span>
                 <span>{item.detailAddress}</span>
                 <button
                   className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
