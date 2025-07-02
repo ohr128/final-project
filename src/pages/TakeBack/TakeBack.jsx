@@ -56,7 +56,7 @@ function TakeBack() {
 
   const handleSubmitRefund = async () => {
     if (!memo.trim()) {
-      alert("반품 사유를 작성해주세요.");
+      alert("※ 반품 사유를 작성해주세요.");
       return;
     }
 
@@ -106,12 +106,12 @@ function TakeBack() {
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
         <div className="w-20">
-          <span className="text-left block text-lg font-semibold">반품사유</span>
+          <span className="text-left block text-lg font-semibold">반품사유<span className="text-red-600 ml-1">*</span></span>
         </div>
         <div className="ml-4 flex-1">
           <textarea
             className="w-full border border-gray-300 p-2 rounded"
-            placeholder="(필수) 반품사유를 입력해주세요."
+            placeholder="반품사유를 입력해주세요."
             rows={6}
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
@@ -126,7 +126,7 @@ function TakeBack() {
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
         <div className="w-24">
-          <span className="text-left block text-lg font-semibold">반품주소</span>
+          <span className="text-left block text-lg font-semibold">반품주소<span className="text-red-600 ml-1">*</span></span>
         </div>
         <div className="flex-1 space-y-3">
           <div className="flex gap-2">
