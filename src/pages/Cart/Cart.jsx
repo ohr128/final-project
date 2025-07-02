@@ -183,22 +183,13 @@ function Cart() {
     if (!tokenStr) return null;
 
     try {
-<<<<<<< HEAD
 
-      const tokenObj = JSON.parse(tokenStr);
-      const decoded = jwtDecode(tokenObj.token);
-      return decoded.sub; // JWT 안에 있는 필드 이름에 따라 변경
-    } catch (error) {
-      console.error("토큰 디코딩 실패:", error);
-      return null;
-=======
     const tokenObj = JSON.parse(tokenStr);
     const decoded = jwtDecode(tokenObj.token);
     return decoded.sub; 
   } catch (error) {
     console.error("토큰 디코딩 실패:", error);
     return null;
->>>>>>> cw
     }
   };
 
@@ -272,14 +263,10 @@ function Cart() {
                 uId: uId,
                 productId: pIdList,
                 memo: memo,
-<<<<<<< HEAD
                 quantity: quantity,
                 address: address,
                 detailAddress: detailAddress,
                 mileage: totalmileage,
-=======
-                quantity:counts,
->>>>>>> cw
               }),
             });
 

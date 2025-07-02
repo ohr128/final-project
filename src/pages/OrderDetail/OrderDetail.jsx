@@ -98,19 +98,13 @@ function OrderDetail() {
                         <div>
                           <div className="font-medium">{order.name}</div>
                           <div className="text-gray-600">
-<<<<<<< HEAD
-                            {order.prices.toLocaleString()}원 /
-                            <span className="text-primary-500"> {order.mileage}P</span>
-=======
                             {order.prices * order.quantity.toLocaleString()}원 /{" "}
                             <span className="text-primary-500">{order.mileage * order.quantity}P</span>
->>>>>>> cw
                           </div>
                         </div>
                       </div>
 
                       <div className="flex flex-col gap-1">
-<<<<<<< HEAD
                         {refundedOrders.some(r => Number(r) === Number(order.oNo)) ? (
                           <span className="text-primary-500 font-semibold mr-4">반품진행중</span>
                         ) : (
@@ -136,18 +130,6 @@ function OrderDetail() {
                             </Link>
                           </>
                         )}
-=======
-                        <Link to={`/takeback?no=${order.no}`}>
-                          <button className="border border-primary-500 rounded px-2 py-1 hover:bg-primary-50 cursor-pointer">
-                            반품하기
-                          </button>
-                        </Link>
-                        <Link to={`/review?pId=${order.productId}`}>
-                          <button className="bg-primary-500 text-white rounded px-2 py-1 hover:bg-primary-600 cursor-pointer">
-                            리뷰작성
-                          </button>
-                        </Link>
->>>>>>> cw
                       </div>
                     </div>
                   </div>

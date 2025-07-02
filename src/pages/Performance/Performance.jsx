@@ -1,32 +1,11 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { Pie } from "react-chartjs-2";
-<<<<<<< HEAD
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
-=======
 import { useEffect, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
->>>>>>> cw
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-<<<<<<< HEAD
-    return(
-        <div className="flex font-notokr">
-            <SideMenu from="/performance" />
-            <div className="w-4/5 px-6 flex justify-center">
-                <div className="w-full max-w-xl flex flex-col text-center mt-20">
-                <span className="mb-4 text-2xl font-semibold ">사업실적</span>
-                <div className="flex gap-4 justify-evenly mt-6 mb-20">
-                    <div className="border border-primary-500 p-10">300회</div>
-                    <div className="border border-primary-500 p-10">200회</div>
-=======
 function Performance() {
   const [greenOrderCount, setGreenOrderCount] = useState(0);
   const [remodelingCount, setRemodelingCount] = useState(0);
@@ -109,7 +88,6 @@ function Performance() {
                   <div className="mt-2">
                     녹색 제품 주문 수: {greenOrderCount}건
                   </div>
->>>>>>> cw
                 </div>
 
                 <div className="w-64 h-64">
@@ -137,12 +115,6 @@ function Performance() {
                   />
                   <div className="mt-2">리모델링 건수: {remodelingCount}건</div>
                 </div>
-<<<<<<< HEAD
-                </div>
-            </div>
-        </div>
-    )
-=======
               </>
             )}
           </div>
@@ -183,7 +155,6 @@ function Performance() {
       </div>
     </div>
   );
->>>>>>> cw
 }
 
 export default Performance;
