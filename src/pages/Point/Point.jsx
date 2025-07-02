@@ -64,18 +64,6 @@ function Point() {
             </div>
           </div>
           
-<<<<<<< HEAD
-          {mileage >= 1000000 ? (
-            <img className="px-10 w-100 mx-20 mt-10" src={lv5} alt="포인트 이미지 (20점 이상)" />
-          ) : mileage >= 1000000 ? (
-            <img className="px-10 w-100 mx-20 mt-10 h-[337px]" src={lv4} alt="포인트 이미지 (20점 이상)" />
-          ) : mileage >= 100000 ? (
-            <img className="px-10 w-100 mx-20 mt-10 h-[337px]" src={lv3} alt="포인트 이미지 (40점 이상)" />
-          ) : mileage >= 1000 ? (
-            <img className="px-10 pt-15 w-100 mx-20 mt-3 h-[337px]" src={lv2} alt="포인트 이미지 (20점 이상)" />
-          ) : mileage >= 10000 ? (
-            <img className="px-10 pt-15 w-100 mx-20 mt-3 h-[337px]" src={lv1} alt="포인트 이미지 (0점 초과)" />
-=======
           {mileage >= 50000 ? (
             <img className="px-10 w-100 mx-20 mt-10" src={lv5} alt="포인트 이미지 (20점 이상)" />
           ) : mileage >= 37500 ? (
@@ -86,7 +74,6 @@ function Point() {
             <img className="px-10 pt-15 w-100 mx-11 mt-4 h-[337px]" src={lv2} alt="포인트 이미지 (20점 이상)" />
           ) : mileage >= 0 ? (
             <img className="px-10 pt-16 w-100 mx-20 mt-3 h-[337px]" src={lv1} alt="포인트 이미지 (0점 초과)" />
->>>>>>> cw
           ) : null}
 
           {mileage >= 50000 ? (

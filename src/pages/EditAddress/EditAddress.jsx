@@ -157,26 +157,10 @@ function EditAddress() {
               <span className="ml-32">상세주소</span>
               <span className="mr-4">관리</span>
             </div>
-<<<<<<< HEAD
 
-            {addresses.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex justify-between border-b border-b-gray-200 py-2"
-              >
-                <span className="w-5/12">{item.address}</span>
-                <span>{item.detailAddress}</span>
-                <button
-                  className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
-                  onClick={() => handleDelete(item.no)}
-                >
-                  삭제
-                </button>
-=======
             {addresses.length === 0 ? (
               <div className="flex justify-center items-center h-60 text-gray-500 text-lg">
                 주소를 등록을 해주셔야 합니다.
->>>>>>> cw
               </div>
             ) : (
               addresses.map((item, idx) => (
