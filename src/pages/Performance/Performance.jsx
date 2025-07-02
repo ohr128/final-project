@@ -6,7 +6,6 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-
 function Performance() {
   const [greenOrderCount, setGreenOrderCount] = useState(0);
   const [remodelingCount, setRemodelingCount] = useState(0);
