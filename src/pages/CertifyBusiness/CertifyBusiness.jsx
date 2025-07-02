@@ -137,15 +137,27 @@ function CertifyBusiness() {
         body: JSON.stringify({ uId }),
       });
       console.log("uId:", uId);
+
       if (res.ok) {
-        alert("삭제되었습니다.");
-        window.location.reload();
-      } else {
-        const text = await res.text();
-        console.error("삭제 실패:", text);
-      }
+        const businessRes = await fetch(
+          "http://localhost:8080/api/user/deleteBusiness",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ id: uId }),
+          }
+        );
+        if (businessRes.ok) {
+          alert("사업자 등록 및 권한이 모두 삭제되었습니다.");
+          window.location.reload();
+        } 
+      } 
     } catch (err) {
       console.error("삭제 에러:", err);
+      alert("삭제 중 오류 발생");
     }
   };
 

@@ -87,9 +87,9 @@ function FindId() {
         </div>
 
         <div className="flex justify-center items-center flex-col gap-4">
-          <div className="flex gap-1">
+          <div className="flex">
             <input
-              className="border border-gray-300 w-70 h-10 pl-2 rounded"
+              className="border border-gray-300 w-70 h-10 pl-2 rounded mr-2"
               placeholder="이메일 주소를 입력해주세요."
               type="email"
               value={email}
@@ -103,9 +103,9 @@ function FindId() {
             </button>
           </div>
 
-          <div className="flex gap-1">
+          <div className="flex">
             <input
-              className="border border-gray-300 w-70 h-10 pl-2 rounded"
+              className="border border-gray-300 w-70 h-10 pl-2 rounded mr-2"
               placeholder="인증번호 입력"
               type="text"
               value={code}

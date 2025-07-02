@@ -2,6 +2,9 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log("API_BASE_URL", API_BASE_URL);
 
@@ -25,7 +28,7 @@ function CertifyGreen() {
   };
 
   const handleSubmit = async () => {
-    if (!imageFile) return alert("이미지를 선택하세요.");
+    if (!imageFile) return toast.error("이미지를 선택하세요.");
 
     setIsLoding(true);
 
@@ -41,7 +44,7 @@ function CertifyGreen() {
       console.log("OCR 결과 인증번호:", authNum);
 
       if (!authNum) {
-        alert("인증번호 추출 실패");
+        toast.error("인증번호 추출 실패");
         setIsLoding(false);
         return;
       }
@@ -50,19 +53,19 @@ function CertifyGreen() {
         await axios.get(
           `${API_BASE_URL}/api/green-check?authNum=${encodeURIComponent(authNum)}`
         );
-        alert("인증 완료")
+        toast.success("인증 완료");
         navigate("/register-green", { state: { authNum } });
       } catch (checkError) {
         if (checkError.response?.status === 404) {
-          alert("해당 인증번호에 대한 정보를 찾을 수 없습니다.");
+          toast.error("해당 인증 번호에 대한 정보가 없습니다.");
         } else {
           console.error("Spring 인증번호 확인 중 오류:", checkError);
-          alert("서버 오류 발생");
+          toast.error("서버 오류 발생");
         }
       }
     } catch (err) {
       console.error("OCR 처리 실패:", err);
-      alert("OCR 처리에 실패했습니다.");
+      toast.error("OCR 처리에 실패했습니다.");
     }
     setIsLoding(false);
   };
@@ -70,7 +73,7 @@ function CertifyGreen() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/certify-green" />
-
+      <ToastContainer position="top-center" />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-10 text-2xl font-semibold">녹색기술제품 확인서</span>

@@ -21,6 +21,7 @@
 }
 
 .modal-close {
+<<<<<<< HEAD
   width: 32px;
   height: 32px;
   background: transparent;
@@ -53,6 +54,22 @@
   }
   to {
     opacity: 1;
+=======
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+  }
+  
+  .modal-top {
+    text-align: end;
+  }
+  
+  .modal {
+    width: 320px;
+    position: fixed;
+    left: 50%;
+    top: 20%;
+>>>>>>> cw
     transform: translate(-50%, 0);
   }
 }

@@ -183,6 +183,7 @@ function Cart() {
     if (!tokenStr) return null;
 
     try {
+<<<<<<< HEAD
 
       const tokenObj = JSON.parse(tokenStr);
       const decoded = jwtDecode(tokenObj.token);
@@ -190,6 +191,14 @@ function Cart() {
     } catch (error) {
       console.error("토큰 디코딩 실패:", error);
       return null;
+=======
+    const tokenObj = JSON.parse(tokenStr);
+    const decoded = jwtDecode(tokenObj.token);
+    return decoded.sub; 
+  } catch (error) {
+    console.error("토큰 디코딩 실패:", error);
+    return null;
+>>>>>>> cw
     }
   };
 
@@ -263,10 +272,14 @@ function Cart() {
                 uId: uId,
                 productId: pIdList,
                 memo: memo,
+<<<<<<< HEAD
                 quantity: quantity,
                 address: address,
                 detailAddress: detailAddress,
                 mileage: totalmileage,
+=======
+                quantity:counts,
+>>>>>>> cw
               }),
             });
 
@@ -381,8 +394,12 @@ function Cart() {
             전체해제
           </span>
         </div>
-
-        {cartItems.map((item, idx) => (
+        {cartItems.length === 0 ? (
+            <div className="flex justify-center items-center h-60 text-gray-500 text-lg">
+              장바구니에 제품이 없습니다.
+            </div>
+          ) : (
+        cartItems.map((item, idx) => (
           <div
             key={idx}
             className="h-40 flex items-center justify-around border-y border-y-gray-400"
@@ -394,11 +411,11 @@ function Cart() {
               onChange={() => toggleCheckbox(item.productId)}
             />
             <img
-              className="h-30"
+              className="h-30 w-30" 
               src={`http://localhost:8080/${encodeURIComponent(item.images)}`}
               alt="상품 이미지"
             />
-            <span>
+            <span className="w-1/5">
               {item.name.length > 13
                 ? item.name.slice(0, 13) + "..."
                 : item.name}
@@ -429,7 +446,8 @@ function Cart() {
               삭제
             </button>
           </div>
-        ))}
+        ))
+      )}
 
         <div className="flex justify-end">
           최종 결제 금액: {totalPrice.toLocaleString()}원
@@ -455,6 +473,8 @@ function Cart() {
             {addresses.map((item, idx) => (
               <li
                 key={idx}
+
+                
                 onClick={() => handleSelectAddress(item)}
                 className="border p-2 rounded cursor-pointer hover:bg-gray-100"
               >

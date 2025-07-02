@@ -3,6 +3,7 @@ import "./Modal.css";
 function Modal(props) {
   return (
     <div className="modal">
+<<<<<<< HEAD
       <div className="modal-top">
         <button className="modal-close" onClick={props.close} aria-label="닫기">
           <svg
@@ -23,6 +24,20 @@ function Modal(props) {
         <div className="modal-title">{props.msg}</div>
         <div>
           {props.children}
+=======
+      <div className="modal-top justify-end flex mr-2">
+        <img
+          className="modal-close"
+          src={close}
+          alt=""
+          onClick={props.close}
+        />
+      </div>
+
+      <div className="modal-bottom flex">
+        <div className="modal-title mb-4">{props.msg}
+        {props.children}
+>>>>>>> cw
         </div>
       </div>
     </div>
