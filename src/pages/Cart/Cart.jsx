@@ -282,6 +282,17 @@ function Cart() {
               }),
             });
 
+            await fetch(`${API_BASE_URL}/order/delete`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                uId: uId,
+              }),
+            });
+
             const selectedProductIds = selectedItems.map((item) => item.productId);
         const newCartItems = cartItems.filter(
           (item) => !selectedProductIds.includes(item.productId)

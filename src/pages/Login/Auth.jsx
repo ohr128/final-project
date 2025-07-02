@@ -52,9 +52,16 @@ function Auth() {
           },
           { withCredentials: true }
         );
-        localStorage.setItem("token", JSON.stringify(response.data));
-        const saveToken = JSON.parse(localStorage.getItem('token'));
-        console.log(saveToken);
+       localStorage.setItem(
+        "token",
+        JSON.stringify({
+          token: response.data.token,
+        })
+      );
+
+      const saveToken = JSON.parse(localStorage.getItem("token"));
+      console.log(saveToken);
+      alert("로그인 성공");
       }
     }
 

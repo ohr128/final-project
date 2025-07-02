@@ -66,7 +66,7 @@ function Navigation() {
     } catch(error) {
       console.error("로그아웃 실패", error);
     }
-    navigate("/");
+    navigate("/login");
   };
 
   return (
