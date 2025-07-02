@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,16 +15,15 @@ function Login() {
   const [password, setPw] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
+  const handleLogin = async () => {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/api/user/sign-in`,
         {
           id,
           password,
-        },{ withCredentials: true}
+        },
+        { withCredentials: true }
       );
 
       localStorage.setItem(
@@ -60,7 +58,6 @@ function Login() {
             <img className="w-50" src={logo} alt="" />
           </Link>
         </div>
-        <form onSubmit={handleLogin}>
         <div className="flex justify-center items-center flex-col">
           <input
             className="border border-gray-300 w-100 h-10 pl-2 rounded"
@@ -76,10 +73,15 @@ function Login() {
             type="password"
             value={password}
             onChange={(e) => setPw(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleLogin();
+              }
+            }}
           />
 
           <button
-           type="submit"
+            type="submit"
             className="bg-primary-500 w-100 h-10 text-white rounded cursor-pointer"
             onClick={handleLogin}
           >
@@ -97,7 +99,6 @@ function Login() {
               비밀번호 찾기
             </Link>
           </div>
-
           <button
             className="border border-gray-300 w-100 h-10 flex justify-center items-center my-10 rounded"
             onClick={handleKakaoLogin}
@@ -106,7 +107,6 @@ function Login() {
             <p>카카오톡 로그인</p>
           </button>
         </div>
-        </form>
       </div>
     </div>
   );

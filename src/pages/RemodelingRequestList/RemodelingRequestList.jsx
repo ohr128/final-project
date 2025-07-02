@@ -1,63 +1,160 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getCookieValue } from "../../helpers/cookieHelper";
+import { jwtDecode } from "jwt-decode";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function RemodelingRequestList() {
   const [openAccordionId, setOpenAccordionId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+  const [remodelingList, setRemodelingList] = useState([]);
+
+  const jwtToken = getCookieValue("jwt_cookie");
+  const stored = localStorage.getItem("token");
+  const parsed = stored ? JSON.parse(stored) : {};
+  const uId = parsed?.id;
+  const token = parsed?.token;
+
+  useEffect(() => {
+    if (jwtToken) {
+      try {
+        const decoded = jwtDecode(jwtToken);
+        const rawRoles = decoded.authorities || "";
+
+        // 쉼표로 구분된 문자열을 배열로 변환
+        const roleArray =
+          typeof rawRoles === "string" ? rawRoles.split(",") : rawRoles;
+
+        // 예: ["ROLE_ADMIN", "ROLE_USER"]
+        if (Array.isArray(roleArray) && roleArray.length > 0) {
+          setUserRole(roleArray);
+        } else {
+          setUserRole([]);
+        }
+      } catch (error) {
+        console.error("JWT decode error:", error);
+        setUserRole([]);
+      }
+    } else {
+      setUserRole([]);
+    }
+
+    console.log("userRole", userRole);
+    console.log(uId);
+  }, [jwtToken]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const url = userRole?.includes("ROLE_BUSINESS")
+        ? "/api/business"
+        : `/api/user/${uId}`;
+
+      try {
+        fetch(`${API_BASE_URL}${url}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setRemodelingList(data);
+            console.log(data);
+          });
+      } catch (error) {
+        console.error("데이터 불러오기 실패:", error);
+      }
+    };
+
+    if (userRole) {
+      fetchData();
+    }
+    console.log(remodelingList);
+  }, [userRole]);
+
+  useEffect(() => {
+  if (!window.kakao || !openAccordionId) return;
+
+  const selectedItem = remodelingList.find(item => item.no === openAccordionId);
+  if (!selectedItem) return;
+
+  const timer = setTimeout(() => {
+    const mapContainer = document.getElementById(`map-${openAccordionId}`);
+    if (!mapContainer) return;
+
+    const mapOption = {
+      center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+      level: 3,
+    };
+    const map = new window.kakao.maps.Map(mapContainer, mapOption);
+    const geocoder = new window.kakao.maps.services.Geocoder();
+
+    geocoder.addressSearch(selectedItem.address, (result, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+        const marker = new window.kakao.maps.Marker({
+          map,
+          position: coords,
+        });
+        const infowindow = new window.kakao.maps.InfoWindow({
+          content: `<div style="width:250px;text-align:center;padding:6px 0;">${selectedItem.address}</div>`,
+        });
+        infowindow.open(map, marker);
+        map.setCenter(coords);
+      }
+    });
+  }); // 지도 로딩 딜레이
+
+  return () => clearTimeout(timer);
+}, [openAccordionId, remodelingList]);
 
   const handleAccordionClick = (id) => {
     setOpenAccordionId(openAccordionId === id ? null : id);
   };
 
-  const remodelingData = [
-    {
-      id: 1,
-      region: "서구",
-      userId: "qwer",
-      requestDate: "2025-06-15",
-      location: "대전광역시 서구 갈마동 OO아파트 OO동 OO호",
-      size: "21평(64m²)",
-      price: "6,010,284",
-    },
-  ];
-
   const AccordionItem = ({ id, title, content, isOpen, onClick }) => {
     return (
-      <div className={`accordion-item ${isOpen ? "border border-primary-500" : "border border-gray-200"}`}>
-        <h2 id={`accordion-color-heading-${id}`}>
-          <button
-            type="button"
-            className={`flex items-center justify-between w-full p-5 font-medium gap-3 
+      <div
+        className={`accordion-item ${
+          isOpen ? "border border-primary-500" : "border border-gray-200"
+        }`}
+      >
+        {remodelingList ? (
+          <h2 id={`accordion-color-heading-${id}`}>
+            <button
+              type="button"
+              className={`flex items-center justify-between w-full p-5 font-medium gap-3 
               ${isOpen ? "bg-primary-500 text-white" : "hover:bg-gray-100"}
             `}
-            onClick={onClick}
-            aria-expanded={isOpen}
-            aria-controls={`accordion-color-body-${id}`}
-          >
-            <div className="flex justify-between items-center w-full pr-4">
-              <span>대전광역시 {title.region}</span>
-              <span>아이디</span>
-              <span>{title.requestDate}</span>
-            </div>
-
-            <svg
-              className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 ${
-                isOpen ? "rotate-180 text-white" : "text-gray-500"
-              }`}
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 10 6"
+              onClick={onClick}
+              aria-expanded={isOpen}
+              aria-controls={`accordion-color-body-${id}`}
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 5 5 1 1 5"
-              />
-            </svg>
-          </button>
-        </h2>
+              <div className="flex justify-between items-center w-full pr-4">
+                <span>{title.address.split(" ").slice(0, 2).join(" ")}</span>
+                <span>{title.uId}</span>
+                <span>{title.applicationDate.slice(0, 10)}</span>
+              </div>
+
+              <svg
+                className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 ${
+                  isOpen ? "rotate-180 text-white" : "text-gray-500"
+                }`}
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 10 6"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 5 5 1 1 5"
+                />
+              </svg>
+            </button>
+          </h2>
+        ) : null}
         <div
           id={`accordion-color-body-${id}`}
           className={`overflow-hidden transition-all duration-300 ${
@@ -77,7 +174,9 @@ function RemodelingRequestList() {
 
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-2xl flex flex-col text-center mt-20">
-          <span className="mb-10 text-2xl font-semibold">그린리모델링 신청내역</span>
+          <span className="mb-10 text-2xl font-semibold">
+            그린리모델링 신청내역
+          </span>
 
           <div className="mb-20">
             <div className="flex justify-around mt-10 mb-2 font-semibold text-lg">
@@ -88,47 +187,42 @@ function RemodelingRequestList() {
 
             {/* 아코디언 */}
             <div id="accordion-color" className="overflow-hidden">
-              {remodelingData.map((data) => (
+              {remodelingList.map((data) => (
                 <AccordionItem
-                  key={data.id}
-                  id={data.id}
+                  key={data.no}
+                  id={data.no}
                   title={{
-                    region: data.region,
-                    userId: data.userId,
-                    requestDate: data.requestDate,
+                    address: data.address,
+                    uId: data.uId,
+                    applicationDate: data.applicationDate,
                   }}
                   content={
                     <div className="flex flex-col gap-2">
                       <div>
                         <div className="border-b border-gray-300 flex justify-between items-center py-2">
-                          <div className="flex items-center gap-1 cursor-pointer">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="currentColor"
-                              className="bi bi-file-earmark-pdf"
-                              viewBox="0 0 16 16"
-                            >
-                              <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
-                              <path d="M4.603 14.087a.8.8 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.7 7.7 0 0 1 1.482-.645 20 20 0 0 0 1.062-2.227 7.3 7.3 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a11 11 0 0 0 .98 1.686 5.8 5.8 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.86.86 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.7 5.7 0 0 1-.911-.95 11.7 11.7 0 0 0-1.997.406 11.3 11.3 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.8.8 0 0 1-.58.029m1.379-1.901q-.25.115-.459.238c-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361q.016.032.026.044l.035-.012c.137-.056.355-.235.635-.572a8 8 0 0 0 .45-.606m1.64-1.33a13 13 0 0 1 1.01-.193 12 12 0 0 1-.51-.858 21 21 0 0 1-.5 1.05zm2.446.45q.226.245.435.41c.24.19.407.253.498.256a.1.1 0 0 0 .07-.015.3.3 0 0 0 .094-.125.44.44 0 0 0 .059-.2.1.1 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a4 4 0 0 0-.612-.053zM8.078 7.8a7 7 0 0 0 .2-.828q.046-.282.038-.465a.6.6 0 0 0-.032-.198.5.5 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822q.036.167.09.346z" />
-                            </svg>
-                            <span>견적서</span>
-                          </div>
-                          <div className="flex flex-col text-left">
-                            <span>아이디 {data.userId}</span>
-                            <span>시공 요청 날짜 {data.requestDate}</span>
+                          <div className="flex items-center gap-1 cursor-pointer"></div>
+                          <div className="flex items-start">
+                            <p className="mr-13">아이디 {data.uId}</p>
+                            <p className="mr-13">
+                              시공 요청 날짜 {data.applicationDate.slice(0, 10)}
+                            </p>
+                            <p className="mr-10">
+                              견적합계 {data.totalsum.toLocaleString()}원
+                            </p>
                           </div>
                         </div>
                         <div className="flex flex-col p-4 gap-4">
-                          <div className="border border-gray-300 p-20">지도</div>
-                          <span>{data.location}</span>
+                          <div
+                            id={`map-${data.no}`}
+                            className="w-full h-[350px] border mt-2"
+                          />
+                          <span>{`${data.address} ${data.dong}동 ${data.ho}호`}</span>
                         </div>
                       </div>
                     </div>
                   }
-                  isOpen={openAccordionId === data.id}
-                  onClick={() => handleAccordionClick(data.id)}
+                  isOpen={openAccordionId === data.no}
+                  onClick={() => handleAccordionClick(data.no)}
                 />
               ))}
             </div>
