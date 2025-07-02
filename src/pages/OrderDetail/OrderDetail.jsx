@@ -123,7 +123,7 @@ function OrderDetail() {
                               </button>
                             </Link>
 
-                            <Link to="/review" state={{ oNo: order.oNo }}>
+                            <Link to={`/review?pId=${order.productId}`}>
                               <button className="bg-primary-500 text-white rounded px-2 py-1 hover:bg-primary-600 cursor-pointer">
                                 리뷰작성
                               </button>
