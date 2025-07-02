@@ -5,24 +5,20 @@ import axios from "axios";
 
 function groupOrdersByDate(orders) {
   const grouped = {};
-
   orders.forEach((order) => {
     const date = order.orderTime?.split("T")[0];
-    if (!grouped[date]) {
-      grouped[date] = [];
-    }
+    if (!grouped[date]) grouped[date] = [];
     grouped[date].push(order);
   });
-
   return grouped;
 }
 
-function OrderList() {
+function OrderDetail() {
   const [orders, setOrders] = useState([]);
+  const [refundedOrders, setRefundedOrders] = useState([]);
 
   useEffect(() => {
     const rawToken = localStorage.getItem("token");
-
     if (!rawToken) {
       alert("로그인이 필요합니다.");
       window.location.href = "/login";
@@ -30,18 +26,17 @@ function OrderList() {
     }
 
     let parsedToken;
-
     try {
       parsedToken = JSON.parse(rawToken);
     } catch (err) {
-      console.error("토큰 파싱 오류", err);
+      console.log(err);
       alert("로그인이 필요합니다.");
       window.location.href = "/login";
       return;
     }
 
-    const token = parsedToken?.token;
-    const uId = parsedToken?.id;
+    const token = parsedToken.token;
+    const uId = parsedToken.id;
 
     if (!token || !uId) {
       alert("로그인이 필요합니다.");
@@ -51,16 +46,23 @@ function OrderList() {
 
     axios
       .get(`http://localhost:8080/api/order-detail?uId=${uId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         setOrders(res.data);
+        console.log("주문 목록:", res.data);
       })
-      .catch((err) => {
-        console.error("주문 목록 조회 실패", err);
-      });
+      .catch((err) => console.error("주문 목록 조회 실패", err));
+
+    axios
+      .get(`http://localhost:8080/api/takeback?uId=${uId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setRefundedOrders(res.data);
+        console.log("반품 주문 목록:", res.data);
+      })
+      .catch((err) => console.error("반품 주문 목록 조회 실패", err.response || err));
   }, []);
 
   const groupedOrders = groupOrdersByDate(orders);
@@ -80,17 +82,12 @@ function OrderList() {
           ) : (
             Object.entries(groupedOrders).map(([date, dateOrders]) => (
               <div key={date} className="mb-10">
-                {/* 날짜 헤더 */}
                 <div className="text-lg font-bold text-gray-800 mb-4 border-b border-b-gray-400 pb-2 rounded">
                   {date}
                 </div>
 
-                {/* 해당 날짜의 주문 리스트 */}
                 {dateOrders.map((order, idx) => (
-                  <div
-                    key={idx}
-                    className="border border-gray-200 rounded p-4 mb-4"
-                  >
+                  <div key={idx} className="border border-gray-200 rounded p-4 mb-4">
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-6">
                         <img
@@ -101,23 +98,38 @@ function OrderList() {
                         <div>
                           <div className="font-medium">{order.name}</div>
                           <div className="text-gray-600">
-                            {order.prices.toLocaleString()}원 /{" "}
-                            <span className="text-primary-500">{order.mileage}P</span>
+                            {order.prices.toLocaleString()}원 /
+                            <span className="text-primary-500"> {order.mileage}P</span>
                           </div>
                         </div>
                       </div>
 
                       <div className="flex flex-col gap-1">
-                        <Link to="/takeback">
-                          <button className="border border-primary-500 rounded px-2 py-1 hover:bg-primary-50 cursor-pointer">
-                            반품하기
-                          </button>
-                        </Link>
-                        <Link to="/review">
-                          <button className="bg-primary-500 text-white rounded px-2 py-1 hover:bg-primary-600 cursor-pointer">
-                            리뷰작성
-                          </button>
-                        </Link>
+                        {refundedOrders.some(r => Number(r) === Number(order.oNo)) ? (
+                          <span className="text-primary-500 font-semibold mr-4">반품진행중</span>
+                        ) : (
+                          <>
+                            <Link
+                              to="/takeback"
+                              state={{
+                                productName: order.name,
+                                orderNo: order.oNo,
+                                refundAmountValue: order.prices,
+                                pointUsed: order.mileage,
+                              }}
+                            >
+                              <button className="border border-primary-500 rounded px-2 py-1 hover:bg-primary-50 cursor-pointer">
+                                반품하기
+                              </button>
+                            </Link>
+
+                            <Link to="/review" state={{ oNo: order.oNo }}>
+                              <button className="bg-primary-500 text-white rounded px-2 py-1 hover:bg-primary-600 cursor-pointer">
+                                리뷰작성
+                              </button>
+                            </Link>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -131,4 +143,4 @@ function OrderList() {
   );
 }
 
-export default OrderList;
+export default OrderDetail;
