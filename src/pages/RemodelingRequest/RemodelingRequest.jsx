@@ -1,7 +1,10 @@
 import axios from "axios";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const parseAddress = (fullAddress) => {
@@ -34,7 +37,7 @@ function RemodelingRequest() {
   console.log("욕실 개수",bathroomCount);
   console.log("방 개수",roomCount);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   
   const stored = localStorage.getItem("token");
     const parsed = stored ? JSON.parse(stored) : {};
@@ -79,7 +82,7 @@ function RemodelingRequest() {
       const data = await response.json();
 
       if (data.documents.length === 0) {
-        alert("검색 결과가 없습니다.");
+        toast.error("검색 결과가 없습니다.");
         return;
       }
       const result = data.documents[0];
@@ -105,13 +108,13 @@ function RemodelingRequest() {
       );
     } catch (error) {
       console.error("주소 검색 실패:", error);
-      alert("주소 검색에 실패했습니다.");
+      toast.error("주소 검색에 실패했습니다.");
     }
   };
 
   const handlesquare = async () => {
     if (!address) {
-      alert("주소를 먼저 입력하세요");
+      toast.error("주소를 먼저 입력하세요");
       return;
     }
     const parsed = parseAddress(address);
@@ -140,7 +143,7 @@ function RemodelingRequest() {
       if (json.response.header.resultCode === "00") {
         const item = json.response.body.items.item[0];
         if (!item) {
-          alert("조회 결과가 없습니다.");
+          toast.error("조회 결과가 없습니다.");
           return;
         }
 
@@ -149,14 +152,14 @@ function RemodelingRequest() {
         const pyeong = Math.ceil(privuseArea / 3.3058);
         console.log(pyeong);
         setPyeong(pyeong);
-        alert(`전용면적: ${privuseArea}㎡\n평수: ${pyeong}평`);
+        toast.success(`전용면적: ${privuseArea}㎡\n평수: ${pyeong}평`);
         return item;
       } else {
-        alert(`API 오류: ${json.response.header.resultMsg}`);
+        toast.error(`API 오류: ${json.response.header.resultMsg}`);
       }
     } catch (error) {
       console.error("API 호출 실패:", error);
-      alert("평수 조회 중 오류가 발생했습니다.");
+      toast.error("평수 조회 중 오류가 발생했습니다.");
     }
   };
 
@@ -171,13 +174,16 @@ function RemodelingRequest() {
           dong:dong,
           ho: ho,
       });
-      alert("신청이 완료되었습니다.");
-      navigate("/estimate");
+      toast.success("신청이 완료되었습니다.");
+      setTimeout(() => {
+        window.location.href = "/estimate";
+      }, 500);
+      // navigate("/estimate");
     } catch (error) {
       if(error.response && error.response.status === 500) {
-        alert("방개수, 욕실개수를 확인해주세요.");
+        toast.error("방, 욕실 개수를 확인해주세요.");
       } else {
-        alert("신청 중 오류 발생했습니다.");
+        toast.error("신청 중 오류 발생했습니다.");
       }
     }
   }
@@ -196,6 +202,7 @@ function RemodelingRequest() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/remodeling-request" />
+      <ToastContainer position="top-center" />
       <div className="w-4/5  flex justify-center">
         <div className="w-full max-w-3xl flex flex-col mt-20">
           <h1 className="p-10 text-2xl font-bold text-center">

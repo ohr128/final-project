@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Checkpw() {
@@ -32,10 +34,10 @@ function Checkpw() {
       if (result === true || result?.isMatch === true) {
         navigate("/edit-Address");
       } else {
-        alert("비밀번호가 일치하지 않습니다.");
+        toast.error("비밀번호가 일치하지 않습니다.");
       }
     } catch (error) {
-      alert("서버 오류가 발생했습니다.");
+      toast.error("서버 오류가 발생했습니다.");
       console.error(error);
     }
   };
@@ -49,7 +51,7 @@ function Checkpw() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/checkpw" />
-
+      <ToastContainer position="top-center" />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-md flex flex-col text-center mt-20">
           <h1 className="p-10 text-2xl font-bold">회원정보 확인</h1>

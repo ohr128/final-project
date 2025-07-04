@@ -169,7 +169,8 @@ function Home() {
   return (
     <div className="container font-notokr">
       <div className="my-8">
-        <span className="font-semibold">녹색 제품 목록</span>
+
+          <span className="font-semibold text-lg">녹색 제품 목록</span>
 
         <div className="grid grid-cols-5 mt-3 gap-6">
           {products.slice(0, 5).map((item, idx) => (
@@ -213,7 +214,7 @@ function Home() {
       </div>
 
       <div className="my-8">
-        <span className="font-semibold">에너지 효율 1등급 제품(에어컨)</span>
+        <span className="font-semibold text-lg">에너지 효율 1등급 제품(에어컨)</span>
 
         <div className="grid grid-cols-5 mt-3 gap-6">
           {energy.slice(0, 5).map((item, idx) => (

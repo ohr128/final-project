@@ -1,8 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import kakao from "../../assets/KakaoTalk_logo.png";
 import logo from "../../assets/logo.png";
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_BASE = import.meta.env.VITE_API_BASE;
 const ADMIN_ID = import.meta.env.VITE_ADMIN_ID;
@@ -15,7 +19,7 @@ const { Kakao } = window;
 function Login() {
   const [id, setId] = useState("");
   const [password, setPw] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleLogin = async (pId = id, pPwd = password) => {    
     try {
@@ -38,11 +42,15 @@ function Login() {
 
       const saveToken = JSON.parse(localStorage.getItem("token"));
       console.log(saveToken);
-      alert("로그인 성공");
-      navigate("/");
+      toast.success("로그인 성공");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
+
+      // navigate("/");
     } catch (error) {
       console.log(error);
-      alert("로그인실패: 아이디 또는 비밀번호를 확인해주세요");
+      toast.error("로그인실패: 아이디 또는 비밀번호를 확인해주세요");
     }
   };
 
@@ -54,6 +62,7 @@ function Login() {
 
   return (
     <div className="container m-auto">
+      <ToastContainer position="top-center" />
       <div className="mt-30">
         <div className="flex justify-center mb-16">
           <Link to="/">

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function groupOrdersByDate(orders) {
@@ -21,8 +23,10 @@ function OrderDetail() {
   useEffect(() => {
     const rawToken = localStorage.getItem("token");
     if (!rawToken) {
-      alert("로그인이 필요합니다.");
-      window.location.href = "/login";
+      toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
       return;
     }
 
@@ -31,8 +35,10 @@ function OrderDetail() {
       parsedToken = JSON.parse(rawToken);
     } catch (err) {
       console.log(err);
-      alert("로그인이 필요합니다.");
-      window.location.href = "/login";
+      toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
       return;
     }
 
@@ -40,8 +46,10 @@ function OrderDetail() {
     const uId = parsedToken.id;
 
     if (!token || !uId) {
-      alert("로그인이 필요합니다.");
-      window.location.href = "/login";
+      toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
       return;
     }
 
@@ -51,7 +59,6 @@ function OrderDetail() {
       })
       .then((res) => {
         setOrders(res.data);
-        console.log("주문 목록:", res.data);
       })
       .catch((err) => console.error("주문 목록 조회 실패", err));
 
@@ -61,7 +68,6 @@ function OrderDetail() {
       })
       .then((res) => {
         setRefundedOrders(res.data);
-        console.log("반품 주문 목록:", res.data);
       })
       .catch((err) => console.error("반품 주문 목록 조회 실패", err.response || err));
   }, []);
@@ -70,8 +76,8 @@ function OrderDetail() {
 
   return (
     <div className="flex font-notokr min-h-screen">
+      <ToastContainer position="top-center" />
       <SideMenu from="/order-detail" />
-
       <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-5xl flex-col my-20">
           <h1 className="p-10 text-3xl font-semibold text-center">주문목록</h1>
@@ -83,31 +89,48 @@ function OrderDetail() {
           ) : (
             Object.entries(groupedOrders).map(([date, dateOrders]) => (
               <div key={date} className="mb-10">
-                <div className="text-lg font-bold text-gray-800 mb-4 border-b border-b-gray-400 pb-2 rounded">
+                <div className="text-lg font-bold text-gray-800 mb-4 border-b border-b-gray-400 pb-2">
                   {date}
                 </div>
 
-                {dateOrders.map((order, idx) => (
-                  <div key={idx} className="border border-gray-200 rounded p-4 mb-4">
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-6">
+                {dateOrders.map((order, idx) => {
+                  let time = "";
+                  if (order.orderTime) {
+                    const d = new Date(order.orderTime);
+                    const hours = d.getHours().toString().padStart(2, "0");
+                    const minutes = d.getMinutes().toString().padStart(2, "0");
+                    time = `${hours}:${minutes}`;
+                  }
+
+                  return (
+                    <div
+                      key={idx}
+                      className="border border-gray-200 rounded p-4 mb-4 flex items-center justify-between gap-16"
+                    >
+                      <div className="flex flex-col items-center flex-shrink-0">
+                        <div className="text-sm self-start text-gray-500 mb-3">{time}</div>
                         <img
                           src={`${API_BASE_URL}/${encodeURIComponent(order.images)}`}
                           alt={order.name}
                           className="w-24 h-24 object-cover rounded"
                         />
-                        <div>
-                          <div className="font-medium">{order.name}</div>
-                          <div className="text-gray-600">
-                            {order.prices * order.quantity.toLocaleString()}원 /{" "}
-                            <span className="text-primary-500">{order.mileage * order.quantity}P</span>
-                          </div>
-                        </div>
                       </div>
 
-                      <div className="flex flex-col gap-1">
-                        {refundedOrders.some(r => Number(r) === Number(order.oNo)) ? (
-                          <span className="text-primary-500 font-semibold mr-4">반품진행중</span>
+                      <div className="flex-1 min-w-[20px] font-medium">{order.name}</div>
+
+                      <div className="w-24 text-gray-700">
+                        {(order.prices * order.quantity).toLocaleString()}원
+                      </div>
+
+                      <div className="w-20 text-primary-500">
+                        {(order.mileage * order.quantity).toLocaleString()}P
+                      </div>
+
+                      <div className="w-16 text-gray-700">{order.quantity}개</div>
+
+                      <div className="flex flex-col gap-2 px-3">
+                        {refundedOrders.some((r) => Number(r) === Number(order.oNo)) ? (
+                          <span className="text-primary-500 font-semibold">반품진행중</span>
                         ) : (
                           <>
                             <Link
@@ -117,6 +140,7 @@ function OrderDetail() {
                                 orderNo: order.oNo,
                                 refundAmountValue: order.prices,
                                 pointUsed: order.mileage,
+                                quantity: order.quantity,
                               }}
                             >
                               <button className="border border-primary-500 rounded px-2 py-1 hover:bg-primary-50 cursor-pointer">
@@ -133,8 +157,8 @@ function OrderDetail() {
                         )}
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ))
           )}

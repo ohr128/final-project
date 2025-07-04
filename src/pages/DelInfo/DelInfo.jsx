@@ -1,6 +1,8 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function DelInfo() {
@@ -23,17 +25,17 @@ function DelInfo() {
 
   const handleDelete = async () => {
     if (agreeText !== "동의합니다") {
-      alert("동의합니다를 정확히 입력해 주세요.");
+      toast.error("동의합니다를 정확히 입력해 주세요.");
       return;
     }
 
     if (!password) {
-      alert("비밀번호를 입력해 주세요.");
+      toast.error("비밀번호를 입력해 주세요.");
       return;
     }
 
     if (!token || !userId) {
-      alert("사용자 정보가 없습니다. 다시 로그인 해주세요.");
+      toast.error("사용자 정보가 없습니다. 다시 로그인 해주세요.");
       return;
     }
 
@@ -49,12 +51,12 @@ function DelInfo() {
 
       const checkResult = await checkRes.json();
       if (!(checkResult === true || checkResult?.isMatch === true)) {
-        alert("비밀번호가 일치하지 않습니다.");
+        toast.error("비밀번호가 일치하지 않습니다.");
         return;
       }
     } catch (err) {
       console.error("비밀번호 확인 오류:", err);
-      alert("비밀번호 확인 중 오류가 발생했습니다.");
+      toast.error("비밀번호 확인 중 오류가 발생했습니다.");
       return;
     }
 
@@ -69,17 +71,20 @@ function DelInfo() {
       });
 
       if (delRes.ok) {
-        alert("회원 탈퇴가 완료되었습니다.");
+        toast.success("회원 탈퇴가 완료되었습니다.");
+        setTimeout(() => {
+            window.location.href = "/";
+          }, 2000);
         sessionStorage.clear();
         navigate("/");
       } else {
         const errText = await delRes.text();
         console.error("탈퇴 실패:", errText);
-        alert("회원 탈퇴 실패");
+        toast.error("회원 탈퇴 실패");
       }
     } catch (err) {
       console.error("탈퇴 요청 오류:", err);
-      alert("회원 탈퇴 중 오류가 발생했습니다.");
+      toast.error("회원 탈퇴 중 오류가 발생했습니다.");
     }
   };
 

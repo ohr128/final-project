@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_PYTHON = import.meta.env.VITE_API_PYTHON;
 
@@ -51,7 +53,7 @@ function CertifyBusiness() {
   };
 
   const handleSubmit = async () => {
-    if (!imageFile) return alert("이미지를 선택하세요.");
+    if (!imageFile) return toast.error("이미지를 선택하세요.");
     setIsLoding(true);
     try {
       const ocrForm = new FormData();
@@ -67,7 +69,7 @@ function CertifyBusiness() {
 
       const authNum = ocrRes.data.auth_num;
       const b_no = authNum?.replace(/-/g, "");
-      if (!b_no) return alert("사업자번호 추출 실패");
+      if (!b_no) return toast.error("사업자번호 추출 실패");
 
       const verifyRes = await axios.post(
         `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=AsKsksTbcdg8cukGUyiMQU%2FawtOq%2BcmyZvZBfGoOZHhAHXweFUxP2W1ysiSuZ6Yh%2Bnsh2KIOC%2FNQDron%2BV9iBQ%3D%3D`,
@@ -80,14 +82,14 @@ function CertifyBusiness() {
         !result ||
         result.tax_type === "국세청에 등록되지 않은 사업자등록번호입니다."
       ) {
-        return alert("국세청에 등록되지 않은 사업자등록번호입니다.");
+        return toast.error("국세청에 등록되지 않은 사업자등록번호입니다.");
       }
 
       const rawToken = localStorage.getItem("token");
       const parsed = rawToken ? JSON.parse(rawToken) : null;
       const token = parsed?.token;
 
-      if (!token) return alert("로그인이 필요합니다.");
+      if (!token) return toast.error("로그인이 필요합니다.");
 
       const saveFormData = new FormData();
       saveFormData.append("registrationNum", b_no);
@@ -100,7 +102,10 @@ function CertifyBusiness() {
         },
       });
 
-      alert("사업자 등록이 완료되었습니다.");
+      toast.success("사업자 등록이 완료되었습니다.");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
 
       await axios.post(
         `${API_BASE_URL}/api/user/UserRole`,
@@ -112,10 +117,13 @@ function CertifyBusiness() {
           },
         }
       );
-      alert("사업자 전환");
+      toast.success("사업자 전환");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (err) {
       console.error("등록 실패:", err);
-      alert("등록 중 오류 발생");
+      toast.error("등록 중 오류 발생");
     }
     setIsLoding(false);
   };
@@ -125,7 +133,7 @@ function CertifyBusiness() {
     const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
 
@@ -153,19 +161,23 @@ function CertifyBusiness() {
           }
         );
         if (businessRes.ok) {
-          alert("사업자 등록 및 권한이 모두 삭제되었습니다.");
+          toast.success("사업자 등록 및 권한이 모두 삭제되었습니다.");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
           window.location.reload();
         } 
       } 
     } catch (err) {
       console.error("삭제 에러:", err);
-      alert("삭제 중 오류 발생");
+      toast.error("삭제 중 오류 발생");
     }
   };
 
   return (
     <div className="flex font-notokr">
       <SideMenu from="/certify-business" />
+      <ToastContainer position="top-center" />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-10 text-2xl font-semibold">사업자 등록증</span>
