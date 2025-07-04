@@ -2,6 +2,9 @@ import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log("API_BASE_URL", API_BASE_URL);
 
@@ -78,7 +81,7 @@ function SignUp(){
 
   const handleSignUp = async () => {
     if(!userId || !email || !password || !passwordConfirm) {
-      alert("모두 입력해주세요");
+      toast.error("모두 입력해주세요");
       return;
     }
 
@@ -94,9 +97,9 @@ function SignUp(){
     } catch (error){
         console.log(error);
         if(error.response) {
-          alert("회원가입 실패:" + error.response.data);
+          toast.error("회원가입 실패:" + error.response.data);
         } else {
-          alert("서버오류");
+          toast.error("서버오류");
         }
     }
   }
@@ -104,6 +107,7 @@ function SignUp(){
     return(
 
     <div className="container m-auto">
+      <ToastContainer position="top-center" />
 
         <div className="mt-30">
 

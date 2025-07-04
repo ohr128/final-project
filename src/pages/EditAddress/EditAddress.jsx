@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log("API_BASE_URL", API_BASE_URL);
 
@@ -82,7 +85,7 @@ function EditAddress() {
     const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
 
@@ -103,7 +106,10 @@ function EditAddress() {
       });
 
       if (res.ok) {
-        alert("주소가 저장되었습니다.");
+        toast.success("주소가 저장되었습니다.");
+        setTimeout(() => {
+                window.location;
+              }, 2000);
         fetchAddresses();
         setAddress("");
         setDetailAddress("");
@@ -112,7 +118,7 @@ function EditAddress() {
       }
     } catch (err) {
       console.error("에러:", err);
-      alert("네트워크 오류 발생");
+      toast.error("네트워크 오류 발생");
     }
   };
 
@@ -121,7 +127,7 @@ function EditAddress() {
     const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
 
@@ -136,7 +142,11 @@ function EditAddress() {
       });
 
       if (res.ok) {
-        alert("삭제되었습니다.");
+        toast.success("삭제되었습니다.");
+        setTimeout(() => {
+            window.location;
+          }, 2000);
+
         fetchAddresses();
       }
     } catch (err) {
@@ -147,6 +157,7 @@ function EditAddress() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/checkpw" />
+      <ToastContainer position="top-center" />
       <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-3xl flex flex-col mt-20">
           <h1 className="p-10 text-2xl font-bold text-center">배송지 관리</h1>

@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { getCookieValue } from "../../helpers/cookieHelper";
 import { jwtDecode } from "jwt-decode";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function RemodelingList() {
@@ -67,11 +70,14 @@ function RemodelingList() {
 
       if (res.ok) {
         const result = await res.json();
-        alert("신청이 완료되었습니다!");
+        toast.success("신청이 완료되었습니다!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
         console.log(result);
       } else {
         const err = await res.text();
-        alert("신청 실패: " + err);
+        toast.error("신청 실패: " + err);
       }
     } catch (error) {
       console.error("신청 오류:", error);
@@ -87,20 +93,21 @@ function RemodelingList() {
       <h2 id={`accordion-color-heading-${id}`}>
         <button
           type="button"
-          className={`flex items-center justify-between w-full p-5 font-medium gap-3 ${
-            isOpen ? "bg-primary-500 text-white" : "hover:bg-gray-100"
-          }`}
+          className={`flex items-center justify-between w-full p-5 font-medium gap-3 transition-all duration-300
+          ${isOpen ? "bg-primary-500 text-white" : "hover:bg-primary-500 hover:text-white cursor-pointer"}`}
           onClick={onClick}
           aria-expanded={isOpen}
           aria-controls={`accordion-color-body-${id}`}
         >
-          <div className="flex justify-around items-center w-full gap-20 pr-4">
-            <span>{title.address.split(" ").slice(0, 2).join(" ")}</span>
-            <span>{title.applicationDate.slice(0, 10)}</span>
+          <div className="flex w-full">
+            <span className="w-1/2 text-center truncate" title={title.address}>
+              {title.address.split(" ").slice(0, 2).join(" ")}
+            </span>
+            <span className="w-1/2 text-center truncate">{title.applicationDate.slice(0, 10)}</span>
           </div>
           <svg
             className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 ${
-              isOpen ? "rotate-180 text-white" : "text-gray-500"
+              isOpen ? "text-white" : "rotate-180 text-gray-500"
             }`}
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
@@ -126,6 +133,7 @@ function RemodelingList() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/remodeling-list" />
+      <ToastContainer />
 
       <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-4xl flex-col mt-20">
@@ -142,12 +150,11 @@ function RemodelingList() {
           </div>
 
           <div className="mb-20">
-            <div className="flex justify-around mt-10 mb-4 mr-3 font-semibold text-lg">
-              <span>지역</span>
+            <div className="flex mt-8 mb-4 font-semibold text-lg gap-87">
+              <span className="ml-54">지역</span>
               <span>시공요청날짜</span>
             </div>
 
-            {/* 아코디언 */}
             <div id="accordion-color" className="overflow-hidden">
               {filteredList.length === 0 ? (
                 <div className="text-center text-gray-500 text-lg py-10">
@@ -166,25 +173,20 @@ function RemodelingList() {
                             <span className="font-semibold">아이디:</span> {data.uId}
                           </p>
                         )}
-
-                        
                         <p>
                           <span className="font-semibold">견적 대상:</span> {data.address}
                         </p>
-                        
                         <p>
                           <span className="font-semibold">평수:</span>{" "}
                           {`${data.roomSize}평(${Math.ceil(data.roomSize * 3.3508)}m²)`}
                         </p>
-
                         <p>
                           <span className="font-semibold">가격:</span> {data.totalsum.toLocaleString()}원
                         </p>
 
-
                         {userRole?.includes("ROLE_BUSINESS") && (
                           <button
-                            className="bg-primary-500 h-8 text-white font-bold"
+                            className="bg-primary-500 h-8 text-white font-bold cursor-pointer"
                             onClick={() => handleApplication(data.no)}
                           >
                             신청

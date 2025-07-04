@@ -6,6 +6,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log("API_BASE_URL", API_BASE_URL);
 import Cookies from "js-cookie";
 
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function GreenDetail() {
   const [searchParams] = useSearchParams();
   const productId = searchParams.get("productId");
@@ -59,7 +62,7 @@ function GreenDetail() {
   const handleAddToCart = () => {
     const token = JSON.parse(localStorage.getItem("token"))?.token;
     if (!token) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
 
@@ -79,7 +82,7 @@ function GreenDetail() {
       } else {
         const text = await res.text();
         if (text.includes("ORA-00001")) {
-          alert("이미 사용자께서 담은 제품입니다.");
+          toast.error("이미 사용자께서 담은 제품입니다.");
         }
       }
     });
@@ -88,7 +91,7 @@ function GreenDetail() {
   const handleBuyNow = () => {
     const token = JSON.parse(localStorage.getItem("token"))?.token;
     if (!token) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
 
@@ -111,7 +114,7 @@ function GreenDetail() {
       } else {
         const text = await res.text();
         if (text.includes("ORA-00001")) {
-          alert("이미 사용자께서 담은 제품입니다.");
+          toast.error("이미 사용자께서 담은 제품입니다.");
         }
       }
     });
@@ -120,6 +123,7 @@ function GreenDetail() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/green-product" />
+      <ToastContainer position="top-center" />
       <div className="w-4/5 px-6">
         <div className="flex justify-evenly mt-20 mb-8">
           <div className="relative w-3/5 h-90 mr-8 border-gray-400">

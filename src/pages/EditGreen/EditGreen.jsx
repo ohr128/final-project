@@ -1,5 +1,7 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState, useRef } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EditGreen() {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -15,7 +17,7 @@ function EditGreen() {
     const files = Array.from(e.target.files);
 
     if (selectedImages.length + files.length > maxImages) {
-      alert(`최대 ${maxImages}장까지만 등록할 수 있습니다.`);
+      toast.error(`최대 ${maxImages}장까지만 등록할 수 있습니다.`);
       return;
     }
 
@@ -37,6 +39,8 @@ function EditGreen() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/green-register-list" />
+
+      <ToastContainer position="top-center" />
 
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-3xl flex flex-col text-center mt-20">

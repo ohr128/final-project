@@ -2,6 +2,8 @@ import { useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log("API_BASE_URL", API_BASE_URL);
 
@@ -25,9 +27,12 @@ const handleSendCode = async () => {
         });
 
         if(res.ok) {
-            alert("인증번호가 이메일로 발송되었습니다.");
+            toast.success("인증번호가 이메일로 발송되었습니다.");
+            setTimeout(() => {
+                window.location;
+            }, 2000);
         } else {
-            alert("이메일 주소를 확인해 주세요");
+            toast.error("이메일 주소를 확인해 주세요");
         }
     }catch (error){ 
         console.log(error);
@@ -44,7 +49,10 @@ const handleVerifyCode = async () => {
             headers: {"Content-Type": "application/json"},
         }
     );
-    alert("이메일 인증 완료");
+    toast.success("이메일 인증 완료");
+    setTimeout(() => {
+        window.location;
+      }, 2000);
     }catch(error) {
         console.log(error);
     }
@@ -67,12 +75,12 @@ const checkPasswordMatch = async (confirm) => {
 
   const handleChangePw = async () => {
     if(!id || !password || !passwordConfirm || !email || !code) {
-        alert("모두 입력해주세요");
+        toast.error("모두 입력해주세요");
         return;
     }
 
     if(password !== passwordConfirm) {
-        alert("비밀번호가 일치하지 않습니다.");
+        toast.error("비밀번호가 일치하지 않습니다.");
         return;
     }
     try {
@@ -82,11 +90,14 @@ const checkPasswordMatch = async (confirm) => {
         },{
             headers: {"Content-Type": "application/json"}
         });
-            alert("비밀번호가 변경되었습니다.");
+            toast.success("비밀번호가 변경되었습니다.");
+            setTimeout(() => {
+                window.location.href = "/login";
+                }, 1500);
             navigate("/login");
     }catch(error) {
         console.log(error);
-        alert("비밀번호 변경 중 오류가 발생하였습니다.");
+        toast.error("비밀번호 변경 중 오류가 발생하였습니다.");
     }
 
   }
@@ -94,6 +105,7 @@ const checkPasswordMatch = async (confirm) => {
     return(
 
         <div className="container font-notokr">
+            <ToastContainer position="top-center" />
             
             <div className="mt-30">
 

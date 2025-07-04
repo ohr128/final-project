@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Modal from "../../components/Modal/Modal";
 import { jwtDecode } from "jwt-decode";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -19,13 +21,15 @@ function Cart() {
   const [memo, setMemo] = useState("");
   const [email, setEmail] = useState("");
 
+
+  
   useEffect(() => {
     const rawToken = localStorage.getItem("token");
     const parsedToken = JSON.parse(rawToken);
     const token = parsedToken?.token;
 
     if (!token) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
 
@@ -66,7 +70,7 @@ function Cart() {
       })
       .catch((err) => {
         console.error(err);
-        alert("장바구니 정보를 불러오지 못했습니다.");
+        toast.error("장바구니 정보를 불러오지 못했습니다.");
       });
   }, []);
 
@@ -99,7 +103,7 @@ function Cart() {
     const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
 
@@ -114,8 +118,10 @@ function Cart() {
       });
 
       if (res.ok) {
-        alert("삭제되었습니다.");
+        toast.success("삭제되었습니다.");
+        setTimeout(() => {
         window.location.reload();
+      }, 1000);
       } else {
         const text = await res.text();
         console.error("삭제 실패:", text);
@@ -214,7 +220,7 @@ function Cart() {
       (items) => checkedItems[items.productId]
     );
     if (selectedItems.length === 0) {
-      alert("결제할 상품을 선택해주세요");
+      toast.err("결제할 상품을 선택해주세요");
       return;
     }
     console.log(cartItems);
@@ -228,7 +234,7 @@ function Cart() {
     const address = selectedAddress.address;
     const detailAddress = selectedAddress.detailAddress;
     if(!address || !detailAddress) {
-      alert("주소를 입력해주세요");
+      toast.err("주소를 입력해주세요");
       return;
     }
     console.log(pIdList);
@@ -300,13 +306,13 @@ function Cart() {
         setCartItems(newCartItems);
 
             const text = await res.text();
-            alert(text);
+            toast.err(text);
           } catch (err) {
-            alert("주문처리 실패");
+            toast.err("주문처리 실패");
             console.log(err);
           }
         } else {
-          alert("결제 실패");
+          toast.err("결제 실패");
         }
       }
     );
@@ -314,6 +320,7 @@ function Cart() {
 
   return (
     <div className="font-notokr p-6">
+      <ToastContainer position="top-center" />
       <h1 className="text-3xl font-bold text-center my-10">장바구니</h1>
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
