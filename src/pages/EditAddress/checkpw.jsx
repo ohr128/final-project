@@ -13,8 +13,13 @@ function Checkpw() {
   const parsed = token ? JSON.parse(token) : null;
   const userId = parsed?.id;
   const handleCheck = async (e) => {
+    e.preventDefault();
 
-    e.preventDefault()
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
 
     try {
       const response = await fetch(

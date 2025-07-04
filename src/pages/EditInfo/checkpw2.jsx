@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { toast, ToastContainer } from "react-toastify";
@@ -11,11 +11,17 @@ function Checkpw2() {
   const navigate = useNavigate();
 
   const handleCheck = async (e) => {
+    e.preventDefault();
+
     const token = localStorage.getItem("token");
     const parsed = token ? JSON.parse(token) : null;
     const userId = parsed?.id;
 
-    e.preventDefault();
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      navigate("/login"); 
+      return;
+    }
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
