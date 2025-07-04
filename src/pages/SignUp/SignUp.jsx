@@ -44,7 +44,7 @@ function SignUp(){
   const findId = async () => {
     try {
         await axios.get(
-            `${API_BASE_URL}api/user/check-userId`, {
+            `${API_BASE_URL}/api/user/check-userId`, {
             params: {id: userId},
         });
         setIdMessage("사용 가능한 아이디입니다.");

@@ -7,11 +7,16 @@ function Checkpw() {
   const navigate = useNavigate();
 
   const handleCheck = async (e) => {
+    e.preventDefault();
     const token = localStorage.getItem("token");
     const parsed = token ? JSON.parse(token) : null;
     const userId = parsed?.id;
 
-    e.preventDefault()
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
 
     try {
       const response = await fetch(

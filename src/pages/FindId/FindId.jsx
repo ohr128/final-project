@@ -58,13 +58,15 @@ function FindId() {
   const handleFindId = async () => {
     if (!isVerified) {
       alert("먼저 인증번호를 확인해주세요.");
-      return;
+      return;     
     }
 
     try {
-      const res = await axios.get("http://localhost:8080/api/user/Id", {
+      const res = await axios.get(`${API_BASE_URL}/api/user/Id`, {
         params: { email },
       });
+
+
 
       if (res.data?.id) {
         navigate("/showId", { state: { userId: res.data.id } });
