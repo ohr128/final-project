@@ -1,6 +1,7 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function GreenRegisterList() {
   const [productList, setProductList] = useState([]);
@@ -16,7 +17,7 @@ function GreenRegisterList() {
       if (!userId) return;
 
       fetch(
-        `http://localhost:8080/api/findUserProduct?registrationNum=${userId}`
+        `${API_BASE_URL}/api/findUserProduct?registrationNum=${userId}`
       )
         .then((res) => res.json())
         .then((data) => {

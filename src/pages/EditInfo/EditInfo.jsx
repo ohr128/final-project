@@ -3,7 +3,6 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function EditInfo() {
   const [email, setEmail] = useState("");
@@ -106,7 +105,7 @@ function EditInfo() {
           return;
         }
       }
-      await axios.patch(`${API_BASE_URL}/api/user/update"`, payload,{
+      await axios.patch(`${API_BASE_URL}/api/user/update`, payload,{
         headers: { "Content-Type": "application/json" },
       });
       alert("회원정보가 수정되었습니다.");

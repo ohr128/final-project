@@ -5,8 +5,10 @@ import kakao from "../../assets/KakaoTalk_logo.png";
 import logo from "../../assets/logo.png";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_BASE = import.meta.env.VITE_API_BASE;
-console.log("API_BASE_URL", API_BASE_URL);
-console.log("API_BASE", API_BASE);
+const ADMIN_ID = import.meta.env.VITE_ADMIN_ID;
+const ADMIN_PW = import.meta.env.VITE_ADMIN_PW;
+const USER_ID = import.meta.env.VITE_USER_ID;
+const USER_PW = import.meta.env.VITE_USER_PW;
 
 const { Kakao } = window;
 
@@ -15,13 +17,13 @@ function Login() {
   const [password, setPw] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (pId = id, pPwd = password) => {    
     try {
       const response = await axios.post(
         `${API_BASE_URL}/api/user/sign-in`,
         {
-          id,
-          password,
+          id: pId,
+          password: pPwd,
         },
         { withCredentials: true }
       );
@@ -29,7 +31,7 @@ function Login() {
       localStorage.setItem(
         "token",
         JSON.stringify({
-          id: id,
+          id: pId,
           token: response.data.token,
         })
       );
@@ -83,7 +85,7 @@ function Login() {
           <button
             type="submit"
             className="bg-primary-500 w-100 h-10 text-white rounded cursor-pointer"
-            onClick={handleLogin}
+            onClick={() => handleLogin()}
           >
             로그인
           </button>
@@ -100,12 +102,20 @@ function Login() {
             </Link>
           </div>
           <button
-            className="border border-gray-300 w-100 h-10 flex justify-center items-center my-10 rounded"
+            className="border border-gray-300 w-100 h-10 flex justify-center items-center my-10 rounded cursor-pointer"
             onClick={handleKakaoLogin}
           >
             <img className="h-5 mr-6" src={kakao} alt="" />
             <p>카카오톡 로그인</p>
           </button>
+          <div>
+          <button className="w-50 h-10 border border-gray-300 bg-primary-500 mr-1 cursor-pointer" onClick={() => handleLogin(ADMIN_ID, ADMIN_PW)}>
+            <p className="text-white"> 관리자, 사업자 권한 </p>
+          </button>
+          <button className="w-50 h-10 border border-gray-300 bg-primary-500 cursor-pointer" onClick={() => handleLogin(USER_ID, USER_PW)}>
+            <p className="text-white"> 일반 사용자 권한 </p>
+          </button>
+          </div>
         </div>
       </div>
     </div>

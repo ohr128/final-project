@@ -3,7 +3,6 @@ import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function FindId(){
 const [email, setEmail] = useState("");

@@ -2,7 +2,6 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function GreenEnergyProduct() {
   const [pageNoArray, setPageNoArray] = useState([1, 2, 3, 4, 5]);

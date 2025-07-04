@@ -8,6 +8,7 @@ function RemodelingRequestList() {
   const [openAccordionId, setOpenAccordionId] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [remodelingList, setRemodelingList] = useState([]);
+  // const [userId, setUserId] = useState("");
 
   const jwtToken = getCookieValue("jwt_cookie");
   const stored = localStorage.getItem("token");
@@ -20,6 +21,9 @@ function RemodelingRequestList() {
       try {
         const decoded = jwtDecode(jwtToken);
         const rawRoles = decoded.authorities || "";
+        const userId = decoded.sub || "";
+        console.log(userId);
+        // setUserId(userId);
 
         // 쉼표로 구분된 문자열을 배열로 변환
         const roleArray =
@@ -46,7 +50,7 @@ function RemodelingRequestList() {
   useEffect(() => {
     const fetchData = async () => {
       const url = userRole?.includes("ROLE_BUSINESS")
-        ? "/api/business"
+        ? `/api/business/${uId}`
         : `/api/user/${uId}`;
 
       try {
@@ -102,7 +106,7 @@ function RemodelingRequestList() {
         map.setCenter(coords);
       }
     });
-  }); // 지도 로딩 딜레이
+  });
 
   return () => clearTimeout(timer);
 }, [openAccordionId, remodelingList]);
@@ -136,8 +140,8 @@ function RemodelingRequestList() {
               </div>
 
               <svg
-                className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 ${
-                  isOpen ? "rotate-180 text-white" : "text-gray-500"
+                className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 rotate-180 ${
+                  isOpen ? "rotate-360 text-white" : "text-gray-500"
                 }`}
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +191,8 @@ function RemodelingRequestList() {
 
             {/* 아코디언 */}
             <div id="accordion-color" className="overflow-hidden">
-              {remodelingList.map((data) => (
+              {remodelingList && remodelingList.length > 0  ? 
+              remodelingList.map((data) => (
                 <AccordionItem
                   key={data.no}
                   id={data.no}
@@ -224,7 +229,12 @@ function RemodelingRequestList() {
                   isOpen={openAccordionId === data.no}
                   onClick={() => handleAccordionClick(data.no)}
                 />
-              ))}
+              ))
+              : 
+              <div className="p-40">
+                <p className="font-bold text-xl text-gray-300"> 그린리모델링 신청내역이 없습니다. </p>
+              </div>
+              }
             </div>
           </div>
         </div>

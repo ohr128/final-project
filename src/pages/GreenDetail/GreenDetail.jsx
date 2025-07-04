@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
-import Cookies from "js-cookie";
 
 function GreenDetail() {
   const [searchParams] = useSearchParams();
@@ -75,6 +72,7 @@ function GreenDetail() {
       }),
     }).then(async (res) => {
       if (res.ok) {
+        alert("장바구니에 상품을 담았습니다.")
         nav("/cart");
       } else {
         const text = await res.text();
@@ -98,7 +96,7 @@ function GreenDetail() {
     };
 
     localStorage.setItem("immediatePurchase", JSON.stringify(item));
-    fetch("http://localhost:8080/api/cart", {
+    fetch(`${API_BASE_URL}/api/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -119,7 +117,11 @@ function GreenDetail() {
 
   return (
     <div className="flex font-notokr">
+      {product.classification === "녹색 제품" ? 
       <SideMenu from="/green-product" />
+      :
+      <SideMenu from="/green-energy-product" />
+      }
       <div className="w-4/5 px-6">
         <div className="flex justify-evenly mt-20 mb-8">
           <div className="relative w-3/5 h-90 mr-8 border-gray-400">
