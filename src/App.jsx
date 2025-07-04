@@ -102,8 +102,6 @@ function App() {
         <Route path="/forecast" element= {<Forecast/>} />
         <Route path="/management" element= {<Management/>} />
 
-
-
       </Routes>
 
       {!hideHeaderFooter && <Footer />}

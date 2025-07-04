@@ -4,9 +4,8 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+const API_PYTHON = import.meta.env.VITE_API_PYTHON
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function CertifyGreen() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -36,7 +35,7 @@ function CertifyGreen() {
     formData.append("file", imageFile);
 
     try {
-      const ocrRes = await axios.post("http://localhost:8000/ocr/certification", formData, {
+      const ocrRes = await axios.post(`${API_PYTHON}/ocr/certification`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

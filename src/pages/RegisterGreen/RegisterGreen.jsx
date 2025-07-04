@@ -2,6 +2,7 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function RegisterGreen() {
   console.log('test');
@@ -79,7 +80,7 @@ function RegisterGreen() {
         mileage: parseInt(mileage),
       };
 
-      const res = await axios.post("http://localhost:8080/api/addobject", data);
+      const res = await axios.post(`${API_BASE_URL}/api/addobject`, data);
 
       if (res.status === 200 || res.status === 201) {
         const formData = new FormData();
@@ -90,7 +91,7 @@ function RegisterGreen() {
           formData.append("files", selectedFiles[i]);
         }
 
-        await axios.post("http://localhost:8080/api/uploadImage", formData, {
+        await axios.post(`${API_BASE_URL}/api/uploadImage`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

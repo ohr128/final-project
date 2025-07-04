@@ -1,6 +1,7 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function DelInfo() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ function DelInfo() {
     }
 
     try {
-      const checkRes = await fetch("http://localhost:8080/api/user/checkPassword", {
+      const checkRes = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +59,7 @@ function DelInfo() {
     }
 
     try {
-      const delRes = await fetch("http://localhost:8080/api/user/byebye", {
+      const delRes = await fetch(`${API_BASE_URL}/api/user/byebye`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

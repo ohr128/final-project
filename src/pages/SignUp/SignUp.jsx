@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function SignUp(){
 
@@ -44,7 +43,7 @@ function SignUp(){
   const findId = async () => {
     try {
         await axios.get(
-            `${API_BASE_URL}api/user/check-userId`, {
+            `${API_BASE_URL}/api/user/check-userId`, {
             params: {id: userId},
         });
         setIdMessage("사용 가능한 아이디입니다.");
@@ -90,6 +89,7 @@ function SignUp(){
       }, {
         headers: { "Content-Type": "application/json"}
       });
+      alert("회원가입이 완료되었습니다.")
       navigate("/login");
     } catch (error){
         console.log(error);
