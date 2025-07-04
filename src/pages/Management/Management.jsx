@@ -2,6 +2,7 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Management() {
   const [openAccordionId, setOpenAccordionId] = useState(null);
@@ -18,7 +19,7 @@ function Management() {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/allreview", {
+      const res = await fetch(`${API_BASE_URL}/api/allreview`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -52,7 +53,7 @@ function Management() {
     }
 
     try {
-      await fetch("http://localhost:8080/api/deleteReviewImg", {
+      await fetch(`${API_BASE_URL}/api/deleteReviewImg`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +62,7 @@ function Management() {
         body: JSON.stringify({ no }),
       });
 
-      const res = await fetch("http://localhost:8080/api/deleteReview", {
+      const res = await fetch(`${API_BASE_URL}/api/deleteReview`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,8 +104,8 @@ function Management() {
               <span>{name}</span>
             </div>
             <svg
-              className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 ${
-                isOpen ? "rotate-180 text-white" : "text-gray-500"
+              className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 rotate-180 ${
+                isOpen ? "rotate-360 text-white" : "text-gray-500"
               }`}
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +140,7 @@ function Management() {
                   {imageList.map((img, idx) => (
                     <img
                       key={idx}
-                      src={`http://localhost:8080/${encodeURIComponent(img.rimage)}`}
+                      src={`${API_BASE_URL}/${encodeURIComponent(img.rimage)}`}
                       className="w-24 h-24 object-cover border"
                     />
                   ))}

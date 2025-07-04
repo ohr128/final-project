@@ -2,6 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_PYTHON = import.meta.env.VITE_API_PYTHON;
 
 function CertifyBusiness() {
   const [selectedImage, setSelectedImage] = useState();
@@ -23,14 +27,14 @@ function CertifyBusiness() {
     setUId(uId);
 
     axios
-      .get(`http://localhost:8080/api/user/findUserRegistration?uId=${uId}`, {
+      .get(`${API_BASE_URL}/api/user/findUserRegistration?uId=${uId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         console.log("사업자 등록증 응답:", res.data.bimage);
         const fileName = res.data.bimage;
         if (fileName) {
-          setExistingImage(`http://localhost:8080/${fileName}`);
+          setExistingImage(`${API_BASE_URL}/${fileName}`);
         }
       })
       .catch((err) => {
@@ -51,14 +55,14 @@ function CertifyBusiness() {
   };
 
   const handleSubmit = async () => {
-    if (!imageFile) return alert("이미지를 선택하세요.");
+    if (!imageFile) return toast.error("이미지를 선택하세요.");
     setIsLoding(true);
     try {
       const ocrForm = new FormData();
       ocrForm.append("file", imageFile);
 
       const ocrRes = await axios.post(
-        "http://localhost:8000/ocr/business",
+        `${API_PYTHON}/ocr/business`,
         ocrForm,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -67,11 +71,10 @@ function CertifyBusiness() {
 
       const authNum = ocrRes.data.auth_num;
       const b_no = authNum?.replace(/-/g, "");
-      if (!b_no) {
-        alert("사업자번호 추출 실패");
+      if (!b_no) { 
         setIsLoding(false);
-        return;
-      }
+        return toast.error("사업자번호 추출 실패")
+      };
 
       const verifyRes = await axios.post(
         `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=AsKsksTbcdg8cukGUyiMQU%2FawtOq%2BcmyZvZBfGoOZHhAHXweFUxP2W1ysiSuZ6Yh%2Bnsh2KIOC%2FNQDron%2BV9iBQ%3D%3D`,
@@ -84,9 +87,8 @@ function CertifyBusiness() {
         !result ||
         result.tax_type === "국세청에 등록되지 않은 사업자등록번호입니다."
       ) {
-        alert("국세청에 등록되지 않은 사업자등록번호입니다.");
         setIsLoding(false);
-        return;
+        return toast.error("국세청에 등록되지 않은 사업자등록번호입니다.");
       }
 
       const rawToken = localStorage.getItem("token");
@@ -94,26 +96,28 @@ function CertifyBusiness() {
       const token = parsed?.token;
 
       if (!token) {
-        alert("로그인이 필요합니다.");
         setIsLoding(false);
-        return;
+        return toast.error("로그인이 필요합니다.");
       }
 
       const saveFormData = new FormData();
       saveFormData.append("registrationNum", b_no);
       saveFormData.append("files", imageFile);
 
-      await axios.post("http://localhost:8080/api/registration", saveFormData, {
+      await axios.post(`${API_BASE_URL}/api/registration`, saveFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
 
-      alert("사업자 등록이 완료되었습니다.");
+      toast.success("사업자 등록이 완료되었습니다.");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
 
       await axios.post(
-        "http://localhost:8080/api/user/UserRole",
+        `${API_BASE_URL}/api/user/UserRole`,
         { uId },
         {
           headers: {
@@ -123,7 +127,10 @@ function CertifyBusiness() {
         }
       );
 
-      alert("사업자 전환이 완료되었습니다. 다시 로그인 해주세요.");
+      toast.success("사업자 전환이 완료되었습니다. 다시 로그인 해주세요.");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
       localStorage.removeItem("token");
       navigate("/login");
     } catch (error) {
@@ -143,9 +150,7 @@ function CertifyBusiness() {
         console.error("예상치 못한 오류:", error);
         alert("등록 실패: 알 수 없는 오류 발생");
       }
-    } finally {
-      setIsLoding(false);
-    }
+    } 
   };
 
   const handledelete = async (uId) => {
@@ -153,12 +158,12 @@ function CertifyBusiness() {
     const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) {
-      alert("로그인이 필요합니다.");
+      toast.error("로그인이 필요합니다.");
       return;
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/deleteRegistration", {
+      const res = await fetch(`${API_BASE_URL}/api/deleteRegistration`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -170,7 +175,7 @@ function CertifyBusiness() {
 
       if (res.ok) {
         const businessRes = await fetch(
-          "http://localhost:8080/api/user/deleteBusiness",
+          `${API_BASE_URL}/api/user/deleteBusiness`,
           {
             method: "POST",
             headers: {
@@ -181,19 +186,23 @@ function CertifyBusiness() {
           }
         );
         if (businessRes.ok) {
-          alert("사업자 등록 및 권한이 모두 삭제되었습니다.");
+          toast.success("사업자 등록 및 권한이 모두 삭제되었습니다.");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
           window.location.reload();
         }
       }
     } catch (err) {
       console.error("삭제 에러:", err);
-      alert("삭제 중 오류 발생");
+      toast.error("삭제 중 오류 발생");
     }
   };
 
   return (
     <div className="flex font-notokr">
       <SideMenu from="/certify-business" />
+      <ToastContainer position="top-center" />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-10 text-2xl font-semibold">사업자 등록증</span>

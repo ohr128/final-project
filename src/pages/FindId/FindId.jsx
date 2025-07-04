@@ -2,8 +2,10 @@ import { useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function FindId() {
   const [email, setEmail] = useState("");
@@ -20,19 +22,23 @@ function FindId() {
       });
 
       if (res.ok) {
-        alert("인증번호가 이메일로 전송되었습니다.");
+        toast.success("인증번호가 이메일로 전송되었습니다.");
+          setTimeout(() => {
+                  window.location;
+                }, 2000);
+
       } else {
-        alert("이메일 전송 실패");
+        toast.error("이메일 전송 실패");
       }
     } catch (error) {
       console.error(error);
-      alert("서버 오류: 인증번호 전송 실패");
+      toast.error("서버 오류: 인증번호 전송 실패");
     }
   };
 
   const handleVerifyCode = async () => {
     try {
-      await axios.post(
+      const res = await axios.post(
         `${API_BASE_URL}/mail/verifyCode`,
         {
           email: email,
@@ -44,21 +50,25 @@ function FindId() {
       );
 
       if (res.status === 200) {
-        alert("인증 성공! 아이디 찾기를 눌러주세요.");
+        toast.success("인증 성공! 아이디 찾기를 눌러주세요.");
+        setTimeout(() => {
+                window.location;
+              }, 2000);
+
         setIsVerified(true);
       } else {
-        alert("인증번호가 일치하지 않습니다.");
+        toast.error("인증번호가 일치하지 않습니다.");
       }
     } catch (error) {
       console.error("인증 실패:", error);
-      alert("인증번호가 일치하지 않거나 만료되었습니다.");
+      toast.error("인증번호가 일치하지 않거나 만료되었습니다.");
     }
   };
 
   const handleFindId = async () => {
     if (!isVerified) {
-      alert("먼저 인증번호를 확인해주세요.");
-      return;     
+      toast.error("먼저 인증번호를 확인해주세요.");
+      return;
     }
 
     try {
@@ -71,11 +81,11 @@ function FindId() {
       if (res.data?.id) {
         navigate("/showId", { state: { userId: res.data.id } });
       } else {
-        alert("아이디를 찾을 수 없습니다.");
+        toast.error("아이디를 찾을 수 없습니다.");
       }
     } catch (error) {
       console.error("아이디 조회 실패:", error);
-      alert("서버 오류로 아이디를 찾을 수 없습니다.");
+      toast.error("서버 오류로 아이디를 찾을 수 없습니다.");
     }
   };
 

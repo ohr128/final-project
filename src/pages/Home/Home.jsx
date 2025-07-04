@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -24,7 +23,7 @@ function Home() {
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 
-    fetch("http://localhost:8080/api/FirstEnergy")
+    fetch(`${API_BASE_URL}/api/FirstEnergy`)
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 
@@ -170,7 +169,8 @@ function Home() {
   return (
     <div className="container font-notokr">
       <div className="my-8">
-        <span className="font-semibold">녹색 제품 목록</span>
+
+          <span className="font-semibold text-lg">녹색 제품 목록</span>
 
         <div className="grid grid-cols-5 mt-3 gap-6">
           {products.slice(0, 5).map((item, idx) => (
@@ -214,7 +214,7 @@ function Home() {
       </div>
 
       <div className="my-8">
-        <span className="font-semibold">에너지 효율 1등급 제품(에어컨)</span>
+        <span className="font-semibold text-lg">에너지 효율 1등급 제품(에어컨)</span>
 
         <div className="grid grid-cols-5 mt-3 gap-6">
           {energy.slice(0, 5).map((item, idx) => (
