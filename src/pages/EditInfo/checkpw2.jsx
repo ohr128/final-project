@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function Checkpw2() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleCheck = async (e) => {
+    e.preventDefault();
+
     const token = localStorage.getItem("token");
     const parsed = token ? JSON.parse(token) : null;
     const userId = parsed?.id;
 
-    e.preventDefault();
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      navigate("/login"); 
+      return;
+    }
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
@@ -30,10 +38,10 @@ function Checkpw2() {
       if (result === true || result?.isMatch === true) {
         navigate("/edit-Info");
       } else {
-        alert("비밀번호가 일치하지 않습니다.");
+        toast.error("비밀번호가 일치하지 않습니다.");
       }
     } catch (error) {
-      alert("서버 오류가 발생했습니다.");
+      toast.error("서버 오류가 발생했습니다.");
       console.error(error);
     }
   };
@@ -41,7 +49,7 @@ function Checkpw2() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/checkpw2" />
-
+      <ToastContainer position="top-center" />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-md flex flex-col text-center mt-20">
           <h1 className="p-10 text-2xl font-bold">회원정보 확인</h1>

@@ -2,19 +2,19 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function RegisterGreen() {
-  console.log('test');
+  console.log("test");
   const location = useLocation();
   const navigate = useNavigate();
   const passedAuthNum = location.state?.authNum || "";
 
   const [selectedImages, setSelectedImages] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]); 
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const fileInputRef = useRef(null);
   const maxImages = 3;
-
 
   const handleBoxClick = () => {
     if (selectedImages.length >= maxImages) return;
@@ -52,7 +52,7 @@ function RegisterGreen() {
 
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setSelectedImages((prev) => [...prev, ...imageUrls]);
-    setSelectedFiles((prev) => [...prev, ...files]); 
+    setSelectedFiles((prev) => [...prev, ...files]);
   };
 
   const handlePrev = (e) => {
@@ -67,6 +67,19 @@ function RegisterGreen() {
   };
 
   const handleSubmit = async () => {
+    if (
+      !authNum ||
+      !name ||
+      !prices ||
+      !company ||
+      !makeDate ||
+      !registrationNum ||
+      !mileage
+    ) {
+      alert("모든 항목을 빠짐없이 입력해주세요.(이미지 제외)");
+      return;
+    }
+
     try {
       const data = {
         productId: authNum,
@@ -79,7 +92,7 @@ function RegisterGreen() {
         mileage: parseInt(mileage),
       };
 
-      const res = await axios.post("http://localhost:8080/api/addobject", data);
+      const res = await axios.post(`${API_BASE_URL}/api/addobject`, data);
 
       if (res.status === 200 || res.status === 201) {
         const formData = new FormData();
@@ -90,7 +103,7 @@ function RegisterGreen() {
           formData.append("files", selectedFiles[i]);
         }
 
-        await axios.post("http://localhost:8080/api/uploadImage", formData, {
+        await axios.post(`${API_BASE_URL}/api/uploadImage`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -98,10 +111,22 @@ function RegisterGreen() {
 
         alert("제품이 성공적으로 등록되었습니다.");
         navigate("/green-register-list");
+      } else {
+        alert(`제품 등록 실패: 상태 코드 ${res.status}`);
       }
     } catch (error) {
-      console.error(error);
-      alert("등록 실패");
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || error.message || "";
+        if (error.response?.status === 500) {
+          alert("등록 실패: 중복된 인증번호가 있습니다.");
+        } else {
+          console.error("Axios 오류:", error.response?.data || error.message);
+          alert(`등록 실패: ${message}`);
+        }
+      } else {
+        console.error("예상치 못한 오류:", error);
+        alert("등록 실패: 알 수 없는 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -137,10 +162,19 @@ function RegisterGreen() {
                         onClick={handlePrev}
                         className="absolute left-2 top-1/2 -translate-y-1/2  text-white  cursor-pointer"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="green"
+                          class="bi bi-chevron-left"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
+                          />
                         </svg>
-
                       </button>
                     )}
                     {currentIndex < selectedImages.length - 1 && (
@@ -148,10 +182,19 @@ function RegisterGreen() {
                         onClick={handleNext}
                         className="absolute right-2 top-1/2 -translate-y-1/2 text-white  cursor-pointer"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
-                        </svg> 
-
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="green"
+                          class="bi bi-chevron-right"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
+                          />
+                        </svg>
                       </button>
                     )}
                   </>

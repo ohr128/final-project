@@ -3,6 +3,9 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Review() {
   const location = useLocation();
@@ -42,7 +45,10 @@ function Review() {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (previewImages.length + files.length > maxImages) {
-      alert(`최대 ${maxImages}장까지만 등록할 수 있습니다.`);
+      toast.success(`최대 ${maxImages}장까지만 등록할 수 있습니다.`);
+      setTimeout(() => {
+        window.location;
+      }, 2000);
       return;
     }
     const newPreviews = files.map((file) => URL.createObjectURL(file));
@@ -62,20 +68,20 @@ function Review() {
 
   const handleSubmitReview = async () => {
     const rawToken = localStorage.getItem("token");
-    if (!rawToken) return alert("로그인이 필요합니다.");
+    if (!rawToken) return toast.error("로그인이 필요합니다.");
 
     const parsed = JSON.parse(rawToken);
     const token = parsed?.token;
 
     if (!reviewText.trim()) {
-      alert("리뷰 내용을 작성해 주세요.");
+      toast.error("리뷰 내용을 작성해 주세요.");
       return;
     }
 
     try {
       // 1. 리뷰 등록
       const reviewRes = await axios.post(
-        "http://localhost:8080/api/review",
+        `${API_BASE_URL}/api/review`,
         {
           pId: productId,
           rReview: reviewText,
@@ -94,7 +100,7 @@ function Review() {
         formData.append("reNo", reNo);
         imageFiles.forEach((file) => formData.append("files", file));
 
-        await axios.post("http://localhost:8080/api/uploadRImage", formData, {
+        await axios.post(`${API_BASE_URL}/api/uploadRImage`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -102,7 +108,10 @@ function Review() {
         });
       }
 
-      alert("리뷰가 성공적으로 등록되었습니다.");
+      toast.success("리뷰가 성공적으로 등록되었습니다.");
+      setTimeout(() => {
+        window.location;
+      }, 2000);
       setReviewText("");
       setPreviewImages([]);
       setImageFiles([]);
@@ -110,7 +119,7 @@ function Review() {
       navigate("/");
     } catch (error) {
       console.error("리뷰 등록 실패:", error);
-      alert("리뷰 등록 중 오류가 발생했습니다.");
+      toast.error("리뷰 등록 중 오류가 발생했습니다.");
     }
   };
 
@@ -118,6 +127,7 @@ function Review() {
     <div className="font-notokr flex min-h-screen">
       {" "}
       <SideMenu from="/order-detail" />
+      <ToastContainer position="top-center" />
       <div className="flex-1 p-6">
         {" "}
         <span className="text-xl font-bold my-10 text-center block">

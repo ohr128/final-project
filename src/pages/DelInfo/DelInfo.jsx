@@ -1,6 +1,9 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function DelInfo() {
   const navigate = useNavigate();
@@ -15,29 +18,28 @@ function DelInfo() {
     if (rawToken) {
       const parsed = JSON.parse(rawToken);
       setUserId(parsed?.id || null);
-      setToken(parsed?.token?.token || null);
+      setToken(parsed?.token || null);
     }
-
   }, []);
 
   const handleDelete = async () => {
     if (agreeText !== "동의합니다") {
-      alert("동의합니다를 정확히 입력해 주세요.");
+      toast.error("동의합니다를 정확히 입력해 주세요.");
       return;
     }
 
     if (!password) {
-      alert("비밀번호를 입력해 주세요.");
+      toast.error("비밀번호를 입력해 주세요.");
       return;
     }
 
     if (!token || !userId) {
-      alert("사용자 정보가 없습니다. 다시 로그인 해주세요.");
+      toast.error("사용자 정보가 없습니다. 다시 로그인 해주세요.");
       return;
     }
 
     try {
-      const checkRes = await fetch("http://localhost:8080/api/user/checkPassword", {
+      const checkRes = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,17 +50,17 @@ function DelInfo() {
 
       const checkResult = await checkRes.json();
       if (!(checkResult === true || checkResult?.isMatch === true)) {
-        alert("비밀번호가 일치하지 않습니다.");
+        toast.error("비밀번호가 일치하지 않습니다.");
         return;
       }
     } catch (err) {
       console.error("비밀번호 확인 오류:", err);
-      alert("비밀번호 확인 중 오류가 발생했습니다.");
+      toast.error("비밀번호 확인 중 오류가 발생했습니다.");
       return;
     }
 
     try {
-      const delRes = await fetch("http://localhost:8080/api/user/byebye", {
+      const delRes = await fetch(`${API_BASE_URL}/api/user/byebye`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,17 +70,30 @@ function DelInfo() {
       });
 
       if (delRes.ok) {
-        alert("회원 탈퇴가 완료되었습니다.");
-        sessionStorage.clear();
-        navigate("/");
+        toast.success("회원 탈퇴가 완료되었습니다.");
+        setTimeout(() => {
+            window.location.href = "/";
+          }, 2000);
+
+        try {
+          await fetch("http://localhost:8080/api/user/sign-out", {
+            method: "POST",
+            credentials: "include",
+          });
+        } catch (error) {
+          console.error("로그아웃 실패", error);
+        }
+        localStorage.removeItem("token");
+
+        navigate("/login");
       } else {
         const errText = await delRes.text();
         console.error("탈퇴 실패:", errText);
-        alert("회원 탈퇴 실패");
+        toast.error("회원 탈퇴 실패");
       }
     } catch (err) {
       console.error("탈퇴 요청 오류:", err);
-      alert("회원 탈퇴 중 오류가 발생했습니다.");
+      toast.error("회원 탈퇴 중 오류가 발생했습니다.");
     }
   };
 
@@ -96,7 +111,7 @@ function DelInfo() {
               <span>탈퇴 시 모든 이용내역은 삭제되며, 복구가 불가능합니다.</span>
               <span>보유 중인 쿠폰, 적립금 등 모든 혜택은 소멸됩니다.</span>
               <span>배송 중이거나 반품이 진행 중인 내역이 있을 경우, 탈퇴가 제한됩니다.</span>
-              <span>탈퇴 후 동일한 아이디로 재가입하실 수 없습니다.</span>
+              <span>탈퇴 후 동일한 이메일로 재가입하실 수 없습니다.</span>
               <span>
                 상기 내용을 모두 확인하였으며 이에 동의하시는 경우, 아래 빈칸에{" "}
                 <span className="text-primary-500 font-bold">‘동의합니다’</span>를 정확히 입력해 주세요.

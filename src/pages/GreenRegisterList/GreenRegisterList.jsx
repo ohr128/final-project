@@ -1,6 +1,10 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function GreenRegisterList() {
   const [productList, setProductList] = useState([]);
@@ -16,7 +20,7 @@ function GreenRegisterList() {
       if (!userId) return;
 
       fetch(
-        `http://localhost:8080/api/findUserProduct?registrationNum=${userId}`
+        `${API_BASE_URL}/api/findUserProduct?registrationNum=${userId}`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -24,7 +28,7 @@ function GreenRegisterList() {
         })
         .catch((err) => {
           console.error("제품 목록 로딩 실패:", err);
-          alert("제품 목록을 불러오지 못했습니다.");
+          toast.error("제품 목록을 불러오지 못했습니다.");
         });
     } catch (err) {
       console.error("로컬스토리지 파싱 에러:", err);
@@ -34,6 +38,7 @@ function GreenRegisterList() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/green-register-list" />
+      <ToastContainer position="top-center" />
 
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-3xl flex flex-col text-center mt-20">
@@ -61,7 +66,7 @@ function GreenRegisterList() {
               >
                 <span>{item.name}</span>
                 <span>{item.productId}</span>
-                <span>{item.prices}원</span>
+                <span>{item.prices.toLocaleString()}원</span>
               </div>
             ))
           )}

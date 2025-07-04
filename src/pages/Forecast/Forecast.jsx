@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+const API_PYTHON = import.meta.env.VITE_API_PYTHON;
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -17,7 +18,7 @@ function Forecast() {
   const [isLoding, setIsLoding] = useState(false);
   useEffect(() => {
     setIsLoding(true);
-    fetch("http://localhost:8000/predict")
+    fetch(`${API_PYTHON}/predict`)
       .then((res) => res.json())
       .then((predicted) => {
         const counts = [

@@ -2,8 +2,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_BASE = import.meta.env.VITE_API_BASE;
-console.log("API_BASE_URL", API_BASE_URL);
-console.log("API_BASE", API_BASE);
 
 function Auth() {
   const urlSearchParams = new URLSearchParams(useLocation().search);
@@ -55,6 +53,7 @@ function Auth() {
        localStorage.setItem(
         "token",
         JSON.stringify({
+          id:email,
           token: response.data.token,
         })
       );

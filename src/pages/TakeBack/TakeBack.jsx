@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Modal from "../../components/Modal/Modal";
 import { useLocation } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -11,6 +13,7 @@ function TakeBack() {
     orderNo,
     refundAmountValue = 0,
     pointUsed = 0,
+    quantity = 1,
   } = location.state || {};
 
   const [isModalShow, setIsModalShow] = useState(false);
@@ -21,6 +24,9 @@ function TakeBack() {
     detailAddress: "",
   });
   const [memo, setMemo] = useState("");
+
+  const totalRefundAmount = refundAmountValue * quantity;
+  const totalPointUsed = pointUsed * quantity;
 
   useEffect(() => {
     const fetchAddresses = async () => {
@@ -56,19 +62,19 @@ function TakeBack() {
 
   const handleSubmitRefund = async () => {
     if (!memo.trim()) {
-      alert("※ 반품 사유를 작성해주세요.");
+      toast.error("※ 반품 사유를 작성해주세요.");
       return;
     }
 
     const raw = localStorage.getItem("token");
     const token = raw ? JSON.parse(raw)?.token : null;
     if (!token) {
-      alert("로그인 필요");
+      toast.error("로그인 필요");
       return;
     }
 
     if (!orderNo) {
-      alert("주문번호 없음");
+      toast.error("주문번호 없음");
       return;
     }
 
@@ -88,25 +94,30 @@ function TakeBack() {
       });
 
       if (res.ok) {
-        alert("반품이 완료되었습니다.");
-        window.location.href = "/order-detail";
+        toast.success("반품이 완료되었습니다.");
+        setTimeout(() => {
+          window.location.href = "/order-detail";
+        }, 2000);
       } else {
         const errorMsg = await res.text();
-        alert("반품 요청 실패: " + errorMsg);
+        toast.error("반품 요청 실패: " + errorMsg);
       }
     } catch (err) {
       console.error("반품 요청 실패:", err);
-      alert("반품 요청 중 오류가 발생했습니다.");
+      toast.error("반품 요청 중 오류가 발생했습니다.");
     }
   };
 
   return (
     <div className="font-notokr p-6 flex flex-col">
+      <ToastContainer position="top-center" />
       <span className="text-xl font-bold my-10 text-center">{productName}</span>
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
         <div className="w-20">
-          <span className="text-left block text-lg font-semibold">반품사유<span className="text-red-600 ml-1">*</span></span>
+          <span className="text-left block text-lg font-semibold">
+            반품사유<span className="text-red-600 ml-1">*</span>
+          </span>
         </div>
         <div className="ml-4 flex-1">
           <textarea
@@ -120,13 +131,15 @@ function TakeBack() {
       </div>
 
       <div className="flex justify-center gap-20 mb-10">
-        <span>환불금액: {refundAmountValue.toLocaleString()}원</span>
-        <span>포인트 차감: {pointUsed}P</span>
+        <span>환불금액: {totalRefundAmount.toLocaleString()}원</span>
+        <span>포인트 차감: {totalPointUsed}P</span>
       </div>
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
         <div className="w-24">
-          <span className="text-left block text-lg font-semibold">반품주소<span className="text-red-600 ml-1">*</span></span>
+          <span className="text-left block text-lg font-semibold">
+            반품주소<span className="text-red-600 ml-1">*</span>
+          </span>
         </div>
         <div className="flex-1 space-y-3">
           <div className="flex gap-2">

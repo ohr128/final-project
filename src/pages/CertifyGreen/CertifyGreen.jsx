@@ -4,9 +4,8 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+const API_PYTHON = import.meta.env.VITE_API_PYTHON
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function CertifyGreen() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -36,9 +35,13 @@ function CertifyGreen() {
     formData.append("file", imageFile);
 
     try {
-      const ocrRes = await axios.post("http://localhost:8000/ocr/certification", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const ocrRes = await axios.post(
+        "http://localhost:8000/ocr/certification",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       const authNum = ocrRes.data.auth_num;
       console.log("OCR 결과 인증번호:", authNum);
@@ -51,12 +54,17 @@ function CertifyGreen() {
 
       try {
         await axios.get(
-          `${API_BASE_URL}/api/green-check?authNum=${encodeURIComponent(authNum)}`
+          `${API_BASE_URL}/api/green-check?authNum=${encodeURIComponent(
+            authNum
+          )}`
         );
+
         toast.success("인증 완료");
         navigate("/register-green", { state: { authNum } });
       } catch (checkError) {
-        if (checkError.response?.status === 404) {
+        const status = checkError.response?.status;
+
+        if (status === 404) {
           toast.error("해당 인증 번호에 대한 정보가 없습니다.");
         } else {
           console.error("Spring 인증번호 확인 중 오류:", checkError);
@@ -67,6 +75,7 @@ function CertifyGreen() {
       console.error("OCR 처리 실패:", err);
       toast.error("OCR 처리에 실패했습니다.");
     }
+
     setIsLoding(false);
   };
 
@@ -76,7 +85,9 @@ function CertifyGreen() {
       <ToastContainer position="top-center" />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
-          <span className="mb-10 text-2xl font-semibold">녹색기술제품 확인서</span>
+          <span className="mb-10 text-2xl font-semibold">
+            녹색기술제품 확인서
+          </span>
 
           <div
             className="border border-gray-300 bg-gray-100 hover:bg-gray-200 cursor-pointer mx-auto mb-6 flex items-center justify-center"
@@ -110,11 +121,11 @@ function CertifyGreen() {
             </button>
           </div>
         </div>
-          {isLoding &&
+        {isLoding && (
           <div className="absolute top-90 left-20 size-full bg-[#ffffff88] flex justify-center pt-70">
             <div className="size-40 border-6 border-primary-500 border-t-gray-200 rounded-full animate-spin"></div>
           </div>
-          }
+        )}
       </div>
     </div>
   );
