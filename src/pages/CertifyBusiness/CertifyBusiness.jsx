@@ -3,7 +3,8 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_PYTHON = import.meta.env.VITE_API_PYTHON;
 
 function CertifyBusiness() {
   const [selectedImage, setSelectedImage] = useState();
@@ -24,14 +25,14 @@ function CertifyBusiness() {
     setUId(uId);
 
     axios
-      .get(`http://localhost:8080/api/user/findUserRegistration?uId=${uId}`, {
+      .get(`${API_BASE_URL}/api/user/findUserRegistration?uId=${uId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         console.log("사업자 등록증 응답:", res.data.bimage);
         const fileName = res.data.bimage;
         if (fileName) {
-          setExistingImage(`http://localhost:8080/${fileName}`);
+          setExistingImage(`${API_BASE_URL}/${fileName}`);
         }
       })
       .catch((err) => {
@@ -59,7 +60,7 @@ function CertifyBusiness() {
       ocrForm.append("file", imageFile);
 
       const ocrRes = await axios.post(
-        "http://localhost:8000/ocr/business",
+        `${API_PYTHON}/ocr/business`,
         ocrForm,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -94,7 +95,7 @@ function CertifyBusiness() {
       saveFormData.append("registrationNum", b_no);
       saveFormData.append("files", imageFile);
 
-      await axios.post("http://localhost:8080/api/registration", saveFormData, {
+      await axios.post(`${API_BASE_URL}/api/registration`, saveFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -107,7 +108,7 @@ function CertifyBusiness() {
       }, 2000);
 
       await axios.post(
-        "http://localhost:8080/api/user/UserRole",
+        `${API_BASE_URL}/api/user/UserRole`,
         { uId },
         {
           headers: {
@@ -137,7 +138,7 @@ function CertifyBusiness() {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/deleteRegistration", {
+      const res = await fetch(`${API_BASE_URL}/api/deleteRegistration`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,7 +150,7 @@ function CertifyBusiness() {
 
       if (res.ok) {
         const businessRes = await fetch(
-          "http://localhost:8080/api/user/deleteBusiness",
+          `${API_BASE_URL}/api/user/deleteBusiness`,
           {
             method: "POST",
             headers: {

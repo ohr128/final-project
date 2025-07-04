@@ -5,6 +5,7 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Review() {
   const location = useLocation();
@@ -80,7 +81,7 @@ function Review() {
     try {
       // 1. 리뷰 등록
       const reviewRes = await axios.post(
-        "http://localhost:8080/api/review",
+        `${API_BASE_URL}/api/review`,
         {
           pId: productId,
           rReview: reviewText,
@@ -99,7 +100,7 @@ function Review() {
         formData.append("reNo", reNo);
         imageFiles.forEach((file) => formData.append("files", file));
 
-        await axios.post("http://localhost:8080/api/uploadRImage", formData, {
+        await axios.post(`${API_BASE_URL}/api/uploadRImage`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",

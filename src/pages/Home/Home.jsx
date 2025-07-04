@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -24,7 +23,7 @@ function Home() {
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 
-    fetch("http://localhost:8080/api/FirstEnergy")
+    fetch(`${API_BASE_URL}/api/FirstEnergy`)
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 

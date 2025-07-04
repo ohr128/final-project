@@ -6,7 +6,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function FindId() {
   const [email, setEmail] = useState("");
@@ -39,7 +38,7 @@ function FindId() {
 
   const handleVerifyCode = async () => {
     try {
-      await axios.post(
+      const res = await axios.post(
         `${API_BASE_URL}/mail/verifyCode`,
         {
           email: email,
@@ -73,8 +72,8 @@ function FindId() {
     }
 
     try {
-      const res = await axios.get("http://localhost:8080/api/user/Id", {
-        params: { email },
+      const res = await axios.get(`${API_BASE_URL}/api/user/Id`, {
+        params: { email },  
       });
 
       if (res.data?.id) {

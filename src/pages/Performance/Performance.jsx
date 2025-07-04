@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -28,13 +28,13 @@ function Performance() {
     }
 
     Promise.all([
-      fetch("http://localhost:8080/order/countOrder", {
+      fetch(`${API_BASE_URL}/order/countOrder`, {
         headers: { Authorization: `Bearer ${token}` },
       }).then((res) => res.json()),
-      fetch("http://localhost:8080/order/countRemodeling", {
+      fetch(`${API_BASE_URL}/order/countRemodeling`, {
         headers: { Authorization: `Bearer ${token}` },
       }).then((res) => res.json()),
-      fetch("http://localhost:8080/order/countOrderInUp", {
+      fetch(`${API_BASE_URL}/order/countOrderInUp`, {
         headers: { Authorization: `Bearer ${token}` },
       }).then((res) => res.json()),
     ])

@@ -4,6 +4,7 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function groupOrdersByDate(orders) {
   const grouped = {};
@@ -53,7 +54,7 @@ function OrderDetail() {
     }
 
     axios
-      .get(`http://localhost:8080/api/order-detail?uId=${uId}`, {
+      .get(`${API_BASE_URL}/api/order-detail?uId=${uId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -62,7 +63,7 @@ function OrderDetail() {
       .catch((err) => console.error("주문 목록 조회 실패", err));
 
     axios
-      .get(`http://localhost:8080/api/takeback?uId=${uId}`, {
+      .get(`${API_BASE_URL}/api/takeback?uId=${uId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -109,7 +110,7 @@ function OrderDetail() {
                       <div className="flex flex-col items-center flex-shrink-0">
                         <div className="text-sm self-start text-gray-500 mb-3">{time}</div>
                         <img
-                          src={`http://localhost:8080/${encodeURIComponent(order.images)}`}
+                          src={`${API_BASE_URL}/${encodeURIComponent(order.images)}`}
                           alt={order.name}
                           className="w-24 h-24 object-cover rounded"
                         />

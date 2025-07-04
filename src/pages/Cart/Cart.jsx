@@ -19,7 +19,6 @@ function Cart() {
   console.log("주소:", selectedAddress);
 
   const [memo, setMemo] = useState("");
-  const [email, setEmail] = useState("");
 
 
   
@@ -33,7 +32,7 @@ function Cart() {
       return;
     }
 
-    fetch("http://localhost:8080/api/cart", {
+    fetch(`${API_BASE_URL}/api/cart`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -108,7 +107,7 @@ function Cart() {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/deleteCart", {
+      const res = await fetch(`${API_BASE_URL}/api/deleteCart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -199,19 +198,6 @@ function Cart() {
     }
   };
 
-  useEffect(() => {
-    console.log("email useEffect 실행됨");
-    const uId = getUidFromToken();
-    if (!uId) return;
-
-    fetch(`http://localhost:8080/api/user/email?id=${uId}`)
-      .then((res) => res.text())
-      .then(setEmail)
-      .catch((err) => console.error("이메일 불러오기 실패", err));
-
-    console.log(email);
-  }, []);
-
   const handlePayment = () => {
     const IMP = window.IMP;
     IMP.init("imp38151585");
@@ -259,7 +245,7 @@ function Cart() {
           const uId = getUidFromToken();
           console.log(uId);
           try {
-            const res = await fetch("http://localhost:8080/order/complete", {
+            const res = await fetch(`${API_BASE_URL}/order/complete`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -276,7 +262,7 @@ function Cart() {
               }),
             });
 
-            await fetch("http://localhost:8080/order/saveMileage", {
+            await fetch(`${API_BASE_URL}/order/saveMileage`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
@@ -312,7 +298,7 @@ function Cart() {
             console.log(err);
           }
         } else {
-          toast.err("결제 실패");
+          toast.err("결제가 취소 되었습니다.");
         }
       }
     );
@@ -406,7 +392,7 @@ function Cart() {
             />
             <img
               className="h-30 w-30" 
-              src={`http://localhost:8080/${encodeURIComponent(item.images)}`}
+              src={`${API_BASE_URL}/${encodeURIComponent(item.images)}`}
               alt="상품 이미지"
             />
             <span className="w-1/5">

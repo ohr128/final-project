@@ -4,7 +4,7 @@ import { getCookieValue } from "../../helpers/cookieHelper";
 import { jwtDecode } from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function RemodelingList() {
@@ -12,19 +12,22 @@ function RemodelingList() {
   const [userRole, setUserRole] = useState([]);
   const [remodelingList, setRemodelingList] = useState([]);
   const [keyWord, setKeyword] = useState("");
+  const [appliedList, setAppliedList] = useState([]);
 
   const jwtToken = getCookieValue("jwt_cookie");
   const stored = localStorage.getItem("token");
   const parsed = stored ? JSON.parse(stored) : {};
   const uId = parsed?.id;
   const token = parsed?.token;
+  const navigate =  useNavigate();
 
   useEffect(() => {
     if (jwtToken) {
       try {
         const decoded = jwtDecode(jwtToken);
         const rawRoles = decoded.authorities || "";
-        const roleArray = typeof rawRoles === "string" ? rawRoles.split(",") : rawRoles;
+        const roleArray =
+          typeof rawRoles === "string" ? rawRoles.split(",") : rawRoles;
         setUserRole(Array.isArray(roleArray) ? roleArray : []);
       } catch (error) {
         console.error("JWT decode error:", error);
@@ -36,6 +39,11 @@ function RemodelingList() {
   }, [jwtToken]);
 
   useEffect(() => {
+    if (!token){
+      alert("로그인이 필요합니다.");
+      navigate("/login")
+      return;
+    } 
     fetch(`${API_BASE_URL}/api/findAllRemodeling`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,7 +56,7 @@ function RemodelingList() {
       .catch((err) => {
         console.error("데이터 불러오기 오류:", err);
       });
-  }, [token]);
+  }, []);
 
   const handleAccordionClick = (id) => {
     setOpenAccordionId(openAccordionId === id ? null : id);
@@ -74,6 +82,7 @@ function RemodelingList() {
         setTimeout(() => {
           window.location.reload();
         }, 2000);
+        setAppliedList((prev) => [...prev, remodelingNo]);
         console.log(result);
       } else {
         const err = await res.text();
@@ -84,12 +93,16 @@ function RemodelingList() {
     }
   };
 
-  const filteredList = remodelingList.filter((item) =>
-    item.address.includes(keyWord) || item.uId?.includes(keyWord)
+  const filteredList = remodelingList.filter(
+    (item) => item.address.includes(keyWord) || item.uId?.includes(keyWord)
   );
 
   const AccordionItem = ({ id, title, content, isOpen, onClick }) => (
-    <div className={`accordion-item ${isOpen ? "border border-primary-500" : "border border-gray-200"}`}>
+    <div
+      className={`accordion-item ${
+        isOpen ? "border border-primary-500" : "border border-gray-200"
+      }`}
+    >
       <h2 id={`accordion-color-heading-${id}`}>
         <button
           type="button"
@@ -106,15 +119,21 @@ function RemodelingList() {
             <span className="w-1/2 text-center truncate">{title.applicationDate.slice(0, 10)}</span>
           </div>
           <svg
-            className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 ${
-              isOpen ? "text-white" : "rotate-180 text-gray-500"
+            className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 rotate-180 ${
+              isOpen ? "rotate-360 text-white" : "text-gray-500"
             }`}
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 10 6"
           >
-            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 5 5 1 1 5"
+            />
           </svg>
         </button>
       </h2>
@@ -137,7 +156,9 @@ function RemodelingList() {
 
       <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-4xl flex-col mt-20">
-          <h1 className="p-10 text-2xl font-bold text-center">그린리모델링 목록</h1>
+          <h1 className="p-10 text-2xl font-bold text-center">
+            그린리모델링 목록
+          </h1>
 
           <div className="flex justify-end mb-4">
             <input
@@ -165,26 +186,39 @@ function RemodelingList() {
                   <AccordionItem
                     key={data.no}
                     id={data.no}
-                    title={{ address: data.address, applicationDate: data.applicationDate }}
+                    title={{
+                      address: data.address,
+                      applicationDate: data.applicationDate,
+                    }}
                     content={
                       <div className="flex flex-col gap-3 p-2">
                         {userRole?.includes("ROLE_BUSINESS") && (
                           <p>
-                            <span className="font-semibold">아이디:</span> {data.uId}
+                            <span className="font-semibold">아이디:</span>{" "}
+                            {data.uId}
                           </p>
                         )}
                         <p>
-                          <span className="font-semibold">견적 대상:</span> {data.address}
+                          <span className="font-semibold">견적 대상:</span>{" "}
+                          {data.address}
                         </p>
                         <p>
                           <span className="font-semibold">평수:</span>{" "}
-                          {`${data.roomSize}평(${Math.ceil(data.roomSize * 3.3508)}m²)`}
+                          {`${data.roomSize}평(${Math.ceil(
+                            data.roomSize * 3.3508
+                          )}m²)`}
                         </p>
                         <p>
-                          <span className="font-semibold">가격:</span> {data.totalsum.toLocaleString()}원
+                          <span className="font-semibold">가격:</span>{" "}
+                          {data.totalsum.toLocaleString()}원
                         </p>
 
                         {userRole?.includes("ROLE_BUSINESS") && (
+                          appliedList.includes(data.no) ? 
+                          <div className="bg-primary-500 h-8 text-white font-bold flex justify-center p-1">
+                            <span> 신청완료 </span>
+                          </div>
+                            :
                           <button
                             className="bg-primary-500 h-8 text-white font-bold cursor-pointer"
                             onClick={() => handleApplication(data.no)}

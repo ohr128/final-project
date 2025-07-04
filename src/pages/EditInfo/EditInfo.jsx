@@ -5,7 +5,6 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
 
 function EditInfo() {
   const [email, setEmail] = useState("");
@@ -116,7 +115,7 @@ function EditInfo() {
           return;
         }
       }
-      await axios.patch(`${API_BASE_URL}/api/user/update"`, payload,{
+      await axios.patch(`${API_BASE_URL}/api/user/update`, payload,{
         headers: { "Content-Type": "application/json" },
       });
       toast.success("회원정보가 수정되었습니다.");
