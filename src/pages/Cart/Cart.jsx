@@ -23,7 +23,6 @@ function Cart() {
   const [postAddress, setPostAddress] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [memo, setMemo] = useState("");
-  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   const [userMileage, setUserMileage] = useState(0);
