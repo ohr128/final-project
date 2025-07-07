@@ -92,7 +92,7 @@ function SignUp(){
       }, {
         headers: { "Content-Type": "application/json"}
       });
-      alert("회원가입이 완료되었습니다.")
+      toast.success("회원가입이 완료되었습니다.");
       navigate("/login");
     } catch (error){
         console.log(error);
