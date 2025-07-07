@@ -5,7 +5,7 @@ export const menuData = [
         sub:[
 
         {
-            subTitle: "마일리지",
+            subTitle: "마일리지 / 포인트",
             subLink: "/point"
         },
         {

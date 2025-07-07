@@ -147,7 +147,7 @@ function RemodelingRequestList() {
         >
           <div className="px-4">{content}</div>
         </div>
-      </div>
+    </div>
   );
 
   return (

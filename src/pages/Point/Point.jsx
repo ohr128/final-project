@@ -5,17 +5,17 @@ import lv2 from "../../assets/lv2.jpg";
 import lv3 from "../../assets/lv3.jpg";
 import lv4 from "../../assets/lv4.jpg";
 import lv5 from "../../assets/lv5.jpg";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Point() {
   const [userId, setUserId] = useState(null);
   const [token, setToken] = useState(null);
   const [mileage, setMileage] = useState(0);
+  const [userMileage, setUserMileage] = useState(0);
 
   useEffect(() => {
     const rawToken = localStorage.getItem("token");
-
     if (rawToken) {
       const parsed = JSON.parse(rawToken);
       setUserId(parsed?.id || null);
@@ -36,13 +36,18 @@ function Point() {
           const text = await result.text();
           console.error("서버 응답 오류 상태코드:", result.status);
           console.error("서버 응답 본문:", text);
-          return;
+          return null;
         }
         return result.json();
       })
       .then((data) => {
+        if (!data) return;
+        console.log("유저 정보 응답:", data); 
         if (data?.totalMileage !== undefined) {
           setMileage(Number(data.totalMileage));
+        }
+        if (data?.totalPoint !== undefined) {
+          setUserMileage(Number(data.totalPoint));
         }
       })
       .catch((err) => {
@@ -59,21 +64,21 @@ function Point() {
           <div className="flex justify-center">
             <div className="border border-primary-500 mt-10 flex justify-center">
               <span className="p-4 text-2xl font-bold">
-                {userId}님의 현재 마일리지는 {mileage.toLocaleString()}P 입니다.
+                {userId}님의 현재 마일리지는 {mileage.toLocaleString()}점 입니다.
               </span>
             </div>
           </div>
-          
+
           {mileage >= 50000 ? (
-            <img className="px-10 w-100 mx-20 mt-10" src={lv5} alt="포인트 이미지 (20점 이상)" />
+            <img className="px-10 w-100 mx-20 mt-10" src={lv5} alt="레벨5" />
           ) : mileage >= 37500 ? (
-            <img className="px-10 w-100 mx-20 mt-10 h-[337px]" src={lv4} alt="포인트 이미지 (20점 이상)" />
+            <img className="px-10 w-100 mx-20 mt-10 h-[337px]" src={lv4} alt="레벨4" />
           ) : mileage >= 25000 ? (
-            <img className="px-10 w-100 mx-20 mt-10 h-[337px]" src={lv3} alt="포인트 이미지 (40점 이상)" />
+            <img className="px-10 w-100 mx-20 mt-10 h-[337px]" src={lv3} alt="레벨3" />
           ) : mileage >= 12500 ? (
-            <img className="px-10 pt-15 w-100 mx-11 mt-4 h-[337px]" src={lv2} alt="포인트 이미지 (20점 이상)" />
+            <img className="px-10 pt-15 w-100 mx-11 mt-4 h-[337px]" src={lv2} alt="레벨2" />
           ) : mileage >= 0 ? (
-            <img className="px-10 pt-16 w-100 mx-20 mt-3 h-[337px]" src={lv1} alt="포인트 이미지 (0점 초과)" />
+            <img className="px-10 pt-16 w-100 mx-20 mt-3 h-[337px]" src={lv1} alt="레벨1" />
           ) : null}
 
           {mileage >= 50000 ? (
@@ -92,11 +97,16 @@ function Point() {
             <span className="p-6 text-2xl font-bold text-center">
               당신의 노력으로 새싹을 피웠습니다.
             </span>
-          ) : mileage >= 0 ? (
+          ) : (
             <span className="p-5 text-2xl font-bold text-center">
               당신이 세상의 생동감을 부여 할 수 있습니다.
             </span>
-          ) : null}
+          )}
+
+          {/* 보유 포인트 표시 */}
+          <div className="mt-8 text-xl font-semibold text-center">
+            보유 포인트: {userMileage.toLocaleString()}P
+          </div>
         </div>
       </div>
     </div>

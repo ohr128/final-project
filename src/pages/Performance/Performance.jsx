@@ -1,12 +1,31 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { Pie } from "react-chartjs-2";
 import { useEffect, useState } from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+const createCenterTextPlugin = (text) => ({
+  id: "centerTextPlugin",
+  afterDraw(chart) {
+    const { width, height, ctx } = chart;
+    ctx.save();
+    ctx.font = "bold 24px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#000";
+    ctx.fillText(text, width / 2, height / 2);
+    ctx.restore();
+  },
+});
 
 function Performance() {
   const [greenOrderCount, setGreenOrderCount] = useState(0);
@@ -51,14 +70,14 @@ function Performance() {
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-4 text-2xl font-semibold ml-10">사업실적
-          <span className="mb-4 text-2xl font-semibold ml-40">리모델링 신청 횟수</span>
+            <span className="mb-4 text-2xl font-semibold ml-40">리모델링 신청 횟수</span>
           </span>
           <div className="flex gap-4 justify-evenly mt-6 mb-20">
             {isLoading ? (
               <div>로딩 중...</div>
             ) : (
               <>
-                <div className="w-64 h-64">
+                <div className="w-64 h-64 relative">
                   <Pie
                     data={{
                       labels: ["녹색 제품"],
@@ -75,18 +94,15 @@ function Performance() {
                       responsive: true,
                       plugins: {
                         legend: {
-                          display: true,
-                          position: "top",
+                          display: false,
                         },
                       },
                     }}
+                    plugins={[createCenterTextPlugin(`주문수 ${greenOrderCount}건`)]}
                   />
-                  <div className="mt-2">
-                    녹색 제품 주문 수: {greenOrderCount}건
-                  </div>
                 </div>
 
-                <div className="w-64 h-64">
+                <div className="w-64 h-64 relative">
                   <Pie
                     data={{
                       labels: ["리모델링"],
@@ -103,13 +119,12 @@ function Performance() {
                       responsive: true,
                       plugins: {
                         legend: {
-                          display: true,
-                          position: "top",
+                          display: false,
                         },
                       },
                     }}
+                    plugins={[createCenterTextPlugin(`리모델링 ${remodelingCount}건`)]}
                   />
-                  <div className="mt-2">리모델링 건수: {remodelingCount}건</div>
                 </div>
               </>
             )}

@@ -18,14 +18,17 @@ function Cart() {
     address: "",
     detailAddress: "",
   });
-  console.log("주소:", selectedAddress);
-
+  const [address, setAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
+  const [postAddress, setPostAddress] = useState("");
+  const [showInput, setShowInput] = useState(false);
   const [memo, setMemo] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
+  const [userMileage, setUserMileage] = useState(0);
+  const [totalPoint, setTotalPoint] = useState(0);
 
-  
   useEffect(() => {
     const rawToken = localStorage.getItem("token");
     const parsedToken = JSON.parse(rawToken);
@@ -104,6 +107,28 @@ function Cart() {
     }
   };
 
+  const fetchUserMileage = async () => {
+    const raw = localStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token : null;
+    const uId = getUidFromToken();
+
+    if (!token || !uId) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/user/userById?id=${uId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUserMileage(data.totalPoint || 0);
+      }
+    } catch (err) {
+      console.error("사용자 마일리지 조회 실패:", err);
+    }
+  };
+
   const handleDelete = async (pId) => {
     const raw = localStorage.getItem("token");
     const token = raw ? JSON.parse(raw)?.token : null;
@@ -131,8 +156,7 @@ function Cart() {
         toast.success("삭제되었습니다.");
         setTimeout(() => {
             window.location.reload();
-          }, 1200);
-
+        }, 1200);
       } else {
         const text = await res.text();
         console.error("삭제 실패:", text);
@@ -144,7 +168,95 @@ function Cart() {
 
   useEffect(() => {
     fetchAddresses();
+    fetchUserMileage();
   }, []);
+
+  useEffect(() => {
+    if (!window.kakao || !window.daum) return;
+    const mapContainer = document.getElementById("map");
+    if (!mapContainer) return;
+    const mapOption = {
+      center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+      level: 3,
+    };
+    const map = new window.kakao.maps.Map(mapContainer, mapOption);
+    const geocoder = new window.kakao.maps.services.Geocoder();
+
+    window.getAddress = () => {
+      new window.daum.Postcode({
+        oncomplete: function (data) {
+          setAddress(data.roadAddress);
+          setPostAddress(data.zonecode);
+          document.getElementById("detail")?.focus();
+
+          geocoder.addressSearch(data.roadAddress, function (result, status) {
+            if (status === window.kakao.maps.services.Status.OK) {
+              const coords = new window.kakao.maps.LatLng(
+                result[0].y,
+                result[0].x
+              );
+              const marker = new window.kakao.maps.Marker({
+                map,
+                position: coords,
+              });
+
+              const infowindow = new window.kakao.maps.InfoWindow({
+                content:
+                  '<div style="width:150px;text-align:center;padding:6px 0;">배송지</div>',
+              });
+
+              infowindow.open(map, marker);
+              map.setCenter(coords);
+            }
+          });
+        },
+      }).open();
+    };
+  }, [showInput]);
+
+  const handleSave = async () => {
+    const raw = localStorage.getItem("token");
+    const token = raw ? JSON.parse(raw)?.token : null;
+
+    if (!token) {
+      toast.error("로그인이 필요합니다.");
+      return;
+    }
+
+    const dto = {
+      address,
+      detailAddress,
+      postAddress,
+    };
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/address`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dto),
+      });
+
+      if (res.ok) {
+        toast.success("주소가 저장되었습니다.");
+        setSelectedAddress({
+          postAddress,
+          address,
+          detailAddress,
+        }); 
+        fetchAddresses();
+        setAddress("");
+        setDetailAddress("");
+        setPostAddress("");
+        setShowInput(false);
+      }
+    } catch (err) {
+      console.error("에러:", err);
+      toast.error("네트워크 오류 발생");
+    }
+  };
 
   const handleIncrease = (id) => {
     setCounts((prev) => ({ ...prev, [id]: Math.min(prev[id] + 1, 10) }));
@@ -186,6 +298,17 @@ function Cart() {
       : sum;
   }, 0);
 
+  const discountedTotal = Math.max(totalPrice - totalPoint);
+
+  const handleMileageChange = (e) => {
+    const value = parseInt(e.target.value) || 0;
+
+    if (value < 0) setTotalPoint(0);
+    else if (value > userMileage) setTotalPoint(userMileage);
+    else if (value > totalPrice) setTotalPoint(totalPrice);
+    else setTotalPoint(value);
+  };
+
   const handleOpenAddressModal = () => {
     setIsModalShow(true);
   };
@@ -200,13 +323,12 @@ function Cart() {
     if (!tokenStr) return null;
 
     try {
-
-    const tokenObj = JSON.parse(tokenStr);
-    const decoded = jwtDecode(tokenObj.token);
-    return decoded.sub; 
-  } catch (error) {
-    console.error("토큰 디코딩 실패:", error);
-    return null;
+      const tokenObj = JSON.parse(tokenStr);
+      const decoded = jwtDecode(tokenObj.token);
+      return decoded.sub;
+    } catch (error) {
+      console.error("토큰 디코딩 실패:", error);
+      return null;
     }
   };
 
@@ -221,7 +343,6 @@ function Cart() {
       toast.error("결제할 상품을 선택해주세요");
       return;
     }
-    console.log(cartItems);
 
     const productName =
       selectedItems.length === 1
@@ -231,22 +352,21 @@ function Cart() {
     const quantity = selectedItems.map((item) => counts[item.productId]);
     const address = selectedAddress.address;
     const detailAddress = selectedAddress.detailAddress;
-    if(!address || !detailAddress) {
+    if (!address || !detailAddress) {
       toast.error("주소를 입력해주세요");
       return;
     }
-    console.log(pIdList);
-    console.log(quantity);
-    console.log(address);
-    console.log(detailAddress);
-    console.log(totalmileage); 
+    if (discountedTotal < 100) {
+      toast.error("최소 결제 금액은 100원 이상이어야 합니다.");
+      return;
+    }
 
     IMP.request_pay(
       {
         pg: "html5_inicis",
         pay_method: "card",
         name: productName,
-        amount: totalPrice,
+        amount: discountedTotal,
         buyer_name: getUidFromToken(),
         buyer_email: "",
       },
@@ -255,7 +375,6 @@ function Cart() {
           const raw = localStorage.getItem("token");
           const token = raw ? JSON.parse(raw).token : null;
           const uId = getUidFromToken();
-          console.log(uId);
           try {
             const res = await fetch(`${API_BASE_URL}/order/complete`, {
               method: "POST",
@@ -271,10 +390,35 @@ function Cart() {
                 address: address,
                 detailAddress: detailAddress,
                 mileage: totalmileage,
+                usedPoint: totalPoint,
               }),
             });
 
             await fetch(`${API_BASE_URL}/order/saveMileage`, {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                uId: uId,
+                mileage: totalmileage,
+              }),
+            });
+
+            await fetch(`${API_BASE_URL}/order/minusMileage`, {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                uId: uId,
+                usedPoint: totalPoint,
+              }),
+            });
+
+            await fetch(`${API_BASE_URL}/order/plusMileage`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
@@ -297,11 +441,13 @@ function Cart() {
               }),
             });
 
-            const selectedProductIds = selectedItems.map((item) => item.productId);
-        const newCartItems = cartItems.filter(
-          (item) => !selectedProductIds.includes(item.productId)
-        );
-        setCartItems(newCartItems);
+            const selectedProductIds = selectedItems.map(
+              (item) => item.productId
+            );
+            const newCartItems = cartItems.filter(
+              (item) => !selectedProductIds.includes(item.productId)
+            );
+            setCartItems(newCartItems);
 
             const text = await res.text();
             toast.error(text);
@@ -310,7 +456,7 @@ function Cart() {
             console.log(err);
           }
         } else {
-          toast.err("결제가 취소 되었습니다.");
+          toast.error("결제가 취소 되었습니다.");
         }
       }
     );
@@ -327,6 +473,95 @@ function Cart() {
         theme="colored"
       />
       <h1 className="text-3xl font-bold text-center my-10">장바구니</h1>
+
+      <div className="p-6 space-y-4 w-full max-w-4xl mx-auto">
+        <div className="text-xs">
+          <span className="cursor-pointer px-2" onClick={selectAll}>
+            전체선택
+          </span>
+          <span className="cursor-pointer" onClick={deselectAll}>
+            전체해제
+          </span>
+        </div>
+
+        {cartItems.length === 0 ? (
+          <div className="flex justify-center items-center h-60 text-gray-500 text-lg">
+            장바구니에 제품이 없습니다.
+          </div>
+        ) : (
+          cartItems.map((item, idx) => (
+            <div
+              key={idx}
+              className="h-40 flex items-center justify-around border-y border-y-gray-400"
+            >
+              <input
+                className="h-5"
+                type="checkbox"
+                checked={checkedItems[item.productId] || false}
+                onChange={() => toggleCheckbox(item.productId)}
+              />
+              <img
+                className="h-30 w-30"
+                src={`${API_BASE_URL}/${encodeURIComponent(item.images)}`}
+                alt="상품 이미지"
+              />
+              <span className="w-1/5">
+                {item.name.length > 13
+                  ? item.name.slice(0, 13) + "..."
+                  : item.name}
+              </span>
+              <div className="flex items-center border border-gray-300 rounded">
+                <button
+                  onClick={() => handleDecrease(item.productId)}
+                  className="px-3 py-1"
+                >
+                  -
+                </button>
+                <span className="px-3">{counts[item.productId]}</span>
+                <button
+                  onClick={() => handleIncrease(item.productId)}
+                  className="px-3 py-1 text-lg"
+                >
+                  +
+                </button>
+              </div>
+              <span>
+                {(item.prices * counts[item.productId]).toLocaleString()}원
+              </span>
+
+              <button
+                className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
+                onClick={() => handleDelete(item.productId)}
+              >
+                삭제
+              </button>
+            </div>
+          ))
+        )}
+        <div className="flex justify-end items-center gap-4 mt-4">
+          <span>보유 포인트: {userMileage.toLocaleString()}P</span>
+          사용 포인트:
+          <input
+            type="number"
+            min="100"
+            max={Math.min(userMileage, totalPrice)}
+            value={totalPoint}
+            onChange={handleMileageChange}
+            className="ml-2 p-1 border rounded w-24 text-right"
+          />
+          P
+        </div>
+
+        <div className="flex justify-end mt-2">
+          최종 결제 금액: {discountedTotal.toLocaleString()}원
+        </div>
+        <div className="flex justify-end mt-2">
+          추가 마일리지: {totalmileage.toLocaleString()}점
+        </div>
+        <div className="flex justify-end mt-2">
+          추가 포인트: {totalmileage.toLocaleString()}P
+        </div>
+      </div>
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
         <div className="w-30">
@@ -366,7 +601,62 @@ function Cart() {
           />
         </div>
       </div>
+      <div className="flex flex-col justify-center my-16">
+        <div className="flex justify-center my-4">
+          <button
+            onClick={() => setShowInput(true)}
+            className="bg-primary-500 text-white px-6 py-2 rounded"
+          >
+            배송지 추가
+          </button>
+        </div>
 
+        {showInput && (
+          <div className="flex flex-col gap-3 border p-4 rounded mb-4">
+            <input
+              type="text"
+              value={postAddress}
+              placeholder="우편번호"
+              className="border border-gray-300 rounded px-3 py-2"
+              readOnly
+              onClick={() => window.getAddress()}
+            />
+            <input
+              type="text"
+              value={address}
+              placeholder="주소"
+              className="border border-gray-300 rounded px-3 py-2"
+              readOnly
+              onClick={() => window.getAddress()}
+            />
+            <input
+              id="detail"
+              type="text"
+              value={detailAddress}
+              onChange={(e) => setDetailAddress(e.target.value)}
+              placeholder="상세 주소"
+              className="border border-gray-300 rounded px-3 py-2"
+            />
+
+            <div id="map" className="w-full h-[350px] border mt-2" />
+
+            <div className="flex justify-center gap-2">
+              <button
+                className="bg-gray-400 text-white px-6 py-2 rounded"
+                onClick={() => setShowInput(false)}
+              >
+                취소
+              </button>
+              <button
+                className="bg-primary-500 text-white px-6 py-2 rounded"
+                onClick={handleSave}
+              >
+                주소 저장
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
         <div>
           <span className="text-left block text-lg font-semibold">
@@ -384,86 +674,13 @@ function Cart() {
         </div>
       </div>
 
-      <div className="p-6 space-y-4 w-full max-w-4xl mx-auto">
-        <div className="text-xs">
-          <span className="cursor-pointer px-2" onClick={selectAll}>
-            전체선택
-          </span>
-          <span className="cursor-pointer" onClick={deselectAll}>
-            전체해제
-          </span>
-        </div>
-        {cartItems.length === 0 ? (
-            <div className="flex justify-center items-center h-60 text-gray-500 text-lg">
-              장바구니에 제품이 없습니다.
-            </div>
-          ) : (
-        cartItems.map((item, idx) => (
-          <div
-            key={idx}
-            className="h-40 flex items-center justify-around border-y border-y-gray-400"
-          >
-            <input
-              className="h-5"
-              type="checkbox"
-              checked={checkedItems[item.productId] || false}
-              onChange={() => toggleCheckbox(item.productId)}
-            />
-            <img
-              className="h-30 w-30" 
-              src={`${API_BASE_URL}/${encodeURIComponent(item.images)}`}
-              alt="상품 이미지"
-            />
-            <span className="w-1/5">
-              {item.name.length > 13
-                ? item.name.slice(0, 13) + "..."
-                : item.name}
-            </span>
-            <div className="flex items-center border border-gray-300 rounded">
-              <button
-                onClick={() => handleDecrease(item.productId)}
-                className="px-3 py-1"
-              >
-                -
-              </button>
-              <span className="px-3">{counts[item.productId]}</span>
-              <button
-                onClick={() => handleIncrease(item.productId)}
-                className="px-3 py-1 text-lg"
-              >
-                +
-              </button>
-            </div>
-            <span>
-              {(item.prices * counts[item.productId]).toLocaleString()}원
-            </span>
-
-            <button
-              className="bg-primary-500 border-primary-500 text-white rounded px-4 py-1 cursor-pointer"
-              onClick={() => handleDelete(item.productId)}
-            >
-              삭제
-            </button>
-          </div>
-        ))
-      )}
-
-        <div className="flex justify-end">
-          최종 결제 금액: {totalPrice.toLocaleString()}원
-        </div>
-
-        <div className="flex justify-end">
-          최종 마일리지: {totalmileage.toLocaleString()}포인트
-        </div>
-
-        <div className="flex justify-center my-16">
-          <button
-            className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer"
-            onClick={handlePayment}
-          >
-            결제하기
-          </button>
-        </div>
+      <div className="flex justify-center my-16">
+        <button
+          className="bg-primary-500 text-white font-bold rounded py-4 px-8 cursor-pointer"
+          onClick={handlePayment}
+        >
+          결제하기
+        </button>
       </div>
 
       {isModalShow && (
@@ -472,8 +689,6 @@ function Cart() {
             {addresses.map((item, idx) => (
               <li
                 key={idx}
-
-                
                 onClick={() => handleSelectAddress(item)}
                 className="border p-2 rounded cursor-pointer hover:bg-gray-100"
               >
