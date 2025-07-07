@@ -69,13 +69,26 @@ export const menuData = [
       {
         subTitle: "그린리모델링 신청",
         subLink: "/remodeling-request",
-        businessHidden: true,
       },
       {
         subTitle: "그린리모델링 목록",
         subLink: "/remodeling-list",
       },
     ],
+  },
+  {
+    title: "소개",
+    link: "/green-consumption",
+    sub: [
+      {
+        subTitle: "녹색 소비 소개",
+        subLink:"/green-consumption",
+      },
+      {
+        subTitle: "그린리모델링 소개",
+        subLink: "/introduction-remodeling",
+      }
+    ]
   },
 
   {
@@ -116,7 +129,7 @@ export const menuArray = [
             subLink: "/certify-business"
         },
         {
-            subTitle: "그린리모델링 신청내역",
+            subTitle: "그린리모델링 사업자내역",
             subLink: "/remodeling-request-list"
         },
         {
@@ -161,6 +174,20 @@ export const menuArray = [
         subLink: "/remodeling-list",
       },
     ],
+  },
+  {
+    title: "소개",
+    link: "/green-consumption",
+    sub: [
+      {
+        subTitle: "녹색 소비 소개",
+        subLink:"/green-consumption",
+      },
+      {
+        subTitle: "그린리모델링 소개",
+        subLink: "/introduction-remodeling",
+      }
+    ]
   },
 
   {

@@ -4,7 +4,6 @@ import { getCookieValue } from "../../helpers/cookieHelper";
 import { jwtDecode } from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function RemodelingList() {
@@ -19,7 +18,6 @@ function RemodelingList() {
   const parsed = stored ? JSON.parse(stored) : {};
   const uId = parsed?.id;
   const token = parsed?.token;
-  const navigate =  useNavigate();
 
   useEffect(() => {
     if (jwtToken) {
@@ -40,8 +38,8 @@ function RemodelingList() {
 
   useEffect(() => {
     if (!token){
-      alert("로그인이 필요합니다.");
-      navigate("/login")
+      toast.error("로그인이 필요합니다.");
+      window.Location.href = "/login";
       return;
     } 
     fetch(`${API_BASE_URL}/api/findAllRemodeling`, {
@@ -256,3 +254,4 @@ function RemodelingList() {
 }
 
 export default RemodelingList;
+  

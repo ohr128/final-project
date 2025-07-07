@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -73,7 +74,10 @@ function CertifyBusiness() {
 
       const authNum = ocrRes.data.auth_num;
       const b_no = authNum?.replace(/-/g, "");
-      if (!b_no) return toast.error("사업자번호 추출 실패");
+      if (!b_no) { 
+        setIsLoding(false);
+        return toast.error("사업자번호 추출 실패")
+      };
 
       const verifyRes = await axios.post(
         `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=AsKsksTbcdg8cukGUyiMQU%2FawtOq%2BcmyZvZBfGoOZHhAHXweFUxP2W1ysiSuZ6Yh%2Bnsh2KIOC%2FNQDron%2BV9iBQ%3D%3D`,
@@ -86,6 +90,7 @@ function CertifyBusiness() {
         !result ||
         result.tax_type === "국세청에 등록되지 않은 사업자등록번호입니다."
       ) {
+        setIsLoding(false);
         return toast.error("국세청에 등록되지 않은 사업자등록번호입니다.");
       }
 
@@ -100,7 +105,6 @@ function CertifyBusiness() {
           }, 1200);
         return
       } 
-
 
       const saveFormData = new FormData();
       saveFormData.append("registrationNum", b_no);
@@ -129,14 +133,30 @@ function CertifyBusiness() {
           },
         }
       );
-      toast.success("사업자 전환");
-      
+      toast.success("사업자 전환이 완료되었습니다. 다시 로그인 해주세요.");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+      localStorage.removeItem("token");
+      navigate("/login");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data || "";
+        const status = error.response?.status;
 
-    } catch (err) {
-      console.error("등록 실패:", err);
-      toast.error("등록 중 오류 발생");
-    }
-    setIsLoding(false);
+        if (
+          status === 500
+        ) {
+          alert("등록 실패: 중복된 인증번호가 있습니다.");
+        } else {
+          console.error("등록 실패:", message);
+          alert("등록 중 오류 발생");
+        }
+      } else {
+        console.error("예상치 못한 오류:", error);
+        alert("등록 실패: 알 수 없는 오류 발생");
+      }
+    } 
   };
 
   const handledelete = async (uId) => {
@@ -177,8 +197,8 @@ function CertifyBusiness() {
         if (businessRes.ok) {
           toast.success("사업자 등록 및 권한이 모두 삭제되었습니다.");
           window.location.reload();
-        } 
-      } 
+        }
+      }
     } catch (err) {
       console.error("삭제 에러:", err);
       toast.error("삭제 중 오류 발생");

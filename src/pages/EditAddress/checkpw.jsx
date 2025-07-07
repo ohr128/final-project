@@ -13,15 +13,14 @@ function Checkpw() {
   const parsed = token ? JSON.parse(token) : null;
   const userId = parsed?.id;
   const handleCheck = async (e) => {
+    e.preventDefault();
 
-        if (!token) {
+    if (!token) {
       toast.error("로그인이 필요합니다.");
       setTimeout(() => {
         navigate("/login");
       }, 1500);
     }
-
-    e.preventDefault()
 
     try {
       const response = await fetch(

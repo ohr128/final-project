@@ -73,8 +73,10 @@ function FindId() {
 
     try {
       const res = await axios.get(`${API_BASE_URL}/api/user/Id`, {
-        params: { email },  
+        params: { email },
       });
+
+
 
       if (res.data?.id) {
         navigate("/showId", { state: { userId: res.data.id } });

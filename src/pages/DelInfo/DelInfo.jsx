@@ -18,9 +18,8 @@ function DelInfo() {
     if (rawToken) {
       const parsed = JSON.parse(rawToken);
       setUserId(parsed?.id || null);
-      setToken(parsed?.token?.token || null);
+      setToken(parsed?.token || null);
     }
-
   }, []);
 
   const handleDelete = async () => {
@@ -77,9 +76,20 @@ function DelInfo() {
       if (delRes.ok) {
         toast.success("회원 탈퇴가 완료되었습니다.");
         setTimeout(() => {
-            navigate("/");
-          }, 1200);
-        sessionStorage.clear();
+            window.location.href = "/";
+          }, 2000);
+
+        try {
+          await fetch("http://localhost:8080/api/user/sign-out", {
+            method: "POST",
+            credentials: "include",
+          });
+        } catch (error) {
+          console.error("로그아웃 실패", error);
+        }
+        localStorage.removeItem("token");
+
+        navigate("/login");
       } else {
         const errText = await delRes.text();
         console.error("탈퇴 실패:", errText);
@@ -123,7 +133,7 @@ function DelInfo() {
               <span>탈퇴 시 모든 이용내역은 삭제되며, 복구가 불가능합니다.</span>
               <span>보유 중인 쿠폰, 적립금 등 모든 혜택은 소멸됩니다.</span>
               <span>배송 중이거나 반품이 진행 중인 내역이 있을 경우, 탈퇴가 제한됩니다.</span>
-              <span>탈퇴 후 동일한 아이디로 재가입하실 수 없습니다.</span>
+              <span>탈퇴 후 동일한 이메일로 재가입하실 수 없습니다.</span>
               <span>
                 상기 내용을 모두 확인하였으며 이에 동의하시는 경우, 아래 빈칸에{" "}
                 <span className="text-primary-500 font-bold">‘동의합니다’</span>를 정확히 입력해 주세요.

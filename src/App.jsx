@@ -38,6 +38,8 @@ import RemodelingRequestList from "./pages/RemodelingRequestList/RemodelingReque
 import Performance from "./pages/Performance/Performance";
 import Forecast from "./pages/Forecast/Forecast";
 import Management from "./pages/Management/Management";
+import IntroductionRemodeling from "./pages/IntroductionRemodeling/IntroductionRemodeling";
+import GreenConsumption from "./pages/GreenConsumption/GreenConsumption";
 
 function App() {
   const location = useLocation();
@@ -72,7 +74,7 @@ function App() {
           />
         </div>
       )}
-
+            
       <div className="container m-auto">
         <Routes>
           <Route path="/" element={<Home />} />
