@@ -1,9 +1,9 @@
 import axios from "axios";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -37,7 +37,7 @@ function RemodelingRequest() {
   console.log("욕실 개수",bathroomCount);
   console.log("방 개수",roomCount);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   
   const stored = localStorage.getItem("token");
     const parsed = stored ? JSON.parse(stored) : {};
@@ -176,9 +176,9 @@ function RemodelingRequest() {
       });
       toast.success("신청이 완료되었습니다.");
       setTimeout(() => {
-        window.location.href = "/estimate";
+        navigate("/estimate");
       }, 500);
-      // navigate("/estimate");
+      
     } catch (error) {
       if(error.response && error.response.status === 500) {
         toast.error("방, 욕실 개수를 확인해주세요.");
@@ -202,7 +202,22 @@ function RemodelingRequest() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/remodeling-request" />
-      <ToastContainer position="top-center" />
+
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        />
+
+
       <div className="w-4/5  flex justify-center">
         <div className="w-full max-w-3xl flex flex-col mt-20">
           <h1 className="p-10 text-2xl font-bold text-center">

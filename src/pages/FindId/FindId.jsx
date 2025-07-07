@@ -52,8 +52,8 @@ function FindId() {
       if (res.status === 200) {
         toast.success("인증 성공! 아이디 찾기를 눌러주세요.");
         setTimeout(() => {
-                window.location;
-              }, 2000);
+            navigate("/showId");
+          }, 1200);
 
         setIsVerified(true);
       } else {
@@ -91,6 +91,16 @@ function FindId() {
 
   return (
     <div className="container font-notokr">
+
+      <ToastContainer
+        position="top-center"
+        hideProgressBar={true}
+        autoClose={1000}
+        closeOnClick
+        theme="colored"
+        toastStyle={{ width: "400px", fontSize: "16px", whiteSpace: "normal" }}
+      />
+
       <div className="mt-30">
         <div className="flex justify-center mb-16">
           <Link to="/">

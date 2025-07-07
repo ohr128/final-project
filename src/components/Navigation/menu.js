@@ -12,22 +12,7 @@ export const menuData = [
             subTitle: "주문내역",
             subLink: "/order-detail"
         },
-        {
-            subTitle: "사업자등록증",
-            subLink: "/certify-business"
-        },
-        {
-            subTitle: "그린리모델링 신청내역",
-            subLink: "/remodeling-request-list"
-        },
-        {
-            subTitle: "녹색제품 인증",
-            subLink: "/certify-green"
-        },
-        {
-            subTitle: "녹색제품 등록내역",
-            subLink: "/green-register-list"
-        },
+        
         {
           subTitle: "회원정보수정",
           subLink: "/checkpw2",
@@ -38,6 +23,30 @@ export const menuData = [
         }
     ],
   },
+
+  {
+    title: "인증&등록",
+    link: "/certify-green",
+    sub: [
+      {
+            subTitle: "녹색제품 인증",
+            subLink: "/certify-green"
+        },
+        {
+            subTitle: "녹색제품 등록내역",
+            subLink: "/green-register-list"
+        },
+        {
+            subTitle: "사업자등록증",
+            subLink: "/certify-business"
+        },
+        {
+            subTitle: "그린리모델링 신청내역",
+            subLink: "/remodeling-request-list"
+        },
+    ],
+  },
+  
   {
     title: "스토어",
     link: "/green-product",
@@ -60,13 +69,26 @@ export const menuData = [
       {
         subTitle: "그린리모델링 신청",
         subLink: "/remodeling-request",
-        businessHidden: true,
       },
       {
         subTitle: "그린리모델링 목록",
         subLink: "/remodeling-list",
       },
     ],
+  },
+  {
+    title: "소개",
+    link: "/green-consumption",
+    sub: [
+      {
+        subTitle: "녹색 소비 소개",
+        subLink:"/green-consumption",
+      },
+      {
+        subTitle: "그린리모델링 소개",
+        subLink: "/introduction-remodeling",
+      }
+    ]
   },
 
   {
@@ -107,7 +129,7 @@ export const menuArray = [
             subLink: "/certify-business"
         },
         {
-            subTitle: "그린리모델링 신청내역",
+            subTitle: "그린리모델링 사업자내역",
             subLink: "/remodeling-request-list"
         },
         {
@@ -152,6 +174,20 @@ export const menuArray = [
         subLink: "/remodeling-list",
       },
     ],
+  },
+  {
+    title: "소개",
+    link: "/green-consumption",
+    sub: [
+      {
+        subTitle: "녹색 소비 소개",
+        subLink:"/green-consumption",
+      },
+      {
+        subTitle: "그린리모델링 소개",
+        subLink: "/introduction-remodeling",
+      }
+    ]
   },
 
   {
