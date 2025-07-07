@@ -96,7 +96,6 @@ function RemodelingRequestList() {
         }
       });
     });
-  });
 
     return () => clearTimeout(timer);
   }, [openAccordionId, remodelingList]);
@@ -187,7 +186,6 @@ function RemodelingRequestList() {
         >
           <div className="px-4">{content}</div>
         </div>
-      </div>
     </div>
   );
 
