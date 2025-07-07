@@ -6,9 +6,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_PYTHON = import.meta.env.VITE_API_PYTHON;
-import { useNavigate } from "react-router-dom";
-
-
 
 function CertifyBusiness() {
   const [selectedImage, setSelectedImage] = useState();
