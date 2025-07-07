@@ -35,6 +35,10 @@ function DelInfo() {
 
     if (!token || !userId) {
       toast.error("사용자 정보가 없습니다. 다시 로그인 해주세요.");
+      setTimeout(() => {
+        navigate("/login")
+      }, 1500);
+
       return;
     }
 
@@ -72,10 +76,9 @@ function DelInfo() {
       if (delRes.ok) {
         toast.success("회원 탈퇴가 완료되었습니다.");
         setTimeout(() => {
-            window.location.href = "/";
-          }, 2000);
+            navigate("/");
+          }, 1200);
         sessionStorage.clear();
-        navigate("/");
       } else {
         const errText = await delRes.text();
         console.error("탈퇴 실패:", errText);
@@ -87,9 +90,27 @@ function DelInfo() {
     }
   };
 
+  
   return (
     <div className="flex font-notokr">
       <SideMenu from="/checkpw2" />
+
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        toastStyle={{ width: "500px", fontSize: "16px", whiteSpace: "normal" }}
+        />
+
+
 
       <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-3xl flex flex-col mt-20 gap-5">

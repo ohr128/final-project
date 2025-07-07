@@ -2,8 +2,6 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import { Pie } from "react-chartjs-2";
 import { useEffect, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -20,12 +18,6 @@ function Performance() {
     const rawToken = localStorage.getItem("token");
     const parsed = rawToken ? JSON.parse(rawToken) : null;
     const token = parsed?.token;
-
-    if (!token) {
-      toast.error("로그인이 필요합니다.");
-      setIsLoading(false);
-      return;
-    }
 
     Promise.all([
       fetch("http://localhost:8080/order/countOrder", {
@@ -54,7 +46,6 @@ function Performance() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/performance" />
-      <ToastContainer position="top-center" />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-4 text-2xl font-semibold ml-10">사업실적

@@ -16,6 +16,7 @@ function GreenDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [count, setCount] = useState(1);
   const [reviews, setReviews] = useState([]);
+  const navigate = useNavigate();
 
   const nav = useNavigate();
 
@@ -63,6 +64,9 @@ function GreenDetail() {
     const token = JSON.parse(localStorage.getItem("token"))?.token;
     if (!token) {
       toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        navigate("/login")
+      }, 1500);
       return;
     }
 
@@ -92,6 +96,9 @@ function GreenDetail() {
     const token = JSON.parse(localStorage.getItem("token"))?.token;
     if (!token) {
       toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        navigate("/login")
+      }, 1500);
       return;
     }
 
@@ -123,7 +130,21 @@ function GreenDetail() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/green-product" />
-      <ToastContainer position="top-center" />
+
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        />
+
       <div className="w-4/5 px-6">
         <div className="flex justify-evenly mt-20 mb-8">
           <div className="relative w-3/5 h-90 mr-8 border-gray-400">

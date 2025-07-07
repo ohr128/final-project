@@ -16,7 +16,16 @@ function Checkpw2() {
     const parsed = token ? JSON.parse(token) : null;
     const userId = parsed?.id;
 
+    if (!token) {
+      toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        navigate("/login")
+      }, 1500);
+    }
+
+    
     e.preventDefault();
+    
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
@@ -44,7 +53,21 @@ function Checkpw2() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/checkpw2" />
-      <ToastContainer position="top-center" />
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        />
+
+
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-md flex flex-col text-center mt-20">
           <h1 className="p-10 text-2xl font-bold">회원정보 확인</h1>

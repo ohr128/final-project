@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Link} from "react-router-dom";
 import kakao from "../../assets/KakaoTalk_logo.png";
 import logo from "../../assets/logo.png";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -17,7 +16,6 @@ const { Kakao } = window;
 function Login() {
   const [id, setId] = useState("");
   const [password, setPw] = useState("");
-  // const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -43,12 +41,12 @@ function Login() {
       toast.success("로그인 성공");
       setTimeout(() => {
         window.location.href = "/";
-      }, 1500);
+      }, 1200);
 
-      // navigate("/");
+
     } catch (error) {
       console.log(error);
-      toast.error("로그인실패: 아이디 또는 비밀번호를 확인해주세요");
+      toast.error("아이디 또는 비밀번호를 확인해주세요.");
     }
   };
 
@@ -60,7 +58,15 @@ function Login() {
 
   return (
     <div className="container m-auto">
-      <ToastContainer position="top-center" />
+      
+      <ToastContainer
+        position="top-center"
+        hideProgressBar={true}
+        autoClose={1000}
+        closeOnClick
+        theme="colored"
+      />
+
       <div className="mt-30">
         <div className="flex justify-center mb-16">
           <Link to="/">

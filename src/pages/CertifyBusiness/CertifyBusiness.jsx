@@ -3,6 +3,8 @@ import SideMenu from "../../components/SideMenu/SideMenu";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
 
 
 function CertifyBusiness() {
@@ -12,6 +14,7 @@ function CertifyBusiness() {
   const [uId, setUId] = useState(null);
   const [isLoding, setIsLoding] = useState(false);
   const fileInputRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const rawToken = localStorage.getItem("token");
@@ -88,7 +91,14 @@ function CertifyBusiness() {
       const parsed = rawToken ? JSON.parse(rawToken) : null;
       const token = parsed?.token;
 
-      if (!token) return toast.error("로그인이 필요합니다.");
+      if (!token){
+        toast.error("로그인이 필요합니다.");
+          setTimeout(() => {
+            navigate("/login");
+          }, 1200);
+        return
+      } 
+
 
       const saveFormData = new FormData();
       saveFormData.append("registrationNum", b_no);
@@ -103,8 +113,9 @@ function CertifyBusiness() {
 
       toast.success("사업자 등록이 완료되었습니다.");
       setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+            navigate("/login");
+          }, 1200);
+
 
       await axios.post(
         "http://localhost:8080/api/user/UserRole",
@@ -117,9 +128,8 @@ function CertifyBusiness() {
         }
       );
       toast.success("사업자 전환");
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+      
+
     } catch (err) {
       console.error("등록 실패:", err);
       toast.error("등록 중 오류 발생");
@@ -133,6 +143,9 @@ function CertifyBusiness() {
 
     if (!token) {
       toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+            navigate("/login");
+          }, 1200);
       return;
     }
 
@@ -161,9 +174,6 @@ function CertifyBusiness() {
         );
         if (businessRes.ok) {
           toast.success("사업자 등록 및 권한이 모두 삭제되었습니다.");
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
           window.location.reload();
         } 
       } 
@@ -176,7 +186,23 @@ function CertifyBusiness() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/certify-business" />
-      <ToastContainer position="top-center" />
+      
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        toastStyle={{ width: "500px", fontSize: "16px", whiteSpace: "normal" }}
+        />
+
+
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-10 text-2xl font-semibold">사업자 등록증</span>

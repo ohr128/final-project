@@ -70,6 +70,9 @@ function TakeBack() {
     const token = raw ? JSON.parse(raw)?.token : null;
     if (!token) {
       toast.error("로그인 필요");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
       return;
     }
 
@@ -97,7 +100,7 @@ function TakeBack() {
         toast.success("반품이 완료되었습니다.");
         setTimeout(() => {
           window.location.href = "/order-detail";
-        }, 2000);
+        }, 1500);
       } else {
         const errorMsg = await res.text();
         toast.error("반품 요청 실패: " + errorMsg);
@@ -110,7 +113,14 @@ function TakeBack() {
 
   return (
     <div className="font-notokr p-6 flex flex-col">
-      <ToastContainer position="top-center" />
+      <ToastContainer
+        position="top-center"
+        hideProgressBar={true}
+        autoClose={1000}
+        closeOnClick
+        theme="colored"
+      />
+
       <span className="text-xl font-bold my-10 text-center">{productName}</span>
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
@@ -130,9 +140,9 @@ function TakeBack() {
         </div>
       </div>
 
-      <div className="flex justify-center gap-20 mb-10">
-        <span>환불금액: {totalRefundAmount.toLocaleString()}원</span>
-        <span>포인트 차감: {totalPointUsed}P</span>
+      <div className="flex justify-center gap-20 mb-10 ml-20">
+        <span>환불금액: {totalRefundAmount.toLocaleString()} 원</span>
+        <span>포인트 차감: {totalPointUsed} P</span>
       </div>
 
       <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
@@ -195,7 +205,9 @@ function TakeBack() {
                 className="border border-gray-300 my-6 p-4 rounded cursor-pointer hover:bg-green-50 hover:border-primary-500 flex flex-col gap-2"
               >
                 <p className="text-sm text-left">{item.detailAddress}</p>
-                <p className="text-sm text-gray-500 text-left">({item.postAddress})</p>
+                <p className="text-sm text-gray-500 text-left">
+                  ({item.postAddress})
+                </p>
                 <p>{item.address}</p>
               </li>
             ))}

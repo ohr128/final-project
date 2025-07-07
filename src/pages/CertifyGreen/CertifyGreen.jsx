@@ -73,7 +73,21 @@ function CertifyGreen() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/certify-green" />
-      <ToastContainer position="top-center" />
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        toastStyle={{ width: "500px", fontSize: "16px", whiteSpace: "normal" }}
+        />
+        
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-10 text-2xl font-semibold">녹색기술제품 확인서</span>

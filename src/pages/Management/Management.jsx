@@ -1,11 +1,13 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Management() {
   const [openAccordionId, setOpenAccordionId] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const navigate = useNavigate();
 
   const fetchReviews = async () => {
     const rawToken = localStorage.getItem("token");
@@ -14,7 +16,9 @@ function Management() {
 
     if (!token) {
       toast.error("로그인이 필요합니다.");
-      return;
+      setTimeout(() => {
+        navigate("/login")
+      }, 1500);
     }
 
     try {
@@ -48,7 +52,9 @@ function Management() {
 
     if (!token) {
       toast.error("로그인이 필요합니다.");
-      return;
+      setTimeout(() => {
+        navigate("/login")
+      }, 1500);
     }
 
     try {
@@ -72,7 +78,7 @@ function Management() {
 
       if (res.ok) {
         toast.success("삭제 성공");
-        setTimeout(fetchReviews, 500); // 알림이 보이도록 약간 지연
+        setTimeout(fetchReviews, 500);
       }
     } catch (err) {
       console.error("삭제 에러:", err);
@@ -161,7 +167,22 @@ function Management() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/management" />
-      <ToastContainer position="top-center" />
+
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        />
+
+
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-4 text-2xl font-semibold">리뷰관리</span>

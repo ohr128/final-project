@@ -28,9 +28,6 @@ const handleSendCode = async () => {
 
         if(res.ok) {
             toast.success("인증번호가 이메일로 발송되었습니다.");
-            setTimeout(() => {
-                window.location;
-            }, 2000);
         } else {
             toast.error("이메일 주소를 확인해 주세요");
         }
@@ -50,9 +47,6 @@ const handleVerifyCode = async () => {
         }
     );
     toast.success("이메일 인증 완료");
-    setTimeout(() => {
-        window.location;
-      }, 2000);
     }catch(error) {
         console.log(error);
     }
@@ -105,7 +99,14 @@ const checkPasswordMatch = async (confirm) => {
     return(
 
         <div className="container font-notokr">
-            <ToastContainer position="top-center" />
+            
+            <ToastContainer
+                position="top-center"
+                hideProgressBar={true}
+                autoClose={1000}
+                closeOnClick
+                theme="colored"
+            />
             
             <div className="mt-30">
 

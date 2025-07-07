@@ -7,21 +7,6 @@ import { getCookieValue } from "../../helpers/cookieHelper";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 console.log("API_BASE_URL", API_BASE_URL);
 
-
-
-// function getJwtPayload(cookieName) {
-//   const token = getCookieValue(cookieName);
-//   try {
-//     const payloadBase64 = token.split('.')[1];
-//     const decodedPayload = JSON.parse(atob(payloadBase64));
-//     return decodedPayload;
-//   } catch (e) {
-//     console.error('Invalid JWT token:', e);
-//     return null;
-//   }
-// }
-
-
 function Navigation() {
   const [userRole, setUserRole] = useState(null);
   const location = useLocation();
@@ -31,7 +16,7 @@ function Navigation() {
   const isLoggedIn = !!jwtToken;
   console.log("userRole", userRole);
 
- useEffect(() => {
+  useEffect(() => {
   if (jwtToken) {
     try {
         const decoded = jwtDecode(jwtToken);
@@ -79,20 +64,20 @@ function Navigation() {
         <div className="w-full h-12 flex justify-end items-center text-s font-bold gap-6">
           {isLoggedIn ? (
             <>
-              <button onClick={handleLogout}>로그아웃</button>
-              <Link to="/cart">장바구니</Link>
+              <button onClick={handleLogout} className="hover:text-primary-500 cursor-pointer">로그아웃</button>
+              <Link to="/cart" className="hover:text-primary-500">장바구니</Link>
             </>
           ) : (
             <>
-              <Link to="/login">로그인</Link>
-              <Link to="/signUp">회원가입</Link>
-              <Link to="/cart">장바구니</Link>
+              <Link to="/login" className="hover:text-primary-500">로그인</Link>
+              <Link to="/signUp" className="hover:text-primary-500">회원가입</Link>
+              <Link to="/cart" className="hover:text-primary-500">장바구니</Link>
             </>
           )}
         </div>
       </div>
 
-      <ul className="flex justify-around font-bold">
+      <ul className="flex justify-around mr-10 mt-2 gap-10 font-bold">
         {menuData.map((data, idx) => {
           if(data.adminOnly && !userRole?.includes("ROLE_ADMIN")) return null;
           const isMainLinkActive = location.pathname === data.link;

@@ -107,7 +107,14 @@ function SignUp(){
     return(
 
     <div className="container m-auto">
-      <ToastContainer position="top-center" />
+      
+      <ToastContainer
+        position="top-center"
+        hideProgressBar={true}
+        autoClose={1000}
+        closeOnClick
+        theme="colored"
+      />
 
         <div className="mt-30">
 
