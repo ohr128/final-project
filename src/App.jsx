@@ -110,6 +110,8 @@ function App() {
           <Route path="/performance" element={<Performance />} />
           <Route path="/forecast" element={<Forecast />} />
           <Route path="/management" element={<Management />} />
+          <Route path="/green-consumption" element={<GreenConsumption />} />
+          <Route path="/introduction-remodeling" element={<IntroductionRemodeling />} />
         </Routes>
       </div>
 
