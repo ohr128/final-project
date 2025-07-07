@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import kakao from "../../assets/KakaoTalk_logo.png";
 import logo from "../../assets/logo.png";
 
@@ -21,7 +21,7 @@ function Login() {
   const [password, setPw] = useState("");
   // const navigate = useNavigate();
 
-  const handleLogin = async (pId = id, pPwd = password) => {    
+  const handleLogin = async (pId = id, pPwd = password) => {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/api/user/sign-in`,
@@ -62,7 +62,18 @@ function Login() {
 
   return (
     <div className="container m-auto">
-      <ToastContainer position="top-center" />
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div className="mt-30">
         <div className="flex justify-center mb-16">
           <Link to="/">
@@ -85,7 +96,7 @@ function Login() {
             value={password}
             onChange={(e) => setPw(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleLogin();
               }
             }}
@@ -118,12 +129,18 @@ function Login() {
             <p>카카오톡 로그인</p>
           </button>
           <div>
-          <button className="w-50 h-10 border border-gray-300 bg-primary-500 mr-1 cursor-pointer" onClick={() => handleLogin(ADMIN_ID, ADMIN_PW)}>
-            <p className="text-white"> 관리자, 사업자 권한 </p>
-          </button>
-          <button className="w-50 h-10 border border-gray-300 bg-primary-500 cursor-pointer" onClick={() => handleLogin(USER_ID, USER_PW)}>
-            <p className="text-white"> 일반 사용자 권한 </p>
-          </button>
+            <button
+              className="w-50 h-10 border border-gray-300 bg-primary-500 mr-1 cursor-pointer"
+              onClick={() => handleLogin(ADMIN_ID, ADMIN_PW)}
+            >
+              <p className="text-white"> 관리자, 사업자 권한 </p>
+            </button>
+            <button
+              className="w-50 h-10 border border-gray-300 bg-primary-500 cursor-pointer"
+              onClick={() => handleLogin(USER_ID, USER_PW)}
+            >
+              <p className="text-white"> 일반 사용자 권한 </p>
+            </button>
           </div>
         </div>
       </div>

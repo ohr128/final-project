@@ -37,6 +37,8 @@ import RemodelingRequestList from "./pages/RemodelingRequestList/RemodelingReque
 import Performance from "./pages/Performance/Performance";
 import Forecast from "./pages/Forecast/Forecast";
 import Management from "./pages/Management/Management";
+import IntroductionRemodeling from "./pages/IntroductionRemodeling/IntroductionRemodeling";
+import GreenConsumption from "./pages/GreenConsumption/GreenConsumption";
 
 function App() {
   const location = useLocation();
@@ -87,6 +89,9 @@ function App() {
         <Route path="/green-register-list" element={<GreenRegisterList />} />
         <Route path="/edit-green" element={<EditGreen />} />
         <Route path="/certify-business" element={<CertifyBusiness />} />
+
+        <Route path="/introduction-remodeling" element={<IntroductionRemodeling />} />
+        <Route path="/green-consumption" element={<GreenConsumption />} />
 
 
         <Route path="/remodeling-request" element={<RemodelingRequest />} />
