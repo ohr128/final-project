@@ -9,40 +9,44 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+
 const API_PYTHON = import.meta.env.VITE_API_PYTHON;
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function Forecast() {
   const [chartData, setChartData] = useState(null);
-  const [isLoding, setIsLoding] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    setIsLoding(true);
+    setIsLoading(true);
+
     fetch(`${API_PYTHON}/predict`)
       .then((res) => res.json())
       .then((predicted) => {
         const counts = [
           352, 2749, 7725, 8551, 9278, 11427, 12005, 11955, 7217, 8381,
         ];
-        const labels = [];
+        const futureValues = Object.values(predicted);
+        const allValues = [...counts, ...futureValues];
 
-        for (let i = 0; i < counts.length; i++) {
-          labels.push((2014 + i).toString());
-        }
+        const labels = Array.from({ length: allValues.length }, (_, i) =>
+          (2014 + i).toString()
+        );
 
-        Object.keys(predicted).forEach((year) => {
-          labels.push(year);
-        });
+        const backgroundColors = [
+          ...Array(counts.length).fill("#30A63E"), 
+          ...Array(futureValues.length).fill("#FFA500"), 
+        ];
 
-        const values = [...counts, ...Object.values(predicted)];
         setChartData({
           labels,
           datasets: [
             {
               label: "연도별 사용량",
-              data: values,
-              backgroundColor: "#30A63E",
-              borderColor: "#30A63E",
+              data: allValues,
+              backgroundColor: backgroundColors,
+              borderColor: backgroundColors,
               borderWidth: 1,
             },
           ],
@@ -52,7 +56,7 @@ function Forecast() {
         console.error("예측 데이터 불러오기 실패:", err);
       })
       .finally(() => {
-        setIsLoding(false);
+        setIsLoading(false);
       });
   }, []);
 
@@ -64,7 +68,16 @@ function Forecast() {
           <span className="mb-4 text-2xl font-semibold">
             그린리모델링 사용량 예측
           </span>
-
+          <div className="flex justify-center gap-4 mt-2">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-[#30A63E] rounded-sm"></div>
+              <span>기존 사용량</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-[#FFA500] rounded-sm"></div>
+              <span>예측 사용량</span>
+            </div>
+          </div>
           <div className="border border-gray-300 p-8 my-10">
             {chartData ? (
               <Bar
@@ -73,8 +86,14 @@ function Forecast() {
                   responsive: true,
                   plugins: {
                     legend: {
-                      display: true,
-                      position: "top",
+                      display: false,
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          return `사용량: ${context.raw.toLocaleString()}`;
+                        },
+                      },
                     },
                   },
                   scales: {
@@ -89,7 +108,7 @@ function Forecast() {
             )}
           </div>
         </div>
-        {isLoding && (
+        {isLoading && (
           <div className="absolute top-90 left-20 size-full bg-[#ffffff88] flex justify-center pt-70">
             <div className="size-40 border-6 border-primary-500 border-t-gray-200 rounded-full animate-spin"></div>
           </div>

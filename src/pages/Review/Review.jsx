@@ -17,6 +17,7 @@ function Review() {
   const [imageFiles, setImageFiles] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviewText, setReviewText] = useState("");
+  const [rating, setRating] = useState();
   const [productId, setProductId] = useState(null);
   const navigate = useNavigate();
   const maxImages = 3;
@@ -79,12 +80,12 @@ function Review() {
     }
 
     try {
-      // 1. 리뷰 등록
       const reviewRes = await axios.post(
         `${API_BASE_URL}/api/review`,
         {
           pId: productId,
           rReview: reviewText,
+          rating: rating,
         },
         {
           headers: {
@@ -111,8 +112,9 @@ function Review() {
       toast.success("리뷰가 성공적으로 등록되었습니다.");
       setTimeout(() => {
         window.location;
-      }, 2000);
+      }, 1200);
       setReviewText("");
+      setRating();
       setPreviewImages([]);
       setImageFiles([]);
       setCurrentIndex(0);
@@ -127,7 +129,22 @@ function Review() {
     <div className="font-notokr flex min-h-screen">
       {" "}
       <SideMenu from="/order-detail" />
-      <ToastContainer position="top-center" />
+      
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        toastStyle={{ width: "500px", fontSize: "16px", whiteSpace: "normal" }}
+        />
+
       <div className="flex-1 p-6">
         {" "}
         <span className="text-xl font-bold my-10 text-center block">
@@ -148,7 +165,6 @@ function Review() {
             />
           </div>
         </div>
-        {/* 이미지 업로드 */}
         <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
           <div className="w-20">
             <span className="text-left block text-lg font-semibold">
@@ -202,7 +218,21 @@ function Review() {
             )}
           </div>
         </div>
-        {/* 등록 버튼 */}
+        <div className="p-6 space-y-4 w-full max-w-xl mx-auto flex">
+          <div className="w-20">
+            <span className="text-left block text-lg font-semibold">
+              별점(선택)
+            </span>
+          </div>
+          <div className="ml-4 flex-1">
+            <textarea
+              className="w-full border border-gray-300 p-2 rounded"
+              placeholder="소수점 1자리 까지 가능, 최대 9.9점"
+              value={rating}
+              onChange={(e) => setRating(e.target.value)}
+            />
+          </div>
+        </div>
         <div className="flex justify-center my-16">
           <button
             className="bg-primary-500 text-white rounded py-2 px-6 cursor-pointer"

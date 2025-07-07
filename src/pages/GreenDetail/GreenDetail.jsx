@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import { FaRegStar } from "react-icons/fa";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 import { toast, ToastContainer } from "react-toastify";
@@ -13,6 +14,8 @@ function GreenDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [count, setCount] = useState(1);
   const [reviews, setReviews] = useState([]);
+
+  const navigate = useNavigate();
 
   const nav = useNavigate();
 
@@ -60,6 +63,9 @@ function GreenDetail() {
     const token = JSON.parse(localStorage.getItem("token"))?.token;
     if (!token) {
       toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        navigate("/login")
+      }, 1500);
       return;
     }
 
@@ -75,7 +81,7 @@ function GreenDetail() {
       }),
     }).then(async (res) => {
       if (res.ok) {
-        alert("장바구니에 상품을 담았습니다.")
+        alert("장바구니에 상품을 담았습니다.");
         nav("/cart");
       } else {
         const text = await res.text();
@@ -90,6 +96,9 @@ function GreenDetail() {
     const token = JSON.parse(localStorage.getItem("token"))?.token;
     if (!token) {
       toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        navigate("/login")
+      }, 1500);
       return;
     }
 
@@ -120,12 +129,28 @@ function GreenDetail() {
 
   return (
     <div className="flex font-notokr">
+
       {product.classification === "녹색 제품" ? 
       <SideMenu from="/green-product" />
       :
       <SideMenu from="/green-energy-product" />
       }
-      <ToastContainer position="top-center" />
+      
+
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        />
+
       <div className="w-4/5 px-6">
         <div className="flex justify-evenly mt-20 mb-8">
           <div className="relative w-3/5 h-90 mr-8 border-gray-400">
@@ -167,8 +192,15 @@ function GreenDetail() {
           <div className="flex flex-col gap-3 flex-1">
             <span>제품명 : {product.name}</span>
             <span>가격 : {(product.prices * count).toLocaleString()}원</span>
-            <span>포인트 : {(product.mileage * count).toLocaleString()}포인트</span>
-
+            <span>
+              포인트 : {(product.mileage * count).toLocaleString()}포인트
+            </span>
+            {product.rating !== 0 && (
+              <div className="flex">
+                <FaRegStar className="mt-1" color="#ffc107" />
+                {product.rating}
+              </div>
+            )}
             <div className="w-25 flex items-center border border-gray-300 rounded">
               <button onClick={handleDecrease} className="px-3 py-1">
                 -
@@ -245,6 +277,12 @@ function GreenDetail() {
                   </span>
                 </div>
                 <span>{review.rreview}</span>
+                {review.rating !== 0 && (
+                  <div className="flex">
+                    <FaRegStar className="mt-1" color="#ffc107" />
+                    {review.rating}
+                  </div>
+                )}
               </div>
             ))
           )}
