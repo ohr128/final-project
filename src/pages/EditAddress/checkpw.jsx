@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function Checkpw() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
+  const parsed = token ? JSON.parse(token) : null;
+  const userId = parsed?.id;
   const handleCheck = async (e) => {
-    const token = localStorage.getItem("token");
-    const parsed = token ? JSON.parse(token) : null;
-    const userId = parsed?.id;
 
         if (!token) {
       toast.error("로그인이 필요합니다.");
@@ -24,7 +25,7 @@ function Checkpw() {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/user/checkPassword",
+        `${API_BASE_URL}/api/user/checkPassword`,
         {
           method: "POST",
           headers: {
@@ -47,6 +48,12 @@ function Checkpw() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if(userId.includes("@")) {
+      navigate("/edit-Address")
+    }
+  }, [])
 
   return (
     <div className="flex font-notokr">

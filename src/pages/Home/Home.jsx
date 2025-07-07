@@ -23,6 +23,7 @@ function Home() {
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const currentLat = position.coords.latitude;

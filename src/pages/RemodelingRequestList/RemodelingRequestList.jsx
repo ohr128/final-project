@@ -8,6 +8,7 @@ function RemodelingRequestList() {
   const [openAccordionId, setOpenAccordionId] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [remodelingList, setRemodelingList] = useState([]);
+  // const [userId, setUserId] = useState("");
 
   const jwtToken = getCookieValue("jwt_cookie");
   const stored = localStorage.getItem("token");
@@ -20,8 +21,20 @@ function RemodelingRequestList() {
       try {
         const decoded = jwtDecode(jwtToken);
         const rawRoles = decoded.authorities || "";
-        const roleArray = typeof rawRoles === "string" ? rawRoles.split(",") : rawRoles;
-        setUserRole(Array.isArray(roleArray) ? roleArray : []);
+        const userId = decoded.sub || "";
+        console.log(userId);
+        // setUserId(userId);
+
+        // 쉼표로 구분된 문자열을 배열로 변환
+        const roleArray =
+          typeof rawRoles === "string" ? rawRoles.split(",") : rawRoles;
+
+        // 예: ["ROLE_ADMIN", "ROLE_USER"]
+        if (Array.isArray(roleArray) && roleArray.length > 0) {
+          setUserRole(roleArray);
+        } else {
+          setUserRole([]);
+        }
       } catch (error) {
         console.error("JWT decode error:", error);
         setUserRole([]);
@@ -34,7 +47,7 @@ function RemodelingRequestList() {
   useEffect(() => {
     const fetchData = async () => {
       const url = userRole?.includes("ROLE_BUSINESS")
-        ? "/api/business"
+        ? `/api/business/${uId}`
         : `/api/user/${uId}`;
 
       try {
@@ -83,6 +96,7 @@ function RemodelingRequestList() {
         }
       });
     });
+  });
 
     return () => clearTimeout(timer);
   }, [openAccordionId, remodelingList]);
@@ -127,14 +141,52 @@ function RemodelingRequestList() {
           </svg>
         </button>
       </h2>
-      <div
-        id={`accordion-color-body-${id}`}
-        className={`overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        }`}
-        aria-labelledby={`accordion-color-heading-${id}`}
-      >
-        <div className="px-4">{content}</div>
+        {remodelingList ? (
+          <h2 id={`accordion-color-heading-${id}`}>
+            <button
+              type="button"
+              className={`flex items-center justify-between w-full p-5 font-medium gap-3 
+              ${isOpen ? "bg-primary-500 text-white" : "hover:bg-gray-100"}
+            `}
+              onClick={onClick}
+              aria-expanded={isOpen}
+              aria-controls={`accordion-color-body-${id}`}
+            >
+              <div className="flex justify-between items-center w-full pr-4">
+                <span>{title.address.split(" ").slice(0, 2).join(" ")}</span>
+                <span>{title.uId}</span>
+                <span>{title.applicationDate.slice(0, 10)}</span>
+              </div>
+
+              <svg
+                className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 rotate-180 ${
+                  isOpen ? "rotate-360 text-white" : "text-gray-500"
+                }`}
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 10 6"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 5 5 1 1 5"
+                />
+              </svg>
+            </button>
+          </h2>
+        ) : null}
+        <div
+          id={`accordion-color-body-${id}`}
+          className={`overflow-hidden transition-all duration-300 ${
+            isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+          }`}
+          aria-labelledby={`accordion-color-heading-${id}`}
+        >
+          <div className="px-4">{content}</div>
+        </div>
       </div>
     </div>
   );
@@ -155,7 +207,8 @@ function RemodelingRequestList() {
             </div>
 
             <div id="accordion-color" className="overflow-hidden">
-              {remodelingList.map((data) => (
+              {remodelingList && remodelingList.length > 0  ? 
+              remodelingList.map((data) => (
                 <AccordionItem
                   key={data.no}
                   id={data.no}
@@ -184,7 +237,12 @@ function RemodelingRequestList() {
                   isOpen={openAccordionId === data.no}
                   onClick={() => handleAccordionClick(data.no)}
                 />
-              ))}
+              ))
+              : 
+              <div className="p-40">
+                <p className="font-bold text-xl text-gray-300"> 그린리모델링 신청내역이 없습니다. </p>
+              </div>
+              }
             </div>
           </div>
         </div>

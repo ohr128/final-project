@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("API_BASE_URL", API_BASE_URL);
-import Cookies from "js-cookie";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -82,6 +79,7 @@ function GreenDetail() {
       }),
     }).then(async (res) => {
       if (res.ok) {
+        alert("장바구니에 상품을 담았습니다.")
         nav("/cart");
       } else {
         const text = await res.text();
@@ -108,7 +106,7 @@ function GreenDetail() {
     };
 
     localStorage.setItem("immediatePurchase", JSON.stringify(item));
-    fetch("http://localhost:8080/api/cart", {
+    fetch(`${API_BASE_URL}/api/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +127,12 @@ function GreenDetail() {
 
   return (
     <div className="flex font-notokr">
+      {product.classification === "녹색 제품" ? 
       <SideMenu from="/green-product" />
+      :
+      <SideMenu from="/green-energy-product" />
+      }
+      
 
       <ToastContainer
         position="top-center"
