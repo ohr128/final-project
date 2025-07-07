@@ -150,7 +150,21 @@ function RemodelingList() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/remodeling-list" />
-      <ToastContainer />
+      
+    <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        />
+
 
       <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-4xl flex-col mt-20">

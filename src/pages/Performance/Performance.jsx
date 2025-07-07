@@ -21,12 +21,6 @@ function Performance() {
     const parsed = rawToken ? JSON.parse(rawToken) : null;
     const token = parsed?.token;
 
-    if (!token) {
-      toast.error("로그인이 필요합니다.");
-      setIsLoading(false);
-      return;
-    }
-
     Promise.all([
       fetch(`${API_BASE_URL}/order/countOrder`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -54,7 +48,6 @@ function Performance() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/performance" />
-      <ToastContainer position="top-center" />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-4 text-2xl font-semibold ml-10">사업실적

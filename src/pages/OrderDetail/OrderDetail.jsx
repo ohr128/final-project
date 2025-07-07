@@ -26,7 +26,7 @@ function OrderDetail() {
       toast.error("로그인이 필요합니다.");
       setTimeout(() => {
         window.location.href = "/login";
-      }, 2000);
+      }, 1500);
       return;
     }
 
@@ -38,7 +38,7 @@ function OrderDetail() {
       toast.error("로그인이 필요합니다.");
       setTimeout(() => {
         window.location.href = "/login";
-      }, 2000);
+      }, 1500);
       return;
     }
 
@@ -49,7 +49,7 @@ function OrderDetail() {
       toast.error("로그인이 필요합니다.");
       setTimeout(() => {
         window.location.href = "/login";
-      }, 2000);
+      }, 1500);
       return;
     }
 
@@ -76,7 +76,7 @@ function OrderDetail() {
 
   return (
     <div className="flex font-notokr min-h-screen">
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" hideProgressBar={true} autoClose={1500} closeOnClick/>
       <SideMenu from="/order-detail" />
       <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-5xl flex-col my-20">
@@ -116,15 +116,23 @@ function OrderDetail() {
                         />
                       </div>
 
-                      <div className="flex-1 min-w-[20px] font-medium">{order.name}</div>
 
-                      <div className="w-24 text-gray-700">
-                        {(order.prices * order.quantity).toLocaleString()}원
+                      <div className="w-80 flex flex-col">
+                        <div className="flex-1 min-w-[20px] font-medium truncate">{order.name}</div>
+
+                          <div className=" text-gray-700">
+                            {(order.prices * order.quantity).toLocaleString()}원
+                          </div>
+
                       </div>
+
 
                       <div className="w-20 text-primary-500">
-                        {(order.mileage * order.quantity).toLocaleString()}P
+                            {(order.mileage * order.quantity).toLocaleString()}P
                       </div>
+                      
+
+
 
                       <div className="w-16 text-gray-700">{order.quantity}개</div>
 

@@ -6,6 +6,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_PYTHON = import.meta.env.VITE_API_PYTHON;
+import { useNavigate } from "react-router-dom";
+
+
 
 function CertifyBusiness() {
   const [selectedImage, setSelectedImage] = useState();
@@ -95,10 +98,13 @@ function CertifyBusiness() {
       const parsed = rawToken ? JSON.parse(rawToken) : null;
       const token = parsed?.token;
 
-      if (!token) {
-        setIsLoding(false);
-        return toast.error("로그인이 필요합니다.");
-      }
+      if (!token){
+        toast.error("로그인이 필요합니다.");
+          setTimeout(() => {
+            navigate("/login");
+          }, 1200);
+        return
+      } 
 
       const saveFormData = new FormData();
       saveFormData.append("registrationNum", b_no);
@@ -113,8 +119,9 @@ function CertifyBusiness() {
 
       toast.success("사업자 등록이 완료되었습니다.");
       setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+            navigate("/login");
+          }, 1200);
+
 
       await axios.post(
         `${API_BASE_URL}/api/user/UserRole`,
@@ -126,7 +133,6 @@ function CertifyBusiness() {
           },
         }
       );
-
       toast.success("사업자 전환이 완료되었습니다. 다시 로그인 해주세요.");
       setTimeout(() => {
         window.location.reload();
@@ -159,6 +165,9 @@ function CertifyBusiness() {
 
     if (!token) {
       toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+            navigate("/login");
+          }, 1200);
       return;
     }
 
@@ -187,9 +196,6 @@ function CertifyBusiness() {
         );
         if (businessRes.ok) {
           toast.success("사업자 등록 및 권한이 모두 삭제되었습니다.");
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
           window.location.reload();
         }
       }
@@ -202,7 +208,23 @@ function CertifyBusiness() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/certify-business" />
-      <ToastContainer position="top-center" />
+      
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        toastStyle={{ width: "500px", fontSize: "16px", whiteSpace: "normal" }}
+        />
+
+
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-10 text-2xl font-semibold">사업자 등록증</span>

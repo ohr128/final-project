@@ -85,6 +85,9 @@ function EditAddress() {
 
     if (!token) {
       toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
       return;
     }
 
@@ -106,9 +109,6 @@ function EditAddress() {
 
       if (res.ok) {
         toast.success("주소가 저장되었습니다.");
-        setTimeout(() => {
-                window.location;
-              }, 2000);
         fetchAddresses();
         setAddress("");
         setDetailAddress("");
@@ -127,6 +127,9 @@ function EditAddress() {
 
     if (!token) {
       toast.error("로그인이 필요합니다.");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
       return;
     }
 
@@ -142,10 +145,6 @@ function EditAddress() {
 
       if (res.ok) {
         toast.success("삭제되었습니다.");
-        setTimeout(() => {
-            window.location;
-          }, 2000);
-
         fetchAddresses();
       }
     } catch (err) {
@@ -156,7 +155,20 @@ function EditAddress() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/checkpw" />
-      <ToastContainer position="top-center" />
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        />
+
       <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-3xl flex flex-col mt-20">
           <h1 className="p-10 text-2xl font-bold text-center">배송지 관리</h1>
@@ -192,7 +204,7 @@ function EditAddress() {
             <div className="flex justify-center my-4">
               <button
                 onClick={() => setShowInput(true)}
-                className="bg-primary-500 text-white px-6 py-2 rounded"
+                className="bg-primary-500 text-white px-6 py-2 rounded cursor-pointer"
               >
                 배송지 추가
               </button>

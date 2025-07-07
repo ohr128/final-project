@@ -111,7 +111,7 @@ function Review() {
       toast.success("리뷰가 성공적으로 등록되었습니다.");
       setTimeout(() => {
         window.location;
-      }, 2000);
+      }, 1200);
       setReviewText("");
       setPreviewImages([]);
       setImageFiles([]);
@@ -127,7 +127,22 @@ function Review() {
     <div className="font-notokr flex min-h-screen">
       {" "}
       <SideMenu from="/order-detail" />
-      <ToastContainer position="top-center" />
+      
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        toastStyle={{ width: "500px", fontSize: "16px", whiteSpace: "normal" }}
+        />
+
       <div className="flex-1 p-6">
         {" "}
         <span className="text-xl font-bold my-10 text-center block">

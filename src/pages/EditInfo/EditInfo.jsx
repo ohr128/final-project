@@ -33,10 +33,6 @@ function EditInfo() {
 
         if(res.ok) {
             toast.success("인증번호가 이메일로 발송되었습니다.");
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
-            
 
         } else {
             toast.error("이메일 주소를 확인해 주세요");
@@ -57,9 +53,7 @@ function EditInfo() {
         }
       );
       toast.success("이메일 인증 완료");
-      setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+
     } catch (error) {
       console.log(error);
     }
@@ -120,9 +114,10 @@ function EditInfo() {
       });
       toast.success("회원정보가 수정되었습니다.");
       setTimeout(() => {
-        window.location.href = "/point";
+        navigate("/point");
       }, 1500);
-      // navigate("/point");
+  
+
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 500) {
@@ -136,7 +131,24 @@ function EditInfo() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/checkpw2" />
-      <ToastContainer position="top-center" />
+      
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        toastStyle={{ width: "500px", fontSize: "16px", whiteSpace: "normal" }}
+        />
+
+
+
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-md flex flex-col text-center mt-20">
           <h1 className="p-10 text-2xl font-bold">회원정보 수정</h1>
