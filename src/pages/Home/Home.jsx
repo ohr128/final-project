@@ -23,7 +23,6 @@ function Home() {
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 
-
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const currentLat = position.coords.latitude;
@@ -110,6 +109,8 @@ function Home() {
           infoWindows.forEach((infowin) => infowin.close());
           setInfoWindws([]);
 
+          clusterer.clear();
+
           for (let place of data) {
             const position = new kakao.maps.LatLng(place.y, place.x);
 
@@ -166,7 +167,6 @@ function Home() {
       onClick={() => nav("/green-detail?productId=" + item.productId)}
       className="aspect-9/12 group cursor-pointer overflow-hidden transform scale-86"
     >
-      {/* 카드 상단 */}
       <div className="h-[75%] overflow-hidden rounded-lg">
         <img
           src={
@@ -179,7 +179,6 @@ function Home() {
         />
       </div>
 
-      {/* 카드 하단 */}
       <div className="h-[25%] py-4 flex flex-col gap-1 justify-evenly text-sm">
         <span className="font-medium">
           {item.name.length > 18 ? item.name.slice(0, 18) + "..." : item.name}
@@ -208,14 +207,18 @@ function Home() {
       </div>
 
       <div className="my-8">
-        <span className="font-semibold text-lg">에너지 효율 1등급 제품(에어컨)</span>
+        <span className="font-semibold text-lg">
+          에너지 효율 1등급 제품(에어컨)
+        </span>
         <div className="grid grid-cols-5 gap-6">
           {energy.slice(0, 5).map(renderProductCard)}
         </div>
       </div>
 
       <div className="my-4 flex gap-2 justify-center">
-        <span className="font-semibold mr-6 mt-6 text-lg">오프라인 적립매장</span>
+        <span className="font-semibold mr-6 mt-6 text-lg">
+          오프라인 적립매장
+        </span>
       </div>
 
       <div className="flex w-full mt-8 mb-16 gap-6 justify-center">

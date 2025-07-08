@@ -120,8 +120,20 @@ function Review() {
       setCurrentIndex(0);
       navigate("/");
     } catch (error) {
-      console.error("리뷰 등록 실패:", error);
-      toast.error("리뷰 등록 중 오류가 발생했습니다.");
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data || "";
+        const status = error.response?.status;
+
+        if (status === 400) {
+          toast.error("등록 실패: 0부터 9.9사이 숫자만 입력 가능");
+        } else {
+          console.error("등록 실패:", message);
+          toast.error("등록 중 오류 발생");
+        }
+      } else {
+        console.error("예상치 못한 오류:", error);
+        toast.error("등록 실패: 알 수 없는 오류 발생");
+      }
     }
   };
 
@@ -129,7 +141,6 @@ function Review() {
     <div className="font-notokr flex min-h-screen">
       {" "}
       <SideMenu from="/order-detail" />
-      
       <ToastContainer
         position="top-center"
         autoClose={1000}
@@ -143,8 +154,7 @@ function Review() {
         pauseOnHover
         theme="colored"
         toastStyle={{ width: "500px", fontSize: "16px", whiteSpace: "normal" }}
-        />
-
+      />
       <div className="flex-1 p-6">
         {" "}
         <span className="text-xl font-bold my-10 text-center block">
@@ -224,13 +234,20 @@ function Review() {
               별점(선택)
             </span>
           </div>
-          <div className="ml-4 flex-1">
-            <textarea
-              className="w-full border border-gray-300 p-2 rounded"
-              placeholder="소수점 1자리 까지 가능, 최대 9.9점"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-            />
+          <div className=" flex">
+            <select value={rating} onChange={(e) => setRating(e.target.value)} className="ml-4 bg-white p-2 border border-gray-300 rounded  ">
+                <option value="">선택하세요</option>
+                <option value="0.5">0.5</option>
+                <option value="1">1</option>
+                <option value="1.5">1.5</option>
+                <option value="2">2</option>
+                <option value="2.5">2.5</option>
+                <option value="3">3</option>
+                <option value="3.5">3.5</option>
+                <option value="4">4</option>
+                <option value="4.5">4.5</option>
+                <option value="5">5</option>
+              </select>
           </div>
         </div>
         <div className="flex justify-center my-16">
