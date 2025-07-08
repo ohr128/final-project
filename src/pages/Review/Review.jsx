@@ -235,7 +235,7 @@ function Review() {
             </span>
           </div>
           <div className=" flex">
-            <select value={rating} onChange={(e) => setRating(e.target.value)} className="ml-4 bg-white p-2 border border-gray-300 rounded">
+            <select value={rating} onChange={(e) => setRating(e.target.value)} className="ml-4 bg-white p-2 border border-gray-300 rounded  ">
                 <option value="">선택하세요</option>
                 <option value="0.5">0.5</option>
                 <option value="1">1</option>
