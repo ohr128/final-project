@@ -4,7 +4,7 @@ import { jwtDecode } from "jwt-decode";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -35,7 +35,7 @@ function Cart() {
 
     if (!token) {
       toast.error("로그인이 필요합니다.");
-            setTimeout(() => {
+      setTimeout(() => {
         navigate("/login")
       }, 1500);
       return;
@@ -473,8 +473,8 @@ function Cart() {
       />
       <h1 className="text-3xl font-bold text-center my-10">장바구니</h1>
 
-      <div className="p-6 space-y-4 w-full max-w-4xl mx-auto">
-        <div className="text-xs">
+      <div className="p-6 w-full max-w-4xl mx-auto">
+        <div className="text-sm mb-4">
           <span className="cursor-pointer px-2" onClick={selectAll}>
             전체선택
           </span>
@@ -491,10 +491,10 @@ function Cart() {
           cartItems.map((item, idx) => (
             <div
               key={idx}
-              className="h-40 flex items-center justify-around border-y border-y-gray-400"
+              className="h-40 flex items-center justify-around border-y border-y-gray-200"
             >
               <input
-                className="h-5"
+                className="w-4 h-4 cursor-pointer"
                 type="checkbox"
                 checked={checkedItems[item.productId] || false}
                 onChange={() => toggleCheckbox(item.productId)}
@@ -509,21 +509,27 @@ function Cart() {
                   ? item.name.slice(0, 13) + "..."
                   : item.name}
               </span>
-              <div className="flex items-center border border-gray-300 rounded">
+
+              <div className="flex items-center border border-gray-300 rounded py-1">
                 <button
                   onClick={() => handleDecrease(item.productId)}
-                  className="px-3 py-1"
+                  className="px-3 py-1 cursor-pointer"
                 >
-                  -
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
+                  </svg>
                 </button>
                 <span className="px-3">{counts[item.productId]}</span>
                 <button
                   onClick={() => handleIncrease(item.productId)}
-                  className="px-3 py-1 text-lg"
+                  className="px-3 py-1 cursor-pointer"
                 >
-                  +
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                  </svg>
                 </button>
               </div>
+
               <span>
                 {(item.prices * counts[item.productId]).toLocaleString()}원
               </span>

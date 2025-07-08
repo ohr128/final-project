@@ -30,19 +30,19 @@ function GreenConsumption() {
           </div>
 
           <div className="ml-5 text-start pb-3 border-b border-gray-300 w-200 mt-4 mb-4">
-          <span className=" text-lg font-bold mt-4"> 녹색소비를 위한 구매 지침 </span>
+          <span className="text-2xl mt-4"> 녹색소비를 위한 구매 지침 </span>
           </div>
           <div className="text-start ml-5 mb-4">
-          <p className="mb-1"> • 구매 전 꼭 필요한 것인지 생각 </p>
-          <p className="mb-1"> • 친환경 마크가 있는 녹색제품 구매 </p>
-          <p className="mb-1"> • 수리나 부품 교환이 쉬운 상품 구입 </p>
-          <p className="mb-1"> • 자윈과 에너지 소비가 적은 상품 선택 </p>
-          <p className="mb-1"> • 환경, 사람에게 해가 되지 않는 상품 선택 </p>
-          <p className="mb-1"> • 재활용이 쉬운 상품 선택 </p>
-          <p className="mb-1"> • 보충과 재충전이 가능한 제품 선택 </p>
-          <p className="mb-1"> • 자연 생태계 파괴를 최소화한 제품 선택 </p>
-          <p className="mb-1"> • 화학 표백제, 방부제 등이 없는 제품 선택 </p>
-          <p> • 소각이나 매립까지 배려한 상품 선택 </p>
+          <p className="mb-1 text-lg"> • 구매 전 꼭 필요한 것인지 생각 </p>
+          <p className="mb-1 text-lg"> • 친환경 마크가 있는 녹색제품 구매 </p>
+          <p className="mb-1 text-lg"> • 수리나 부품 교환이 쉬운 상품 구입 </p>
+          <p className="mb-1 text-lg"> • 자윈과 에너지 소비가 적은 상품 선택 </p>
+          <p className="mb-1 text-lg"> • 환경, 사람에게 해가 되지 않는 상품 선택 </p>
+          <p className="mb-1 text-lg"> • 재활용이 쉬운 상품 선택 </p>
+          <p className="mb-1 text-lg"> • 보충과 재충전이 가능한 제품 선택 </p>
+          <p className="mb-1 text-lg"> • 자연 생태계 파괴를 최소화한 제품 선택 </p>
+          <p className="mb-1 text-lg"> • 화학 표백제, 방부제 등이 없는 제품 선택 </p>
+          <p className="text-lg"> • 소각이나 매립까지 배려한 상품 선택 </p>
           </div>
         </div>
       </div>

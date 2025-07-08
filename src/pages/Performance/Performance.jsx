@@ -7,34 +7,31 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const createCenterTextPlugin = (text) => ({
-  id: "centerTextPlugin",
-  afterDraw(chart) {
-    const { width, height, ctx } = chart;
-    ctx.save();
-    ctx.font = "bold 24px sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#000";
-    ctx.fillText(text, width / 2, height / 2);
-    ctx.restore();
-  },
-});
+// const createCenterTextPlugin = (text) => ({
+//   id: "centerTextPlugin",
+//   afterDraw(chart) {
+//     const { width, height, ctx } = chart;
+//     ctx.save();
+//     ctx.font = "bold 24px sans-serif";
+//     ctx.textAlign = "center";
+//     ctx.textBaseline = "middle";
+//     ctx.fillStyle = "#000";
+//     ctx.fillText(text, width / 2, height / 2);
+//     ctx.restore();
+//   },
+// });
 
 function Performance() {
   const [greenOrderCount, setGreenOrderCount] = useState(0);
   const [remodelingCount, setRemodelingCount] = useState(0);
   const [greenOrderInUpCount, setGreenOrderInUpCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
 
     const rawToken = localStorage.getItem("token");
     const parsed = rawToken ? JSON.parse(rawToken) : null;
@@ -60,7 +57,6 @@ function Performance() {
         console.error("데이터 불러오기 실패:", err);
       })
       .finally(() => {
-        setIsLoading(false);
       });
   }, []);
 
@@ -73,7 +69,9 @@ function Performance() {
             <span className="mb-4 text-2xl font-semibold ml-40">리모델링 신청 횟수</span>
           </span>
           <div className="flex gap-4 justify-evenly mt-6 mb-20">
-            {isLoading ? (
+            <div className="bg-primary-500 w-50 rounded-full h-50 text-center pt-20 text-2xl text-white"> 주문수 {greenOrderCount} 건</div>
+            <div className="bg-primary-500 w-50 rounded-full h-50 text-center pt-20 text-2xl text-white"> 신청수 {remodelingCount} 건</div>
+            {/* {isLoading ? (
               <div>로딩 중...</div>
             ) : (
               <>
@@ -127,7 +125,7 @@ function Performance() {
                   />
                 </div>
               </>
-            )}
+            )} */}
           </div>
 
           <span className="mb-10 text-2xl font-semibold">녹색제품 판매량</span>

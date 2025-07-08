@@ -44,8 +44,6 @@ function Login() {
       setTimeout(() => {
         window.location.href = "/";
       }, 1200);
-
-
     } catch (error) {
       console.log(error);
       toast.error("아이디 또는 비밀번호를 확인해주세요.");
@@ -63,14 +61,14 @@ function Login() {
       <ToastContainer
         position="top-center"
         autoClose={1000}
-        hideProgressBar={false}
+        hideProgressBar={true}
         newestOnTop={false}
         closeOnClick={false}
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="colored"
       />
       <div className="mt-30">
         <div className="flex justify-center mb-16">
@@ -84,7 +82,12 @@ function Login() {
             placeholder="아이디"
             type="text"
             value={id}
-            onChange={(e) => setId(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (!value.includes("@")) {
+                setId(value);
+              }
+            }}
           />
 
           <input
