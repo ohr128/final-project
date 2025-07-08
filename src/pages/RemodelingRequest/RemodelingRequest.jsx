@@ -232,6 +232,7 @@ function RemodelingRequest() {
                   value={postAddress}
                   onChange={e => setPostAddress(e.target.value)}
                   placeholder="우편번호"
+                  readOnly
                   className="flex-1 border border-gray-300 rounded p-2"
                 />
                 <button
@@ -246,6 +247,7 @@ function RemodelingRequest() {
                 value={address}
                 onChange={e => setAddress(e.target.value)}
                 placeholder="지번주소"
+                readOnly
                 className="w-full rounded border border-gray-300 p-2"
               />
             </div>

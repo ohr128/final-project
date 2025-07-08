@@ -13,6 +13,10 @@ function SideMenu(props) {
   const jwtToken = getCookieValue("jwt_cookie");
   console.log("userRole", userRole);
 
+  const stored = localStorage.getItem("token");
+  const parsed = stored ? JSON.parse(stored) : {};
+  const uId = parsed?.id;
+
   useEffect(() => {
     if (jwtToken) {
       try {
@@ -37,10 +41,10 @@ function SideMenu(props) {
       setUserRole([]);
     }
   }, []);
-  
+
   useEffect(() => {
     console.log(from);
-    
+
     if (userRole?.includes("ROLE_BUSINESS")) {
       menuArray.forEach((big) => {
         big.sub.forEach((subMenu) => {
@@ -71,25 +75,30 @@ function SideMenu(props) {
       </h1>
 
       <ul className="mb-4">
-        {bigMenu.sub
-          ?.filter(
-            (menu) =>
-              !(menu.businessHidden && userRole?.includes("ROLE_BUSINESS"))
-          )
-          .map((menu, idx) => (
-            <li key={idx}>
-              <Link
-                className={`w-60 px-5 py-3 block font-semibold border-y border-y-gray-300 text-lg ${
-                  menu.subLink == from
-                    ? "bg-primary-500 text-white"
-                    : "hover:text-primary-500"
-                }`}
-                to={menu.subLink}
-              >
-                {menu.subTitle}
-              </Link>
-            </li>
-          ))}
+        <ul className="mb-4">
+  {bigMenu.sub
+    ?.filter((menu) => {
+      // ROLE_BUSINESS인 경우 businessHidden 메뉴 숨김
+      if (menu.businessHidden && userRole?.includes("ROLE_BUSINESS")) return false;
+      // 아이디가 이메일 형식(@ 포함)인 경우 hideWhenEmailId 메뉴 숨김
+      if (menu.hideWhenEmailId && uId?.includes("@")) return false;
+      return true;
+    })
+    .map((menu, idx) => (
+      <li key={idx}>
+        <Link
+          className={`w-60 px-5 py-3 block font-semibold border-y border-y-gray-300 text-lg ${
+            menu.subLink == from
+              ? "bg-primary-500 text-white"
+              : "hover:text-primary-500"
+          }`}
+          to={menu.subLink}
+        >
+          {menu.subTitle}
+        </Link>
+      </li>
+    ))}
+</ul>
       </ul>
     </div>
   );
