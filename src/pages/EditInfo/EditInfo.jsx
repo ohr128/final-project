@@ -155,6 +155,7 @@ function EditInfo() {
 
           <div className="flex flex-col w-full gap-2">
             <div>
+              <p className="text-start mt-5 mb-2"> 이메일 변경 </p>
               <input
                 className="border border-gray-300 w-82 h-10 pl-2 rounded mr-1"
                 placeholder="이메일 주소"
@@ -186,13 +187,7 @@ function EditInfo() {
               </button>
             </div>
 
-            <input
-              placeholder="기존 비밀번호 입력"
-              type="password"
-              className="border border-gray-300 rounded px-3 py-2"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
+            <p className="text-start mt-5"> 비밀번호 변경 </p>
             <input
               placeholder="새로운 비밀번호 입력"
               type="text"
@@ -210,22 +205,16 @@ function EditInfo() {
               onBlur={() => checkPasswordMatch(passwordConfirm)}
             />
 
-            <div className="flex justify-end">
-              <button
-                onClick={() => navigate("/del-info")}
-                className="text-sm text-primary-500 rounded cursor-pointer mr-3"
-              >
-                회원탈퇴
-              </button>
-            </div>
+            
             <p style={{ color: pwColor }}> {pwMessage} </p>
 
             <div className="flex justify-center gap-3 my-20">
-              <Link to="/order-detail">
-                <button className="border border-primary-500 text-primary-500 rounded px-4 py-2 cursor-pointer">
-                  뒤로가기
-                </button>
-              </Link>
+              <button
+                onClick={() => navigate("/del-info")}
+                className="border border-primary-500 text-primary-500 rounded px-4 py-2 cursor-pointer"
+              >
+                회원탈퇴
+              </button>
               <button
                 className=" bg-primary-500 text-white rounded px-4 py-2 cursor-pointer"
                 onClick={handleChange}

@@ -3,6 +3,7 @@ import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_BASE = import.meta.env.VITE_API_BASE;
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Auth() {
   const urlSearchParams = new URLSearchParams(useLocation().search);

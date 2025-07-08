@@ -116,20 +116,28 @@ function Navigation() {
               </Link>
 
               {data.sub && (
-                <ul className="absolute bg-white hidden group-hover:block top-full left-1/2 -translate-x-1/2 shadow w-auto min-w-[160px] rounded">
-                  {data.sub.filter((menu) => !(menu.businessHidden && userRole?.includes("ROLE_BUSINESS"))).map((menu, idx) => (
-                    <li key={idx}>
-                      <Link
-                        to={menu.subLink}
-                        className="p-3 block hover:bg-primary-500 hover:text-white whitespace-nowrap"
-                        title={menu.subTitle}
-                      >
-                        {menu.subTitle}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+  <ul className="absolute bg-white hidden group-hover:block top-full left-1/2 -translate-x-1/2 shadow w-auto min-w-[160px] rounded">
+    {data.sub
+      .filter(menu => {
+        // @ 포함된 아이디면 hideWhenEmailId가 true인 메뉴는 숨긴다
+        if (menu.hideWhenEmailId && uId?.includes("@")) {
+          return false;
+        }
+        return true;
+      })
+      .filter(menu => !(menu.businessHidden && userRole?.includes("ROLE_BUSINESS")))
+      .map((menu, idx) => (
+        <li key={idx}>
+          <Link
+            to={menu.subLink}
+            className="p-3 block hover:bg-primary-500 hover:text-white whitespace-nowrap"
+          >
+            {menu.subTitle}
+          </Link>
+        </li>
+      ))}
+  </ul>
+)}
             </li>
           );
         })
@@ -154,20 +162,28 @@ function Navigation() {
               </Link>
 
               {data.sub && (
-                <ul className="absolute bg-white hidden group-hover:block top-full left-1/2 -translate-x-1/2 shadow w-auto min-w-[160px] rounded">
-                  {data.sub.filter((menu) => !(menu.businessHidden && userRole?.includes("ROLE_BUSINESS"))).map((menu, idx) => (
-                    <li key={idx}>
-                      <Link
-                        to={menu.subLink}
-                        className="p-3 block hover:bg-primary-500 hover:text-white whitespace-nowrap"
-                        title={menu.subTitle}
-                      >
-                        {menu.subTitle}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+  <ul className="absolute bg-white hidden group-hover:block top-full left-1/2 -translate-x-1/2 shadow w-auto min-w-[160px] rounded">
+    {data.sub
+      .filter((menu) => {
+        // 이메일 기반 아이디면 특정 메뉴 숨기기
+        if (menu.hideWhenEmailId && uId?.includes("@")) {
+          return false;
+        }
+        return true;
+      })
+      .filter((menu) => !(menu.businessHidden && userRole?.includes("ROLE_BUSINESS")))
+      .map((menu, idx) => (
+        <li key={idx}>
+          <Link
+            to={menu.subLink}
+            className="p-3 block hover:bg-primary-500 hover:text-white whitespace-nowrap"
+          >
+            {menu.subTitle}
+          </Link>
+        </li>
+      ))}
+  </ul>
+)}
             </li>
           );
         })
