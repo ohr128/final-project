@@ -169,7 +169,7 @@ function EditAddress() {
         theme="colored"
         />
 
-      <div className="w-4/5 flex justify-center">
+      <div className="w-4/5 flex justify-center mb-30">
         <div className="w-full max-w-3xl flex flex-col mt-20">
           <h1 className="p-10 text-2xl font-bold text-center">배송지 관리</h1>
 
@@ -204,7 +204,7 @@ function EditAddress() {
             <div className="flex justify-center my-4">
               <button
                 onClick={() => setShowInput(true)}
-                className="bg-primary-500 text-white px-6 py-2 rounded cursor-pointer"
+                className="bg-primary-500 text-white px-6 py-2 rounded cursor-pointer mt-10"
               >
                 배송지 추가
               </button>
@@ -257,6 +257,8 @@ function EditAddress() {
             )}
           </div>
         </div>
+
+
       </div>
     </div>
   );

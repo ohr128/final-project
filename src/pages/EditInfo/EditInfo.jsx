@@ -171,7 +171,7 @@ function EditInfo() {
               </button>
             </div>
 
-            <div>
+            <div className="mb-2">
               <input
                 className="border border-gray-300 w-82 h-10 pl-2 rounded mr-1"
                 placeholder="인증번호"

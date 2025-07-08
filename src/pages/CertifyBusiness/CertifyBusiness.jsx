@@ -133,7 +133,7 @@ function CertifyBusiness() {
       toast.success("사업자 전환이 완료되었습니다. 다시 로그인 해주세요.");
       setTimeout(() => {
         window.location.reload();
-      }, 2000);
+      }, 1200);
       localStorage.removeItem("token");
       navigate("/login");
     } catch (error) {
@@ -144,14 +144,14 @@ function CertifyBusiness() {
         if (
           status === 500
         ) {
-          alert("등록 실패: 중복된 인증번호가 있습니다.");
+          toast.error("등록 실패: 중복된 인증번호가 있습니다.");
         } else {
           console.error("등록 실패:", message);
-          alert("등록 중 오류 발생");
+          toast.error("등록 중 오류 발생");
         }
       } else {
         console.error("예상치 못한 오류:", error);
-        alert("등록 실패: 알 수 없는 오류 발생");
+        toast.error("등록 실패: 알 수 없는 오류 발생");
       }
     } 
   };

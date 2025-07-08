@@ -104,7 +104,7 @@ function Point() {
           )}
 
           {/* 보유 포인트 표시 */}
-          <div className="mt-8 text-xl font-semibold text-center">
+          <div className="mt-8 mb-20 text-xl font-semibold text-center">
             보유 포인트: {userMileage.toLocaleString()}P
           </div>
         </div>

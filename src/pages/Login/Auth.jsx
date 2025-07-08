@@ -65,24 +65,26 @@ function Auth() {
       toast.success("로그인 성공");
       setTimeout(() => {
         navigate("/");
-      }, 1200);
+      }, 1500);
       }
     }
+
+    
   })();
 
   return (
-    <ToastContainer
+
+    <div>
+      <ToastContainer
         position="top-center"
+        hideProgressBar={true}
         autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
+        closeOnClick
+        theme="colored"
       />
+    </div>
+
+
   )
 }
 
