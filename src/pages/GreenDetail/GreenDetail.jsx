@@ -14,6 +14,9 @@ function GreenDetail() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [count, setCount] = useState(1);
   const [reviews, setReviews] = useState([]);
+  const [showInput, setShowInput] = useState(false);
+  const [modalImages, setModalImages] = useState([]);
+  const [modalIndex, setModalIndex] = useState(0);
 
   const navigate = useNavigate();
 
@@ -35,7 +38,7 @@ function GreenDetail() {
         console.log("리뷰 데이터", data);
         setReviews(data);
       });
-  }, [productId]);
+  }, [productId, showInput]);
 
   const nextImage = () => {
     if (product.images && product.images.length > 0) {
@@ -64,7 +67,7 @@ function GreenDetail() {
     if (!token) {
       toast.error("로그인이 필요합니다.");
       setTimeout(() => {
-        navigate("/login")
+        navigate("/login");
       }, 1500);
       return;
     }
@@ -97,7 +100,7 @@ function GreenDetail() {
     if (!token) {
       toast.error("로그인이 필요합니다.");
       setTimeout(() => {
-        navigate("/login")
+        navigate("/login");
       }, 1500);
       return;
     }
@@ -129,13 +132,11 @@ function GreenDetail() {
 
   return (
     <div className="flex font-notokr">
-
-      {product.classification === "녹색 제품" ? 
-      <SideMenu from="/green-product" />
-      :
-      <SideMenu from="/green-energy-product" />
-      }
-      
+      {product.classification === "녹색 제품" ? (
+        <SideMenu from="/green-product" />
+      ) : (
+        <SideMenu from="/green-energy-product" />
+      )}
 
       <ToastContainer
         position="top-center"
@@ -149,7 +150,7 @@ function GreenDetail() {
         draggable
         pauseOnHover
         theme="colored"
-        />
+      />
 
       <div className="w-4/5 px-6">
         <div className="flex justify-evenly mt-20 mb-8">
@@ -267,6 +268,18 @@ function GreenDetail() {
                       className="w-1/5 h-32 object-cover"
                       src={`${API_BASE_URL}/${encodeURIComponent(img.rimage)}`}
                       alt="리뷰 이미지"
+                      onClick={() => {
+                        setModalImages(
+                          review.rimages.map(
+                            (img) =>
+                              `${API_BASE_URL}/${encodeURIComponent(
+                                img.rimage
+                              )}`
+                          )
+                        );
+                        setModalIndex(i);
+                        setShowInput(true);
+                      }}
                     />
                   ))}
                 </div>
@@ -288,6 +301,18 @@ function GreenDetail() {
           )}
         </div>
       </div>
+      {showInput && (
+        <div
+          className="fixed top-0 left-0 w-full h-full bg-black flex justify-center items-center z-100"
+        >
+          <img
+            className="w-4/5 h-4/5"
+            src={modalImages[modalIndex]}
+            alt="리뷰 모달 이미지"
+            onClick={() => setShowInput(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }
