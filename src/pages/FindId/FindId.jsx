@@ -51,10 +51,6 @@ function FindId() {
 
       if (res.status === 200) {
         toast.success("인증 성공! 아이디 찾기를 눌러주세요.");
-        setTimeout(() => {
-            navigate("/showId");
-          }, 1200);
-
         setIsVerified(true);
       } else {
         toast.error("인증번호가 일치하지 않습니다.");
