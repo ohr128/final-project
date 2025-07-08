@@ -80,7 +80,7 @@ function Navigation() {
         <div className="w-full h-12 flex justify-end items-center text-s font-bold gap-6">
           {isLoggedIn ? (
             <>
-              <p className="text-gray-400"> {uId}님 </p>
+              <p className="text-primary-500"> {uId}님 </p>
               <button className="cursor-pointer hover:text-primary-500" onClick={handleLogout}>로그아웃</button>
               <Link className="hover:text-primary-500" to="/cart">장바구니</Link>
             </>

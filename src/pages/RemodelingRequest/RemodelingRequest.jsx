@@ -301,7 +301,7 @@ function RemodelingRequest() {
                   방 개수
                 </span>
                 <select
-                  className="border border-gray-300 p-1 rounded m-1"
+                  className="border border-gray-300 px-3 py-1 rounded m-1"
                   value={roomCount}
                   onChange={e => setRoomCount(e.target.value)}
                 >
@@ -317,7 +317,7 @@ function RemodelingRequest() {
                   욕실 개수
                 </span>
                 <select
-                  className="border border-gray-300 p-1 rounded m-1"
+                  className="border border-gray-300 px-3 py-1 p-1 rounded m-1"
                   value={bathroomCount}
                   onChange={e => setBathRoomCount(e.target.value)}
                 >
