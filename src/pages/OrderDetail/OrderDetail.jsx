@@ -76,7 +76,22 @@ function OrderDetail() {
 
   return (
     <div className="flex font-notokr min-h-screen">
-      <ToastContainer position="top-center" hideProgressBar={true} autoClose={1500} closeOnClick/>
+      
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        />
+
+
       <SideMenu from="/order-detail" />
       <div className="w-4/5 flex justify-center">
         <div className="w-full max-w-5xl flex-col my-20">

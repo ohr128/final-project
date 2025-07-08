@@ -61,14 +61,14 @@ function Login() {
       <ToastContainer
         position="top-center"
         autoClose={1000}
-        hideProgressBar={false}
+        hideProgressBar={true}
         newestOnTop={false}
         closeOnClick={false}
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="colored"
       />
       <div className="mt-30">
         <div className="flex justify-center mb-16">

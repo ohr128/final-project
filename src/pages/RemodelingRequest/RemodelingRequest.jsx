@@ -232,6 +232,7 @@ function RemodelingRequest() {
                   value={postAddress}
                   onChange={e => setPostAddress(e.target.value)}
                   placeholder="우편번호"
+                  readOnly
                   className="flex-1 border border-gray-300 rounded p-2"
                 />
                 <button
@@ -246,6 +247,7 @@ function RemodelingRequest() {
                 value={address}
                 onChange={e => setAddress(e.target.value)}
                 placeholder="지번주소"
+                readOnly
                 className="w-full rounded border border-gray-300 p-2"
               />
             </div>
@@ -301,7 +303,7 @@ function RemodelingRequest() {
                   방 개수
                 </span>
                 <select
-                  className="border border-gray-300 p-1 rounded m-1"
+                  className="border border-gray-300 px-3 py-1 rounded m-1"
                   value={roomCount}
                   onChange={e => setRoomCount(e.target.value)}
                 >
@@ -317,7 +319,7 @@ function RemodelingRequest() {
                   욕실 개수
                 </span>
                 <select
-                  className="border border-gray-300 p-1 rounded m-1"
+                  className="border border-gray-300 px-3 py-1 p-1 rounded m-1"
                   value={bathroomCount}
                   onChange={e => setBathRoomCount(e.target.value)}
                 >

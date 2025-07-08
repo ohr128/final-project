@@ -84,8 +84,11 @@ function GreenDetail() {
       }),
     }).then(async (res) => {
       if (res.ok) {
-        alert("장바구니에 상품을 담았습니다.");
+        toast.success("장바구니에 상품을 담았습니다.");
+        setTimeout(() => {
         nav("/cart");
+      }, 1500);
+
       } else {
         const text = await res.text();
         if (text.includes("ORA-00001")) {
@@ -153,7 +156,8 @@ function GreenDetail() {
       />
 
       <div className="w-4/5 px-6">
-        <div className="flex justify-evenly mt-20 mb-8">
+
+        <div className="flex justify-evenly mt-20 mb-20 mx-6">
           <div className="relative w-3/5 h-90 mr-8 border-gray-400">
             {product.images && product.images.length > 0 ? (
               <>
@@ -167,17 +171,42 @@ function GreenDetail() {
                 {product.images.length > 1 && (
                   <>
                     <button
-                      onClick={prevImage}
-                      className="absolute top-1/2 left-0 transform -translate-y-1/2 text-xl px-2"
-                    >
-                      {"<"}
-                    </button>
+                        onClick={prevImage}
+                        className="group absolute top-1/2 left-0 transform -translate-y-1/2 text-xl px-2 cursor-pointer"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 16 16"
+                          className="bi bi-chevron-left fill-gray-400 group-hover:fill-primary-500 transition-colors"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"
+                          />
+                        </svg>
+                      </button>
+
                     <button
                       onClick={nextImage}
-                      className="absolute top-1/2 right-0 transform -translate-y-1/2 text-xl px-2"
+                      className="group absolute top-1/2 right-0 transform -translate-y-1/2 text-xl px-2 cursor-pointer"
                     >
-                      {">"}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 16 16"
+                        className="bi bi-chevron-right fill-gray-400 group-hover:fill-primary-500 transition-colors"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
+                        />
+                      </svg>
                     </button>
+
+
                   </>
                 )}
               </>
@@ -190,38 +219,44 @@ function GreenDetail() {
             )}
           </div>
 
-          <div className="flex flex-col gap-3 flex-1">
-            <span>제품명 : {product.name}</span>
-            <span>가격 : {(product.prices * count).toLocaleString()}원</span>
-            <span>
-              포인트 : {(product.mileage * count).toLocaleString()}포인트
+          <div className="flex flex-col gap-5 flex-1">
+            <span className="font-semibold text-xl">{product.name}</span>
+            
+            <span className="text-lg font-bold">{(product.prices * count).toLocaleString()}원</span>
+            <span className="text-primary-500">
+              {(product.mileage * count).toLocaleString()}P
             </span>
+
             {product.rating !== 0 && (
-              <div className="flex">
+              <div className="flex gap-2">
                 <FaRegStar className="mt-1" color="#ffc107" />
                 {product.rating}
               </div>
             )}
-            <div className="w-25 flex items-center border border-gray-300 rounded">
-              <button onClick={handleDecrease} className="px-3 py-1">
-                -
+            <div className="w-30 h-10 flex items-center border border-gray-300 rounded cursor-pointer justify-around my-4">
+              <button onClick={handleDecrease} className="px-3 py-1 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
+                </svg>  
               </button>
               <span className="px-3">{count}</span>
-              <button onClick={handleIncrease} className="px-3 py-1 text-lg">
-                +
+              <button onClick={handleIncrease} className="px-3 py-1 text-lg cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                </svg>
               </button>
             </div>
 
             <div className="flex">
               <button
                 onClick={handleAddToCart}
-                className="border border-primary-500 text-primary-500 px-4 py-2 cursor-pointer"
+                className="border border-primary-500 text-primary-500 px-6 py-2 cursor-pointer text-lg"
               >
                 장바구니
               </button>
               <button
                 onClick={handleBuyNow}
-                className="bg-primary-500 text-white px-4 py-2 cursor-pointer"
+                className="bg-primary-500 text-white px-6 py-2 cursor-pointer text-lg"
               >
                 바로구매
               </button>
@@ -229,8 +264,8 @@ function GreenDetail() {
           </div>
         </div>
 
-        <span className="font-bold text-3xl">상세정보</span>
-        <div className="border-y border-y-gray-200 justify-center items-center my-4">
+        <span className="font-semibold text-2xl">상세정보</span>
+        <div className="border-y border-y-gray-200 justify-center items-center my-4 py-10 px-4">
           {product.classification === "녹색 제품" ? (
             <>
               <div className="my-2">제조 회사 : {product.company}</div>
@@ -249,8 +284,12 @@ function GreenDetail() {
           )}
         </div>
 
-        <div className="border-y border-y-gray-200">
-          <span className="text-xl">리뷰</span>
+        <div className=" my-20">
+          
+          <div className="mb-4">
+            <span className="text-xl font-semibold">리뷰</span>
+          </div>
+
           {reviews.length === 0 ? (
             <div className="flex justify-center items-center h-60 text-gray-500 text-lg">
               리뷰가 없습니다.
@@ -289,13 +328,13 @@ function GreenDetail() {
                     <span>{new Date(review.rdate).toLocaleString()}</span>
                   </span>
                 </div>
-                <span>{review.rreview}</span>
                 {review.rating !== 0 && (
-                  <div className="flex">
+                  <div className="flex gap-2">
                     <FaRegStar className="mt-1" color="#ffc107" />
                     {review.rating}
                   </div>
                 )}
+                <span>{review.rreview}</span>
               </div>
             ))
           )}

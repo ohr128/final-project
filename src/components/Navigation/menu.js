@@ -16,6 +16,7 @@ export const menuData = [
         {
           subTitle: "회원정보수정",
           subLink: "/checkpw2",
+          hideWhenEmailId: true,
         },
         {
           subTitle: "배송지관리",
@@ -125,14 +126,20 @@ export const menuArray = [
             subLink: "/order-detail"
         },
         {
-            subTitle: "사업자등록증",
-            subLink: "/certify-business"
+          subTitle: "회원정보수정",
+          subLink: "/checkpw2",
         },
         {
-            subTitle: "그린리모델링 사업자내역",
-            subLink: "/remodeling-request-list"
-        },
-        {
+          subTitle: "배송지관리",
+          subLink: "/checkpw",
+        }
+    ],
+  },
+  {
+    title: "인증&등록",
+    link: "/certify-green",
+    sub: [
+      {
             subTitle: "녹색제품 인증",
             subLink: "/certify-green"
         },
@@ -141,13 +148,13 @@ export const menuArray = [
             subLink: "/green-register-list"
         },
         {
-          subTitle: "회원정보수정",
-          subLink: "/checkpw2",
+            subTitle: "사업자등록증",
+            subLink: "/certify-business"
         },
         {
-          subTitle: "배송지관리",
-          subLink: "/checkpw",
-        }
+            subTitle: "그린리모델링 사업자신청내역",
+            subLink: "/remodeling-request-list"
+        },
     ],
   },
   {

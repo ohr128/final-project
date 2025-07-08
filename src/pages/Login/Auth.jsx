@@ -2,6 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_BASE = import.meta.env.VITE_API_BASE;
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Auth() {
   const urlSearchParams = new URLSearchParams(useLocation().search);
@@ -60,14 +62,30 @@ function Auth() {
 
       const saveToken = JSON.parse(localStorage.getItem("token"));
       console.log(saveToken);
-      alert("로그인 성공");
+      toast.success("로그인 성공");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
       }
     }
 
-    navigate("/");
+    
   })();
 
-  return null;
+  return (
+
+    <div>
+      <ToastContainer
+        position="top-center"
+        hideProgressBar={true}
+        autoClose={1000}
+        closeOnClick
+        theme="colored"
+      />
+    </div>
+
+
+  )
 }
 
 export default Auth;

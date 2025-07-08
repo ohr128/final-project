@@ -127,6 +127,7 @@ function CertifyBusiness() {
       );
       toast.success("사업자 전환이 완료되었습니다. 다시 로그인 해주세요.");
       setTimeout(handleSubmit, 500);
+
       localStorage.removeItem("token");
       navigate("/login");
     } catch (error) {
