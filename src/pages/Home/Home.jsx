@@ -198,7 +198,7 @@ function Home() {
   );
 
   return (
-    <div className="container font-notokr">
+    <div className="font-notokr">
       <div className="my-8">
         <span className="font-semibold text-lg">녹색 제품 목록</span>
         <div className="grid grid-cols-5 gap-6">

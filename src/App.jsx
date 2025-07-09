@@ -23,7 +23,6 @@ import TakeBack from "./pages/TakeBack/TakeBack";
 import Point from "./pages/Point/Point";
 import EditInfo from "./pages/EditInfo/EditInfo";
 import DelInfo from "./pages/DelInfo/DelInfo";
-import EditAddress from "./pages/EditAddress/EditAddress";
 import CertifyGreen from "./pages/CertifyGreen/CertifyGreen";
 import RegisterGreen from "./pages/RegisterGreen/RegisterGreen";
 import GreenRegisterList from "./pages/GreenRegisterList/GreenRegisterList";
@@ -32,7 +31,6 @@ import CertifyBusiness from "./pages/CertifyBusiness/CertifyBusiness";
 import RemodelingRequest from "./pages/RemodelingRequest/RemodelingRequest";
 import Estimate from "./pages/Estimate/Estimate";
 import RemodelingList from "./pages/RemodelingList/RemodelingList";
-import Checkpw from "./pages/EditAddress/checkpw";
 import Checkpw2 from "./pages/EditInfo/checkpw2";
 import RemodelingRequestList from "./pages/RemodelingRequestList/RemodelingRequestList";
 import Performance from "./pages/Performance/Performance";
@@ -58,9 +56,9 @@ function App() {
   }, [location]);
 
   return (
-    <div className="w-full">
+    <div className="w-[1480px] m-auto">
       {!hideHeaderFooter && (
-        <div className="mb-2 container m-auto">
+        <div className="mb-2">
           <Navigation />
         </div>
       )}
@@ -75,7 +73,7 @@ function App() {
         </div>
       )}
             
-      <div className="container m-auto">
+      <div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signUp" element={<SignUp />} />
@@ -95,7 +93,6 @@ function App() {
           <Route path="/point" element={<Point />} />
           <Route path="/edit-info" element={<EditInfo />} />
           <Route path="/del-info" element={<DelInfo />} />
-          <Route path="/edit-Address" element={<EditAddress />} />
           <Route path="/certify-green" element={<CertifyGreen />} />
           <Route path="/register-green" element={<RegisterGreen />} />
           <Route path="/green-register-list" element={<GreenRegisterList />} />
@@ -106,7 +103,6 @@ function App() {
           <Route path="/remodeling-list" element={<RemodelingList />} />
           <Route path="/remodeling-request-list" element={<RemodelingRequestList />} />
           <Route path="/checkpw2" element={<Checkpw2 />} />
-          <Route path="/checkpw" element={<Checkpw />} />
           <Route path="/performance" element={<Performance />} />
           <Route path="/forecast" element={<Forecast />} />
           <Route path="/management" element={<Management />} />

@@ -20,9 +20,6 @@ function RemodelingRequestList() {
       try {
         const decoded = jwtDecode(jwtToken);
         const rawRoles = decoded.authorities || "";
-        const userId = decoded.sub || "";
-        console.log(userId);
-        // setUserId(userId);
 
         // 쉼표로 구분된 문자열을 배열로 변환
         const roleArray =

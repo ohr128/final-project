@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import SideMenu from "../../components/SideMenu/SideMenu";
-import lv1 from "../../assets/lv1.jpg";
-import lv2 from "../../assets/lv2.jpg";
-import lv3 from "../../assets/lv3.jpg";
-import lv4 from "../../assets/lv4.jpg";
-import lv5 from "../../assets/lv5.jpg";
+import lv1 from "../../assets/lv0.jpg";
+import lv2 from "../../assets/lv1.jpg";
+import lv3 from "../../assets/lv2.jpg";
+import lv4 from "../../assets/lv3.jpg";
+import lv5 from "../../assets/lv4.jpg";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -42,7 +42,6 @@ function Point() {
       })
       .then((data) => {
         if (!data) return;
-        console.log("유저 정보 응답:", data); 
         if (data?.totalMileage !== undefined) {
           setMileage(Number(data.totalMileage));
         }

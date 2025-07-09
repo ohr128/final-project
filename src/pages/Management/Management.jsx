@@ -31,7 +31,6 @@ function Management() {
 
       if (res.ok) {
         const data = await res.json();
-        console.log("리뷰 데이터", data);
         setReviews(data);
       }
     } catch (err) {
