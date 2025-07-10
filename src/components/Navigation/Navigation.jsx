@@ -18,7 +18,6 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 //   }
 // }
 
-console.log("API_BASE_URL", API_BASE_URL);
 
 function Navigation() {
   const [userRole, setUserRole] = useState([]);
@@ -27,7 +26,6 @@ function Navigation() {
 
   const jwtToken = getCookieValue('jwt_cookie');
   const isLoggedIn = !!jwtToken;
-  console.log("userRole", userRole);
   const stored = localStorage.getItem("token");
   const parsed = stored ? JSON.parse(stored) : {};
   const uId = parsed?.id;

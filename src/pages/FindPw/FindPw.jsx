@@ -68,6 +68,15 @@ function FindId() {
     }
   };
 
+  const validatePassword = (pw) => {
+  const hasUppercase = /[A-Z]/.test(pw);
+  const hasNumber = /[0-9]/.test(pw);
+    const hasSpecial = /[!@#$%^&*()_+{}\[\]:;"'<>,.?/~`|\\-]/.test(pw);
+  const hasMinLength = pw.length >= 8;
+
+  return hasUppercase && hasNumber && hasSpecial && hasMinLength;
+};
+
   const handleChangePw = async () => {
     if (!id || !password || !passwordConfirm || !email || !code) {
       toast.error("모두 입력해주세요");
@@ -78,6 +87,12 @@ function FindId() {
       toast.error("비밀번호가 일치하지 않습니다.");
       return;
     }
+
+    if(!validatePassword(password)) {
+      toast.error("비밀번호는 영문 대문자, 숫자, 특수문자를 각각 하나 이상 표현해야 하며 8글자 이상이여야 합니다.");
+      return;
+    }
+
     try {
       await axios.patch(
         `${API_BASE_URL}/api/user/changePw`,
@@ -108,6 +123,7 @@ function FindId() {
         autoClose={1000}
         closeOnClick
         theme="colored"
+        toastStyle={{ width: "700px", fontSize: "16px", whiteSpace: "normal" }}
       />
 
       <div className="mt-30">

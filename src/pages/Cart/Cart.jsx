@@ -449,7 +449,8 @@ function Cart() {
             setCartItems(newCartItems);
 
             const text = await res.text();
-            toast.error(text);
+            toast.success(text);
+            navigate("/order-detail");
           } catch (err) {
             toast.error("주문처리 실패");
             console.log(err);
