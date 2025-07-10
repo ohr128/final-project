@@ -80,7 +80,7 @@ function DelInfo() {
           }, 2000);
 
         try {
-          await fetch("http://localhost:8080/api/user/sign-out", {
+          await fetch(`${API_BASE_URL}/api/user/sign-out`, {
             method: "POST",
             credentials: "include",
           });
