@@ -18,7 +18,7 @@ function Management() {
     if (!token) {
       toast.error("로그인이 필요합니다.");
       setTimeout(() => {
-        navigate("/login")
+        navigate("/login");
       }, 1500);
     }
 
@@ -42,6 +42,18 @@ function Management() {
     fetchReviews();
   }, []);
 
+  const groupReviewsByDate = (reviews) => {
+    const grouped = {};
+    reviews.forEach((review) => {
+      const date = review.rdate?.split("T")[0];
+      if (!grouped[date]) grouped[date] = [];
+      grouped[date].push(review);
+    });
+    return grouped;
+  };
+
+  const groupedReviews = groupReviewsByDate(reviews);
+
   const handleAccordionClick = (id) => {
     setOpenAccordionId(openAccordionId === id ? null : id);
   };
@@ -53,7 +65,7 @@ function Management() {
     if (!token) {
       toast.error("로그인이 필요합니다.");
       setTimeout(() => {
-        navigate("/login")
+        navigate("/login");
       }, 1500);
     }
 
@@ -175,31 +187,36 @@ function Management() {
         hideProgressBar={true}
         newestOnTop={false}
         closeOnClick={false}
-        rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
         theme="colored"
-        />
-
+      />
 
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-4 text-2xl font-semibold">리뷰관리</span>
           <div className="mt-10 mb-20">
-            <div id="accordion-color" className="overflow-hidden">
+            <div id="accordion-color" className="overflow-hidden text-start">
               {reviews.length === 0 ? (
                 <div className="flex justify-center items-center h-60 text-gray-500 text-lg">
                   리뷰가 없습니다.
                 </div>
               ) : (
-                reviews.map((review) => (
-                  <AccordionItem
-                    key={review.no}
-                    review={review}
-                    isOpen={openAccordionId === review.no}
-                    onClick={() => handleAccordionClick(review.no)}
-                  />
+                Object.entries(groupedReviews).map(([date, reviewsOnDate]) => (
+                  <div key={date} className="mb-10">
+                    <div className="text-lg font-bold text-gray-800 mb-4 border-b border-b-gray-400 pb-2">
+                      {date}
+                    </div>
+                    {reviewsOnDate.map((review) => (
+                      <AccordionItem
+                        key={review.no}
+                        review={review}
+                        isOpen={openAccordionId === review.no}
+                        onClick={() => handleAccordionClick(review.no)}
+                      />
+                    ))}
+                  </div>
                 ))
               )}
             </div>

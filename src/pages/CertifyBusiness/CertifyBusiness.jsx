@@ -217,7 +217,7 @@ function CertifyBusiness() {
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
           <span className="mb-10 text-2xl font-semibold">사업자 등록증</span>
-
+          <span className="font-bold mb-4">사업자 등록증을 등록하거나 삭제시에 로그인 화면으로 돌아갑니다.</span>
           <div
             className="border border-gray-300 bg-gray-100 hover:bg-gray-200 cursor-pointer mx-auto mb-6 flex items-center justify-center"
             style={{ width: "460px", height: "600px" }}
