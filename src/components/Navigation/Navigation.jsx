@@ -29,7 +29,7 @@ function Navigation() {
   const stored = localStorage.getItem("token");
   const parsed = stored ? JSON.parse(stored) : {};
   const uId = parsed?.id;
-
+  
   useEffect(() => {
   if (jwtToken) {
     try {
@@ -67,7 +67,7 @@ function Navigation() {
     }
     navigate("/login");
   };
-
+  console.log(userRole)
   return (
     <nav className="font-notokr relative z-10">
       <div className="flex justify-end items-center mt-4">
