@@ -1,6 +1,8 @@
 import SideMenu from "../../components/SideMenu/SideMenu";
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -46,7 +48,7 @@ function RegisterGreen() {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (selectedImages.length + files.length > maxImages) {
-      alert(`최대 ${maxImages}장까지만 등록할 수 있습니다.`);
+      toast.error(`최대 ${maxImages}장까지만 등록할 수 있습니다.`);
       return;
     }
 
@@ -76,7 +78,7 @@ function RegisterGreen() {
       !registrationNum ||
       !mileage
     ) {
-      alert("모든 항목을 빠짐없이 입력해주세요.(이미지 제외)");
+      toast.error("모든 항목을 빠짐없이 입력해주세요.(이미지 제외)");
       return;
     }
 
@@ -133,6 +135,19 @@ function RegisterGreen() {
   return (
     <div className="flex font-notokr">
       <SideMenu from="/green-register-list" />
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        limit={1}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-3xl flex flex-col text-center mt-20">
           <span className="mb-10 text-2xl font-semibold">

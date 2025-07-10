@@ -345,7 +345,7 @@ function GreenDetail() {
           className="fixed top-0 left-0 w-full h-full bg-black flex justify-center items-center z-100"
         >
           <img
-            className="w-4/5 h-4/5"
+            className="w-1/2 h-1/2"
             src={modalImages[modalIndex]}
             alt="리뷰 모달 이미지"
             onClick={() => setShowInput(false)}
