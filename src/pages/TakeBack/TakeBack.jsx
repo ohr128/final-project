@@ -23,6 +23,7 @@ function TakeBack() {
     address: "",
     detailAddress: "",
   });
+  
   const [memo, setMemo] = useState("");
 
   const totalRefundAmount = refundAmountValue * quantity;
