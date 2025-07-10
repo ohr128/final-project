@@ -11,7 +11,6 @@ function SideMenu(props) {
 
   const [bigMenu, setBigMenu] = useState({});
   const jwtToken = getCookieValue("jwt_cookie");
-  console.log("userRole", userRole);
 
   const stored = localStorage.getItem("token");
   const parsed = stored ? JSON.parse(stored) : {};
@@ -43,14 +42,11 @@ function SideMenu(props) {
   }, []);
 
   useEffect(() => {
-    console.log(from);
 
     if (userRole?.includes("ROLE_BUSINESS")) {
       menuArray.forEach((big) => {
         big.sub.forEach((subMenu) => {
-          console.log(subMenu.subLink);
           if (subMenu.subLink === from) {
-            console.log(big);
             setBigMenu(big);
           }
         });
@@ -58,9 +54,7 @@ function SideMenu(props) {
     } else {
       menuData.forEach((big) => {
         big.sub.forEach((subMenu) => {
-          console.log(subMenu.subLink);
           if (subMenu.subLink === from) {
-            console.log(big);
             setBigMenu(big);
           }
         });

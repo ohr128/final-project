@@ -33,10 +33,10 @@ function CertifyGreen() {
 
     const formData = new FormData();
     formData.append("file", imageFile);
-
+    
     try {
       const ocrRes = await axios.post(
-        "http://localhost:8000/ocr/certification",
+        `${API_PYTHON}/ocr/certification`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

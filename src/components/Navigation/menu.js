@@ -1,30 +1,18 @@
 export const menuData = [
-    {
-        title: "마이페이지",
-        link: "/point",
-        sub:[
-
-        {
-            subTitle: "마일리지 / 포인트",
-            subLink: "/point"
-        },
-        {
-            subTitle: "주문내역",
-            subLink: "/order-detail"
-        },
-        
-        {
-          subTitle: "회원정보수정",
-          subLink: "/checkpw2",
-          hideWhenEmailId: true,
-        },
-        {
-          subTitle: "배송지관리",
-          subLink: "/checkpw",
-        }
-    ],
+  {
+    title: "소개",
+    link: "/green-consumption",
+    sub: [
+      {
+        subTitle: "녹색 소비 소개",
+        subLink:"/green-consumption",
+      },
+      {
+        subTitle: "그린리모델링 소개",
+        subLink: "/introduction-remodeling",
+      }
+    ]
   },
-
   {
     title: "인증&등록",
     link: "/certify-green",
@@ -40,11 +28,7 @@ export const menuData = [
         {
             subTitle: "사업자등록증",
             subLink: "/certify-business"
-        },
-        {
-            subTitle: "그린리모델링 신청내역",
-            subLink: "/remodeling-request-list"
-        },
+        }
     ],
   },
   
@@ -78,18 +62,29 @@ export const menuData = [
     ],
   },
   {
-    title: "소개",
-    link: "/green-consumption",
-    sub: [
-      {
-        subTitle: "녹색 소비 소개",
-        subLink:"/green-consumption",
-      },
-      {
-        subTitle: "그린리모델링 소개",
-        subLink: "/introduction-remodeling",
-      }
-    ]
+        title: "마이페이지",
+        link: "/point",
+        sub:[
+
+        {
+            subTitle: "마일리지 / 포인트",
+            subLink: "/point"
+        },
+        {
+            subTitle: "주문내역",
+            subLink: "/order-detail"
+        },
+        
+        {
+          subTitle: "회원정보수정",
+          subLink: "/checkpw2",
+          hideWhenEmailId: true,
+        },
+        {
+            subTitle: "그린리모델링 신청내역",
+            subLink: "/remodeling-request-list"
+        }
+    ],
   },
 
   {
@@ -112,28 +107,19 @@ export const menuData = [
 ];
 
 export const menuArray = [
-    {
-        title: "마이페이지",
-        link: "/point",
-        sub:[
-
-        {
-            subTitle: "마일리지 / 포인트",
-            subLink: "/point"
-        },
-        {
-            subTitle: "주문내역",
-            subLink: "/order-detail"
-        },
-        {
-          subTitle: "회원정보수정",
-          subLink: "/checkpw2",
-        },
-        {
-          subTitle: "배송지관리",
-          subLink: "/checkpw",
-        }
-    ],
+  {
+    title: "소개",
+    link: "/green-consumption",
+    sub: [
+      {
+        subTitle: "녹색 소비 소개",
+        subLink:"/green-consumption",
+      },
+      {
+        subTitle: "그린리모델링 소개",
+        subLink: "/introduction-remodeling",
+      }
+    ]
   },
   {
     title: "인증&등록",
@@ -150,11 +136,7 @@ export const menuArray = [
         {
             subTitle: "사업자등록증",
             subLink: "/certify-business"
-        },
-        {
-            subTitle: "그린리모델링 사업자신청내역",
-            subLink: "/remodeling-request-list"
-        },
+        }
     ],
   },
   {
@@ -183,18 +165,27 @@ export const menuArray = [
     ],
   },
   {
-    title: "소개",
-    link: "/green-consumption",
-    sub: [
-      {
-        subTitle: "녹색 소비 소개",
-        subLink:"/green-consumption",
-      },
-      {
-        subTitle: "그린리모델링 소개",
-        subLink: "/introduction-remodeling",
-      }
-    ]
+        title: "마이페이지",
+        link: "/point",
+        sub:[
+
+        {
+            subTitle: "마일리지 / 포인트",
+            subLink: "/point"
+        },
+        {
+            subTitle: "주문내역",
+            subLink: "/order-detail"
+        },
+        {
+          subTitle: "회원정보수정",
+          subLink: "/checkpw2",
+        },
+        {
+            subTitle: "그린리모델링 사업자신청내역",
+            subLink: "/remodeling-request-list"
+        }
+    ],
   },
 
   {

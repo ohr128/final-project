@@ -31,7 +31,6 @@ function CertifyBusiness() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        console.log("사업자 등록증 응답:", res.data.bimage);
         const fileName = res.data.bimage;
         if (fileName) {
           setExistingImage(`${API_BASE_URL}/${fileName}`);
@@ -171,7 +170,6 @@ function CertifyBusiness() {
         },
         body: JSON.stringify({ uId }),
       });
-      console.log("uId:", uId);
 
       if (res.ok) {
         const businessRes = await fetch(
