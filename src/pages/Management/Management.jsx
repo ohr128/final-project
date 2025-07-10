@@ -118,7 +118,7 @@ function Management() {
             aria-controls={`accordion-body-${no}`}
           >
             <div className="flex justify-between items-center w-full pr-4 cursor-pointer">
-              <span>{name}</span>
+              <span>{name.length > 41 ? name.substring(0,36) + "..." : name}</span>
             </div>
             <svg
               className={`w-3 h-3 transition-transform duration-300 flex-shrink-0 rotate-180 ${
