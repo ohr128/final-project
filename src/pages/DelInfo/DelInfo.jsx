@@ -43,7 +43,7 @@ function DelInfo() {
     }
 
     try {
-      const checkRes = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
+      const checkRes = await fetch(`${API_BASE_URL}/user/checkPassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +64,7 @@ function DelInfo() {
     }
 
     try {
-      const delRes = await fetch(`${API_BASE_URL}/api/user/byebye`, {
+      const delRes = await fetch(`${API_BASE_URL}/user/byebye`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +80,7 @@ function DelInfo() {
           }, 2000);
 
         try {
-          await fetch("http://localhost:8080/api/user/sign-out", {
+          await fetch(`${API_BASE_URL}/user/sign-out`, {
             method: "POST",
             credentials: "include",
           });

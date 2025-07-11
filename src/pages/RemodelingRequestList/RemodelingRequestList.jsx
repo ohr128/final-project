@@ -43,8 +43,8 @@ function RemodelingRequestList() {
   useEffect(() => {
     const fetchData = async () => {
       const url = userRole?.includes("ROLE_BUSINESS")
-        ? `/api/business/${uId}`
-        : `/api/user/${uId}`;
+        ? `/business/${uId}`
+        : `/user/${uId}`;
 
       try {
         const response = await fetch(`${API_BASE_URL}${url}`, {

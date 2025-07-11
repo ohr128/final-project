@@ -46,7 +46,7 @@ function Auth() {
         console.log(kakaoId);
         console.log(email);
 
-        const response = await axios.post(`${API_BASE_URL}/api/auth/kakao`, {
+        const response = await axios.post(`${API_BASE_URL}/auth/kakao`, {
             email: email,
             kakaoId: kakaoId,
           },

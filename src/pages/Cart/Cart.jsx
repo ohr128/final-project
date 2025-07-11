@@ -41,7 +41,7 @@ function Cart() {
       return;
     }
 
-    fetch(`${API_BASE_URL}/api/cart`, {
+    fetch(`${API_BASE_URL}/cart`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -89,7 +89,7 @@ function Cart() {
     if (!token) return;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/address`, {
+      const res = await fetch(`${API_BASE_URL}/address`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -114,7 +114,7 @@ function Cart() {
     if (!token || !uId) return;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/user/userById?id=${uId}`, {
+      const res = await fetch(`${API_BASE_URL}/user/userById?id=${uId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -142,7 +142,7 @@ function Cart() {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/deleteCart`, {
+      const res = await fetch(`${API_BASE_URL}/deleteCart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -229,7 +229,7 @@ function Cart() {
     };
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/address`, {
+      const res = await fetch(`${API_BASE_URL}/address`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

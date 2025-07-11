@@ -57,7 +57,7 @@ function Navigation() {
 
   const handleLogout = async () => {
     try{
-      await fetch (`${API_BASE_URL}/api/user/sign-out`,{
+      await fetch (`${API_BASE_URL}/user/sign-out`,{
         method: "POST",
         credentials: "include",
       });
@@ -67,7 +67,7 @@ function Navigation() {
     }
     navigate("/login");
   };
-
+  console.log(userRole)
   return (
     <nav className="font-notokr relative z-10">
       <div className="flex justify-end items-center mt-4">

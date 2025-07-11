@@ -69,7 +69,7 @@ function EditInfo() {
     console.log("payload to backend:", payload);
 
     try {
-      await axios.patch(`${API_BASE_URL}/api/user/update`, payload, {
+      await axios.patch(`${API_BASE_URL}/user/update`, payload, {
         headers: { "Content-Type": "application/json" },
       });
       toast.success("회원정보가 수정되었습니다.");
@@ -88,7 +88,7 @@ function EditInfo() {
     if (!token) return;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/address`, {
+      const res = await fetch(`${API_BASE_URL}/address`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -168,7 +168,7 @@ function EditInfo() {
     };
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/address`, {
+      const res = await fetch(`${API_BASE_URL}/address`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -204,7 +204,7 @@ function EditInfo() {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/deleteAddress`, {
+      const res = await fetch(`${API_BASE_URL}/deleteAddress`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

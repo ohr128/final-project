@@ -36,7 +36,7 @@ function TakeBack() {
       if (!token) return;
 
       try {
-        const res = await fetch(`${API_BASE_URL}/api/address`, {
+        const res = await fetch(`${API_BASE_URL}/address`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -83,7 +83,7 @@ function TakeBack() {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/takeback`, {
+      const res = await fetch(`${API_BASE_URL}/takeback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

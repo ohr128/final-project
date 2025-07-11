@@ -44,7 +44,7 @@ function SignUp() {
 
   const findId = async () => {
     try {
-      await axios.get(`${API_BASE_URL}/api/user/check-userId`, {
+      await axios.get(`${API_BASE_URL}/user/check-userId`, {
         params: { id: userId },
       });
       setIdMessage("사용 가능한 아이디입니다.");
@@ -83,7 +83,7 @@ function SignUp() {
 
     try {
       await axios.post(
-        `${API_BASE_URL}/api/user/sign-up`,
+        `${API_BASE_URL}/user/sign-up`,
         {
           id: userId,
           email: email,
