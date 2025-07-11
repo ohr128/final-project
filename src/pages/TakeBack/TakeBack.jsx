@@ -112,6 +112,19 @@ function TakeBack() {
     }
   };
 
+  useEffect(() => {
+  if (isModalShow) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+
+  // 페이지 나갈 때 overflow 초기화 (메모리 누수 방지)
+  return () => {
+    document.body.style.overflow = "auto";
+  };
+}, [isModalShow]);
+
   return (
     <div className="font-notokr p-6 flex flex-col">
       <ToastContainer
@@ -197,7 +210,7 @@ function TakeBack() {
       </div>
 
       {isModalShow && (
-        <Modal msg="반품지 선택" close={() => setIsModalShow(false)}>
+        <Modal msg="반품지 선택하세요" close={() => setIsModalShow(false)}>
           <ul>
             {addresses.map((item, idx) => (
               <li
@@ -205,11 +218,11 @@ function TakeBack() {
                 onClick={() => handleSelectAddress(item)}
                 className="border border-gray-300 my-6 p-4 rounded cursor-pointer hover:bg-green-50 hover:border-primary-500 flex flex-col gap-2"
               >
+                <p className="text-left">{item.address}</p>
                 <p className="text-sm text-left">{item.detailAddress}</p>
                 <p className="text-sm text-gray-500 text-left">
                   ({item.postAddress})
                 </p>
-                <p>{item.address}</p>
               </li>
             ))}
           </ul>

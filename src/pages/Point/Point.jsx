@@ -61,9 +61,9 @@ function Point() {
       <div className="w-4/5 px-6 justify-center flex m-auto mt-5">
         <div className="my-8 flex flex-col justify-center">
           <div className="flex justify-center">
-            <div className="border border-primary-500 mt-10 flex justify-center">
+            <div className="mt-10 flex justify-center">
               <span className="p-4 text-2xl font-bold">
-                {userId}님의 현재 마일리지는 {mileage.toLocaleString()}점 입니다.
+                {userId}님의 현재 마일리지는 <span className="text-primary-500">{mileage.toLocaleString()}</span>점 입니다.
               </span>
             </div>
           </div>
@@ -75,7 +75,7 @@ function Point() {
           ) : mileage >= 25000 ? (
             <img className="px-10 w-100 mx-20 mt-10 h-[337px]" src={lv3} alt="레벨3" />
           ) : mileage >= 12500 ? (
-            <img className="px-10 pt-15 w-100 mx-11 mt-4 h-[337px]" src={lv2} alt="레벨2" />
+            <img className="px-10 pt-10 w-100 mx-11 h-[337px]" src={lv2} alt="레벨2" />
           ) : mileage >= 0 ? (
             <img className="px-10 pt-16 w-100 mx-20 mt-3 h-[337px]" src={lv1} alt="레벨1" />
           ) : null}

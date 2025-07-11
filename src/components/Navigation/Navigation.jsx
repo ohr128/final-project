@@ -29,7 +29,7 @@ function Navigation() {
   const stored = localStorage.getItem("token");
   const parsed = stored ? JSON.parse(stored) : {};
   const uId = parsed?.id;
-
+  
   useEffect(() => {
   if (jwtToken) {
     try {

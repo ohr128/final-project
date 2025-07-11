@@ -461,6 +461,18 @@ function Cart() {
       }
     );
   };
+  useEffect(() => {
+  if (isModalShow) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+
+  // 페이지 나갈 때 overflow 초기화 (메모리 누수 방지)
+  return () => {
+    document.body.style.overflow = "auto";
+  };
+}, [isModalShow]);
 
   return (
     <div className="font-notokr p-6">
@@ -611,7 +623,7 @@ function Cart() {
         <div className="flex justify-center my-4">
           <button
             onClick={() => setShowInput(true)}
-            className="bg-primary-500 text-white px-6 py-2 rounded"
+            className="bg-primary-500 text-white px-6 py-2 rounded cursor-pointer"
           >
             배송지 추가
           </button>
@@ -691,16 +703,16 @@ function Cart() {
 
       {isModalShow && (
         <Modal msg="배송지를 선택하세요" close={() => setIsModalShow(false)}>
-          <ul className="space-y-2">
+          <ul>
             {addresses.map((item, idx) => (
               <li
                 key={idx}
                 onClick={() => handleSelectAddress(item)}
-                className="border p-2 rounded cursor-pointer hover:bg-gray-100"
+                className="border border-gray-300 my-6 p-4 rounded cursor-pointer hover:bg-green-50 hover:border-primary-500 flex flex-col gap-2"
               >
-                <p className="font-semibold">{item.address}</p>
-                <p className="text-sm">{item.detailAddress}</p>
-                <p className="text-xs text-gray-500">({item.postAddress})</p>
+                <p className="text-left">{item.address}</p>
+                <p className="text-sm text-left">{item.detailAddress}</p>
+                <p className="text-sm text-gray-500 text-left">({item.postAddress})</p>
               </li>
             ))}
           </ul>
