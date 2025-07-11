@@ -355,7 +355,7 @@ function GreenDetail() {
       </div>
       {showInput && (
         <div
-          className="fixed top-0 left-0 w-full h-full  flex justify-center items-center z-100"
+          className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-100"
         >
           <img
             className="w-1/2 h-1/2"
