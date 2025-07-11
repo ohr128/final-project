@@ -154,13 +154,13 @@ function RemodelingRequestList() {
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-2xl flex flex-col text-center mt-20">
           { userRole?.includes("ROLE_BUSINESS")?  
-          <span className="mb-10 text-2xl font-semibold"> 그린리모델링 사업자신청내역 </span>
+          <span className="mb-10 text-2xl font-semibold"> 그린리모델링 사업자 내역 </span>
           : <span className="mb-10 text-2xl font-semibold"> 그린리모델링 신청내역 </span>
           }
 
           <div className="mb-20">
             { userRole?.includes("ROLE_BUSINESS")?  
-            <div className="flex justify-around my-4 font-semibold text-lg px-5">
+            <div className="flex justify-around my-4 font-semibold text-lg pr-15 pl-15">
               <span>지역</span>
               <span>신청자 아이디</span>
               <span>시공날짜</span>

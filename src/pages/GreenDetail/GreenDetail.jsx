@@ -133,6 +133,19 @@ function GreenDetail() {
     });
   };
 
+  useEffect(() => {
+  if (showInput) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+
+  // 페이지 나갈 때 overflow 초기화 (메모리 누수 방지)
+  return () => {
+    document.body.style.overflow = "auto";
+  };
+}, [showInput]);
+
   return (
     <div className="flex font-notokr">
       {product.classification === "녹색 제품" ? (
@@ -342,7 +355,7 @@ function GreenDetail() {
       </div>
       {showInput && (
         <div
-          className="fixed top-0 left-0 w-full h-full bg-black flex justify-center items-center z-100"
+          className="fixed top-0 left-0 w-full h-full  flex justify-center items-center z-100"
         >
           <img
             className="w-1/2 h-1/2"

@@ -182,7 +182,7 @@ export const menuArray = [
           subLink: "/checkpw2",
         },
         {
-            subTitle: "그린리모델링 사업자신청내역",
+            subTitle: "그린리모델링 사업자 내역",
             subLink: "/remodeling-request-list"
         }
     ],
