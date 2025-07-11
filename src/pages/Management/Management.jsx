@@ -23,7 +23,7 @@ function Management() {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/allreview`, {
+      const res = await fetch(`${API_BASE_URL}/allreview`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -70,7 +70,7 @@ function Management() {
     }
 
     try {
-      await fetch(`${API_BASE_URL}/api/deleteReviewImg`, {
+      await fetch(`${API_BASE_URL}/deleteReviewImg`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +79,7 @@ function Management() {
         body: JSON.stringify({ no }),
       });
 
-      const res = await fetch(`${API_BASE_URL}/api/deleteReview`, {
+      const res = await fetch(`${API_BASE_URL}/deleteReview`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

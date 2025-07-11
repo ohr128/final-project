@@ -20,7 +20,7 @@ function GreenRegisterList() {
       if (!userId) return;
 
       fetch(
-        `${API_BASE_URL}/api/findUserProduct?registrationNum=${userId}`
+        `${API_BASE_URL}/findUserProduct?registrationNum=${userId}`
       )
         .then((res) => res.json())
         .then((data) => {

@@ -24,7 +24,7 @@ function Checkpw() {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/user/checkPassword`,
+        `${API_BASE_URL}/user/checkPassword`,
         {
           method: "POST",
           headers: {

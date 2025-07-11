@@ -26,7 +26,7 @@ function Point() {
   useEffect(() => {
     if (!token || !userId) return;
 
-    fetch(`${API_BASE_URL}/api/user/userById?id=${userId}`, {
+    fetch(`${API_BASE_URL}/user/userById?id=${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

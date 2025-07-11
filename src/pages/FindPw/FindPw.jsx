@@ -95,7 +95,7 @@ function FindId() {
 
     try {
       await axios.patch(
-        `${API_BASE_URL}/api/user/changePw`,
+        `${API_BASE_URL}/user/changePw`,
         {
           id: id,
           password: password,

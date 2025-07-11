@@ -42,7 +42,7 @@ function RemodelingList() {
       window.Location.href = "/login";
       return;
     } 
-    fetch(`${API_BASE_URL}/api/findAllRemodeling`, {
+    fetch(`${API_BASE_URL}/findAllRemodeling`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -62,7 +62,7 @@ function RemodelingList() {
 
   const handleApplication = async (remodelingNo) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/api/remodelingList`, {
+      const res = await fetch(`${API_BASE_URL}/remodelingList`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

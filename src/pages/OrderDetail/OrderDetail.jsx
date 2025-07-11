@@ -54,7 +54,7 @@ function OrderDetail() {
     }
 
     axios
-      .get(`${API_BASE_URL}/api/order-detail?uId=${uId}`, {
+      .get(`${API_BASE_URL}/order-detail?uId=${uId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -63,7 +63,7 @@ function OrderDetail() {
       .catch((err) => console.error("주문 목록 조회 실패", err));
 
     axios
-      .get(`${API_BASE_URL}/api/takeback?uId=${uId}`, {
+      .get(`${API_BASE_URL}/takeback?uId=${uId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

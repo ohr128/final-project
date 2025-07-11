@@ -18,7 +18,7 @@ function GreenEnergyProduct() {
   const [activeBtnIndex, setActiveBtnIndex] = useState(0);
   const nav = useNavigate();
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/FirstEnergy`)
+    fetch(`${API_BASE_URL}/FirstEnergy`)
       .then((res) => res.json())
       .then((data) => setEnergy(data));
   }, []);

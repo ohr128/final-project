@@ -68,7 +68,7 @@ function FindId() {
     }
 
     try {
-      const res = await axios.get(`${API_BASE_URL}/api/user/Id`, {
+      const res = await axios.get(`${API_BASE_URL}/user/Id`, {
         params: { email },
       });
 

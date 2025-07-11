@@ -18,7 +18,7 @@ function EditAddress() {
     if (!token) return;
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/address`, {
+      const res = await fetch(`${API_BASE_URL}/address`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -98,7 +98,7 @@ function EditAddress() {
     };
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/address`, {
+      const res = await fetch(`${API_BASE_URL}/address`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,7 +134,7 @@ function EditAddress() {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/deleteAddress`, {
+      const res = await fetch(`${API_BASE_URL}/deleteAddress`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
