@@ -25,7 +25,7 @@ function Checkpw2() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/user/checkPassword`, {
+      const response = await fetch(`${API_BASE_URL}/user/checkPassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

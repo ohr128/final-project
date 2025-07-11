@@ -94,7 +94,7 @@ function RegisterGreen() {
         mileage: parseInt(mileage),
       };
 
-      const res = await axios.post(`${API_BASE_URL}/api/addobject`, data);
+      const res = await axios.post(`${API_BASE_URL}/addobject`, data);
 
       if (res.status === 200 || res.status === 201) {
         const formData = new FormData();
@@ -105,7 +105,7 @@ function RegisterGreen() {
           formData.append("files", selectedFiles[i]);
         }
 
-        await axios.post(`${API_BASE_URL}/api/uploadImage`, formData, {
+        await axios.post(`${API_BASE_URL}/uploadImage`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

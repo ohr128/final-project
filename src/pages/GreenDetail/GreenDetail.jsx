@@ -23,7 +23,7 @@ function GreenDetail() {
   const nav = useNavigate();
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/product/${productId}`)
+    fetch(`${API_BASE_URL}/product/${productId}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -32,7 +32,7 @@ function GreenDetail() {
         setCount(1);
       });
 
-    fetch(`${API_BASE_URL}/api/reviews?pId=${productId}`)
+    fetch(`${API_BASE_URL}/reviews?pId=${productId}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("리뷰 데이터", data);
@@ -72,7 +72,7 @@ function GreenDetail() {
       return;
     }
 
-    fetch(`${API_BASE_URL}/api/cart`, {
+    fetch(`${API_BASE_URL}/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +114,7 @@ function GreenDetail() {
     };
 
     localStorage.setItem("immediatePurchase", JSON.stringify(item));
-    fetch(`${API_BASE_URL}/api/cart`, {
+    fetch(`${API_BASE_URL}/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

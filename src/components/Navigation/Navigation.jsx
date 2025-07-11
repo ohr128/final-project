@@ -57,7 +57,7 @@ function Navigation() {
 
   const handleLogout = async () => {
     try{
-      await fetch (`${API_BASE_URL}/api/user/sign-out`,{
+      await fetch (`${API_BASE_URL}/user/sign-out`,{
         method: "POST",
         credentials: "include",
       });

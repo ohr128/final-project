@@ -15,11 +15,11 @@ function Home() {
   const nav = useNavigate();
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/green-object-list`)
+    fetch(`${API_BASE_URL}/green-object-list`)
       .then((res) => res.json())
       .then((data) => setProducts(data));
 
-    fetch(`${API_BASE_URL}/api/FirstEnergy`)
+    fetch(`${API_BASE_URL}/FirstEnergy`)
       .then((res) => res.json())
       .then((data) => setEnergy(data));
 

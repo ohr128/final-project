@@ -54,7 +54,7 @@ function CertifyGreen() {
 
       try {
         await axios.get(
-          `${API_BASE_URL}/api/green-check?authNum=${encodeURIComponent(
+          `${API_BASE_URL}/green-check?authNum=${encodeURIComponent(
             authNum
           )}`
         );

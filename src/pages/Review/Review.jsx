@@ -81,7 +81,7 @@ function Review() {
 
     try {
       const reviewRes = await axios.post(
-        `${API_BASE_URL}/api/review`,
+        `${API_BASE_URL}/review`,
         {
           pId: productId,
           rReview: reviewText,
@@ -101,7 +101,7 @@ function Review() {
         formData.append("reNo", reNo);
         imageFiles.forEach((file) => formData.append("files", file));
 
-        await axios.post(`${API_BASE_URL}/api/uploadRImage`, formData, {
+        await axios.post(`${API_BASE_URL}/uploadRImage`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",

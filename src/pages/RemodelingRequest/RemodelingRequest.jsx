@@ -165,7 +165,7 @@ function RemodelingRequest() {
 
   const handleGeneration = async () => {
     try{
-      await axios.post(`${API_BASE_URL}/api/save-remodeling`, {
+      await axios.post(`${API_BASE_URL}/save-remodeling`, {
           uId: userId,
           roomSize: pyeong,
           room:roomCount,

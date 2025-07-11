@@ -27,7 +27,7 @@ function CertifyBusiness() {
     setUId(uId);
 
     axios
-      .get(`${API_BASE_URL}/api/user/findUserRegistration?uId=${uId}`, {
+      .get(`${API_BASE_URL}/user/findUserRegistration?uId=${uId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -102,7 +102,7 @@ function CertifyBusiness() {
       saveFormData.append("registrationNum", b_no);
       saveFormData.append("files", imageFile);
 
-      await axios.post(`${API_BASE_URL}/api/registration`, saveFormData, {
+      await axios.post(`${API_BASE_URL}/registration`, saveFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -115,7 +115,7 @@ function CertifyBusiness() {
       }, 1200);
 
       await axios.post(
-        `${API_BASE_URL}/api/user/UserRole`,
+        `${API_BASE_URL}/user/UserRole`,
         { uId },
         {
           headers: {
@@ -162,7 +162,7 @@ function CertifyBusiness() {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/deleteRegistration`, {
+      const res = await fetch(`${API_BASE_URL}/deleteRegistration`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -173,7 +173,7 @@ function CertifyBusiness() {
 
       if (res.ok) {
         const businessRes = await fetch(
-          `${API_BASE_URL}/api/user/deleteBusiness`,
+          `${API_BASE_URL}/user/deleteBusiness`,
           {
             method: "POST",
             headers: {

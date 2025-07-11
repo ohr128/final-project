@@ -16,7 +16,7 @@ function Estimate() {
   console.log(remodelingList);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/findUid?uId=` + uId, {
+    fetch(`${API_BASE_URL}/findUid?uId=` + uId, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

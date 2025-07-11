@@ -22,7 +22,7 @@ function Login() {
   const handleLogin = async (pId = id, pPwd = password) => {
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/api/user/sign-in`,
+        `${API_BASE_URL}/user/sign-in`,
         {
           id: pId,
           password: pPwd,
