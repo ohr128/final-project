@@ -112,7 +112,10 @@ function RegisterGreen() {
         });
 
         toast.success("제품이 성공적으로 등록되었습니다.");
-        navigate("/green-register-list");
+        setTimeout(() => {
+          navigate("/green-register-list");
+        }, 1500);
+
       } else {
         toast.error(`제품 등록 실패: 상태 코드 ${res.status}`);
       }

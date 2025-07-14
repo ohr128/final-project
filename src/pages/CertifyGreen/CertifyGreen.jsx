@@ -59,8 +59,21 @@ function CertifyGreen() {
           )}`
         );
 
-        toast.success("인증 완료");
-        navigate("/register-green", { state: { authNum } });
+        // toast.success("인증 완료");
+        // navigate("/register-green"
+        //   , { state: { authNum } });
+
+
+      toast.success("인증 완료");
+      setTimeout(() => {
+        navigate("/register-green"
+          , { state: { authNum } });
+      }, 1200);
+
+
+
+
+
       } catch (checkError) {
         const status = checkError.response?.status;
 

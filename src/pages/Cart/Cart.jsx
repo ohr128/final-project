@@ -450,7 +450,9 @@ function Cart() {
 
             const text = await res.text();
             toast.success(text);
-            navigate("/order-detail");
+            setTimeout(() => {
+              navigate("/order-detail");
+            }, 2000);
           } catch (err) {
             toast.error("주문처리 실패");
             console.log(err);
