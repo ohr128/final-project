@@ -123,15 +123,19 @@ function CertifyBusiness() {
           },
         }
       );
-      toast.success("사업자 전환이 완료되었습니다. 다시 로그인 해주세요.");
-      setTimeout(handleSubmit, 500);
+      
 
       await fetch (`${API_BASE_URL}/user/sign-out`,{
         method: "POST",
         credentials: "include",
       });
       localStorage.removeItem("token");
-      navigate("/login");
+
+      toast.success("사업자 전환이 완료되었습니다. 다시 로그인 해주세요.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data || "";
