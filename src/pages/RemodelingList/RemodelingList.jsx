@@ -4,6 +4,7 @@ import { getCookieValue } from "../../helpers/cookieHelper";
 import { jwtDecode } from "jwt-decode";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function RemodelingList() {
@@ -12,6 +13,7 @@ function RemodelingList() {
   const [remodelingList, setRemodelingList] = useState([]);
   const [keyWord, setKeyword] = useState("");
   const [appliedList, setAppliedList] = useState([]);
+  const navigator = useNavigate();
 
   const jwtToken = getCookieValue("jwt_cookie");
   const stored = localStorage.getItem("token");
@@ -78,7 +80,7 @@ function RemodelingList() {
         const result = await res.json();
         toast.success("신청이 완료되었습니다!");
         setTimeout(() => {
-          window.location.reload();
+          navigator("/remodeling-request-list");
         }, 2000);
         setAppliedList((prev) => [...prev, remodelingNo]);
         console.log(result);

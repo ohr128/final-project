@@ -35,8 +35,8 @@ function Forecast() {
         );
 
         const backgroundColors = [
-          ...Array(counts.length).fill("#30A63E"), 
-          ...Array(futureValues.length).fill("#FFA500"), 
+          ...Array(counts.length).fill("#30A63E"),
+          ...Array(futureValues.length).fill("#FFA500"),
         ];
 
         setChartData({
@@ -78,12 +78,13 @@ function Forecast() {
               <span>예측 사용량</span>
             </div>
           </div>
-          <div className="border border-gray-300 p-8 my-10">
+          <div className="border border-gray-300 p-8 my-10 h-120">
             {chartData ? (
               <Bar
                 data={chartData}
                 options={{
-                  responsive: true,
+                  responsive: true, 
+                  maintainAspectRatio: false, 
                   plugins: {
                     legend: {
                       display: false,

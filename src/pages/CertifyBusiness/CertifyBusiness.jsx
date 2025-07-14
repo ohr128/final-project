@@ -91,7 +91,6 @@ function CertifyBusiness() {
       const token = parsed?.token;
 
       if (!token) {
-        toast.error("로그인이 필요합니다.");
         setTimeout(() => {
           navigate("/login");
         }, 1200);
@@ -127,6 +126,10 @@ function CertifyBusiness() {
       toast.success("사업자 전환이 완료되었습니다. 다시 로그인 해주세요.");
       setTimeout(handleSubmit, 500);
 
+      await fetch (`${API_BASE_URL}/user/sign-out`,{
+        method: "POST",
+        credentials: "include",
+      });
       localStorage.removeItem("token");
       navigate("/login");
     } catch (error) {
@@ -154,7 +157,6 @@ function CertifyBusiness() {
     const token = raw ? JSON.parse(raw)?.token : null;
 
     if (!token) {
-      toast.error("로그인이 필요합니다.");
       setTimeout(() => {
         navigate("/login");
       }, 1200);

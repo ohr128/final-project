@@ -91,7 +91,7 @@ function Login() {
           />
 
           <input
-            className="border border-gray-300 w-100 h-10 pl-2  my-2"
+            className="border border-gray-300 w-100 h-10 pl-2  my-2 rounded"
             placeholder="비밀번호"
             type="password"
             value={password}

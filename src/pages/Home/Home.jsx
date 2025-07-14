@@ -199,8 +199,61 @@ function Home() {
 
   return (
     <div className="font-notokr">
+
+        <div className="my-4 flex gap-2 justify-center">
+        <span className="font-semibold mr-6 mt-6 text-lg mb-2">
+          오프라인 적립매장
+        </span>
+      </div>
+
+      <div className="flex justify-center gap-4 ">
+          {["이마트", "홈플러스", "gs"].map((keyword, idx) => (
+            <div
+              key={idx}
+              className={`rounded-2xl ${
+                activeButton === keyword ? "border-4 border-green-500" : ""
+              }`}
+              style={{ width: "160px", height: "60px", overflow: "hidden" }}
+            >
+              <button
+                onClick={() => handleSearch(keyword)}
+                className="w-full h-15 hover:cursor-pointer"
+              >
+                <img
+                  src={
+                    keyword === "이마트"
+                      ? "https://cdn.psnews.co.kr/news/photo/202403/2050553_100280_4015.jpg"
+                      : keyword === "홈플러스"
+                      ? "https://blog.kakaocdn.net/dn/rfvNk/btrbgodbV2k/Ycz0kkfmFREQhlKkxIduJK/img.jpg"
+                      : "https://hpsimg.gsretail.com/medias/sys_master/images/images/h30/h57/9029664079902.jpg"
+                  }
+                  alt={keyword}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "10px",
+                  }}
+                />
+              </button>
+            </div>
+          ))}
+        </div>
+
+      <div className="flex w-full mt-8 mb-16 gap-6 justify-center">
+        <div className="w-1/2 min-w-[480px] aspect-video mr-35">
+          <div id="map" style={{ width: "120%", height: "100%"}}></div>
+        </div>
+      </div>
+
+
+
+
+      
+
+
       <div className="my-8">
-        <span className="font-semibold text-lg">녹색 제품 목록</span>
+        <span className="font-semibold text-lg">녹색 제품</span>
         <div className="grid grid-cols-5 gap-6">
           {products.slice(0, 5).map(renderProductCard)}
         </div>
@@ -215,50 +268,9 @@ function Home() {
         </div>
       </div>
 
-      <div className="my-4 flex gap-2 justify-center">
-        <span className="font-semibold mr-6 mt-6 text-lg">
-          오프라인 적립매장
-        </span>
-      </div>
+      
 
-      <div className="flex w-full mt-8 mb-16 gap-6 justify-center">
-        <div className="w-1/2 min-w-[480px] aspect-video">
-          <div id="map" style={{ width: "100%", height: "100%" }}></div>
-        </div>
-        <div className="flex flex-col gap-4">
-          {["이마트", "홈플러스", "gs"].map((keyword, idx) => (
-            <div
-              key={idx}
-              className={`rounded-2xl ${
-                activeButton === keyword ? "border-4 border-green-500" : ""
-              }`}
-              style={{ width: "160px", height: "100px", overflow: "hidden" }}
-            >
-              <button
-                onClick={() => handleSearch(keyword)}
-                className="w-full h-full hover:cursor-pointer"
-              >
-                <img
-                  src={
-                    keyword === "이마트"
-                      ? "https://cdn.psnews.co.kr/news/photo/202403/2050553_100280_4015.jpg"
-                      : keyword === "홈플러스"
-                      ? "https://blog.kakaocdn.net/dn/rfvNk/btrbgodbV2k/Ycz0kkfmFREQhlKkxIduJK/img.jpg"
-                      : "https://18db109adea2ac8c.kinxzone.com/upfile/image/additionFacilities/6e320139-605d-4f82-804e-b1fba89e4f31.jpg"
-                  }
-                  alt={keyword}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    borderRadius: "10px",
-                  }}
-                />
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
+      
     </div>
   );
 }

@@ -360,13 +360,13 @@ function EditInfo() {
 
                       <div className="flex justify-center gap-2">
                         <button
-                          className="bg-gray-400 text-white px-6 py-2 rounded"
+                          className="bg-gray-400 text-white px-6 py-2 rounded cursor-pointer"
                           onClick={() => setShowInput(false)}
                         >
                           취소
                         </button>
                         <button
-                          className="bg-primary-500 text-white px-6 py-2 rounded"
+                          className="bg-primary-500 text-white px-6 py-2 rounded cursor-pointer"
                           onClick={handleSave}
                         >
                           주소 저장

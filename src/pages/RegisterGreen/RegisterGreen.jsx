@@ -111,19 +111,19 @@ function RegisterGreen() {
           },
         });
 
-        alert("제품이 성공적으로 등록되었습니다.");
+        toast.success("제품이 성공적으로 등록되었습니다.");
         navigate("/green-register-list");
       } else {
-        alert(`제품 등록 실패: 상태 코드 ${res.status}`);
+        toast.error(`제품 등록 실패: 상태 코드 ${res.status}`);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const message = error.response?.data?.message || error.message || "";
         if (error.response?.status === 500) {
-          alert("등록 실패: 중복된 인증번호가 있습니다.");
+          toast.error("등록 실패: 중복된 인증번호가 있습니다.");
         } else {
           console.error("Axios 오류:", error.response?.data || error.message);
-          alert(`등록 실패: ${message}`);
+          toast.error(`등록 실패: ${message}`);
         }
       } else {
         console.error("예상치 못한 오류:", error);

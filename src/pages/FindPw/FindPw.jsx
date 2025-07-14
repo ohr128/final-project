@@ -50,6 +50,7 @@ function FindId() {
       toast.success("이메일 인증 완료");
     } catch (error) {
       console.log(error);
+      toast.error("인증번호가 일치하지 않습니다.");
     }
   };
 

@@ -71,7 +71,7 @@ export const menuData = [
             subLink: "/point"
         },
         {
-            subTitle: "주문내역",
+            subTitle: "주문목록",
             subLink: "/order-detail"
         },
         
@@ -174,7 +174,7 @@ export const menuArray = [
             subLink: "/point"
         },
         {
-            subTitle: "주문내역",
+            subTitle: "주문목록",
             subLink: "/order-detail"
         },
         {
