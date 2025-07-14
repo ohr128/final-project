@@ -205,7 +205,7 @@ function RemodelingRequest() {
 
       <ToastContainer
         position="top-center"
-        autoClose={1000}
+        autoClose={3000}
         limit={1}
         hideProgressBar={true}
         newestOnTop={false}
@@ -239,7 +239,7 @@ function RemodelingRequest() {
                   className="border border-primary-500 rounded text-primary-500 px-4 py-2 cursor-pointer"
                   onClick={handleClick}
                 >
-                  우편번호찾기
+                  주소 찾기
                 </button>
               </div>
               <input
@@ -290,7 +290,7 @@ function RemodelingRequest() {
                       onChange={e => setPyeong(e.target.value)}
                     />
                     <button
-                      className="border border-primary-500 rounded text-primary-500 px-4 py-2 cursor-pointer"
+                      className="border border-primary-500 rounded text-primary-500 px-2 py-2 cursor-pointer"
                       onClick={handlesquare}
                     >
                       평수찾기

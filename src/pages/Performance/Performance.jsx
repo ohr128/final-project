@@ -65,8 +65,8 @@ function Performance() {
       <SideMenu from="/performance" />
       <div className="w-4/5 px-6 flex justify-center">
         <div className="w-full max-w-xl flex flex-col text-center mt-20">
-          <span className="mb-4 text-2xl font-semibold ml-10">사업실적
-            <span className="mb-4 text-2xl font-semibold ml-40">리모델링 신청 횟수</span>
+          <span className="mb-4 text-2xl font-semibold ml-15">주문량
+            <span className="mb-4 text-2xl font-semibold ml-35">리모델링 신청 횟수</span>
           </span>
           <div className="flex gap-4 justify-evenly mt-6 mb-20">
             <div className="bg-primary-500 w-50 rounded-full h-50 text-center pt-20 text-2xl text-white"> 주문수 {greenOrderCount} 건</div>

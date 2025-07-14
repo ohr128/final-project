@@ -60,6 +60,15 @@ function SignUp() {
     }
   };
 
+  const validatePassword = (pw) => {
+  const hasUppercase = /[A-Z]/.test(pw);
+  const hasNumber = /[0-9]/.test(pw);
+  const hasSpecial = /[!@#$%^&*()_+{}\[\]:;"'<>,.?/~`|\\-]/.test(pw);
+  const hasMinLength = pw.length >= 8;
+
+  return hasUppercase && hasNumber && hasSpecial && hasMinLength;
+};
+
   const checkPasswordMatch = async (confirm) => {
     if (password === "" || confirm === "") {
       setPwMessage("");
@@ -81,6 +90,11 @@ function SignUp() {
       return;
     }
 
+    if(!validatePassword(password)) {
+      toast.error("비밀번호는 영문 대문자, 숫자, 특수문자를 각각 하나 이상 표현해야 하며 8글자 이상이여야 합니다.");
+      return;
+    }
+
     try {
       await axios.post(
         `${API_BASE_URL}/user/sign-up`,
@@ -93,12 +107,16 @@ function SignUp() {
           headers: { "Content-Type": "application/json" },
         }
       );
+      
       toast.success("회원가입이 완료되었습니다.");
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+
     } catch (error) {
       console.log(error);
       if (error.response) {
-        toast.error("회원가입 실패:" + error.response.data);
+        toast.error("아이디 최소 8글자입니다.");
       } else {
         toast.error("서버오류");
       }

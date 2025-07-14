@@ -202,7 +202,7 @@ function GreenEnergyProduct() {
           </div>
 
           {filteredProducts.length > 0 && (
-            <ul className="flex gap-1 justify-center my-10 select-none">
+            <ul className="flex gap-1 justify-center my-10 select-none cursor-pointer">
               <li
                 onClick={firstPage}
                 className="size-9 bg-gray-100 flex justify-center items-center border border-gray-300"

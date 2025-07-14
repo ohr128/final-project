@@ -59,7 +59,7 @@ function Estimate() {
             그린리모델링 견적서
           </h1>
           <div className="flex justify-end m-4">
-                <button className="border-2 rounded flex justify-center items-center gap-2 p-1" onClick={handleDownloadPdf} style={{color: "#30a63e"}}>
+                <button className="border-2 rounded flex justify-center items-center gap-2 p-1 cursor-pointer" onClick={handleDownloadPdf} style={{color: "#30a63e"}}>
                   <span className="font-bold" style={{color: "#30a63e"}}>
                     PDF 다운로드
                   </span>

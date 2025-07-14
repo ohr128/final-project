@@ -277,7 +277,7 @@ function GreenDetail() {
           </div>
         </div>
 
-        <span className="font-semibold text-2xl">상세정보</span>
+        <span className="font-semibold text-2xl">제품정보</span>
         <div className="border-y border-y-gray-200 justify-center items-center my-4 py-10 px-4">
           {product.classification === "녹색 제품" ? (
             <>
